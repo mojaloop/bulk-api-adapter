@@ -1,0 +1,2 @@
+# BULK API ADAPTER API
+***
