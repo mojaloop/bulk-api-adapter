@@ -29,8 +29,6 @@
 const Hapi = require('hapi')
 const HapiOpenAPI = require('hapi-openapi')
 const Path = require('path')
-// const ErrorHandling = require('@mojaloop/central-services-error-handling')
-// const Plugins = require('./plugins')
 const Logger = require('@mojaloop/central-services-shared').Logger
 const Boom = require('@hapi/boom')
 const RegisterHandlers = require('../handlers/register')
@@ -85,9 +83,6 @@ const createServer = async (port, modules) => {
       handlers: Path.resolve(__dirname, '../api/handlers')
     }
   })
-
-  // await Plugins.registerPlugins(server)
-  // await server.register(modules)
 
   await server.start()
   Logger.debug(`Server running at: ${server.info.uri}`)
