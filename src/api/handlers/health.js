@@ -41,6 +41,6 @@ module.exports = {
      * responses: default
      */
   get: function getHealth (request, h) {
-    return 'bla'
+    return { status: 'OK' }
   }
 }
