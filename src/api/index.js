@@ -1,7 +1,8 @@
-const Setup = require('./server')
+const Setup = require('../shared/setup')
 const Config = require('../../src/lib/config')
 
 module.exports = Setup.initialize({
-  service: 'bulk-api',
-  port: Config.PORT
+  service: 'api',
+  port: Config.PORT,
+  runHandlers: !Config.HANDLERS_DISABLED
 })
