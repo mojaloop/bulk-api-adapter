@@ -26,7 +26,7 @@
 
 const Logger = require('@mojaloop/central-services-shared').Logger
 const request = require('request')
-const Transformer = require('../../domain/transfer/transformer')
+const Transformer = require('../../domain/bulkTransfer/transformer')
 const Config = require('../../lib/config')
 const Enum = require('../../lib/enum')
 

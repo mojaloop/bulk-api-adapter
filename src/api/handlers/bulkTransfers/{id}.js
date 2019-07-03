@@ -28,7 +28,7 @@
  ******/
 'use strict'
 
-const TransferService = require('../../../domain/transfer')
+const TransferService = require('../../../domain/bulkTransfer')
 const Logger = require('@mojaloop/central-services-shared').Logger
 const Boom = require('boom')
 const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer

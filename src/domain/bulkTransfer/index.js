@@ -33,7 +33,7 @@ const FULFIL = 'fulfil'
 const BULK_TRANSFER = 'bulk'
 
 /**
- * @module src/domain/transfer
+ * @module src/domain/bulkTransfer
  */
 
 /**

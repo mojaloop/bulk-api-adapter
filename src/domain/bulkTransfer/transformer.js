@@ -18,9 +18,7 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * ModusBox
- - Miguel de Barros <miguel.debarros@modusbox.com>
-
+ * Miguel de Barros <miguel.debarros@modusbox.com>
  --------------
  ******/
 
@@ -29,7 +27,7 @@
 const ENUM = require('../../lib/enum')
 
 /**
- * @module src/domain/transfer/transformer
+ * @module src/domain/bulkTransfer/transformer
  */
 
 /**
