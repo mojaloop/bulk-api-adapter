@@ -23,7 +23,7 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Georgi Georgiev <georgi.georgiev@modusbox.com> : sourced from ml-api-adapter
+ * Georgi Georgiev <georgi.georgiev@modusbox.com> << central-services-shared
  * Miguel de Barros <miguel.debarros@modusbox.com>
  --------------
  ******/

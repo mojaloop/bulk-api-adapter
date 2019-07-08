@@ -63,8 +63,8 @@
               "consumeTimeout": 1000
             },
             "rdkafkaConf": {
-              "client.id": "ml-con-notification-event",
-              "group.id": "ml-group-notification-event",
+              "client.id": "bulk-con-notification-event",
+              "group.id": "bulk-group-notification-event",
               "metadata.broker.list": "localhost:9092",
               "socket.keepalive.enable": true
             },
@@ -84,7 +84,7 @@
             },
             "rdkafkaConf": {
               "metadata.broker.list": "localhost:9092",
-              "client.id": "ml-prod-bulk-prepare",
+              "client.id": "bulk-prod-bulk-prepare",
               "event_cb": true,
               "dr_cb": true,
               "socket.keepalive.enable": true,
@@ -102,7 +102,7 @@
             },
             "rdkafkaConf": {
               "metadata.broker.list": "localhost:9092",
-              "client.id": "ml-prod-bulk-fulfil",
+              "client.id": "bulk-prod-bulk-fulfil",
               "event_cb": true,
               "dr_cb": true,
               "socket.keepalive.enable": true,

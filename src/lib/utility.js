@@ -18,7 +18,7 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Georgi Georgiev <georgi.georgiev@modusbox.com> : sourced from ml-api-adapter
+ * Georgi Georgiev <georgi.georgiev@modusbox.com> << central-services-shared
  * Shashikant Hirugade <shashikant.hirugade@modusbox.com>
 --------------
  ******/

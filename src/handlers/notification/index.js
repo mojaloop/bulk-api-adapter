@@ -204,9 +204,7 @@ const processMessage = async (msg) => {
       return Callback.sendCallback(callbackURLTo, methodFrom, content.headers, JSON.stringify(responsePayload), id, from, to)
     }
 
-    const err = new Error('Unknown action received from kafka')
-    Logger.error(`Error sending notification - ${err}`)
-    throw err
+    Logger.warn(`Unknown action received from kafka: ${action}`)
   } catch (e) {
     Logger.error(`Error processing the message - ${e}`)
     throw e
