@@ -1,4 +1,5 @@
 /*****
+ * @file This registers all handlers for the central-ledger API
  License
  --------------
  Copyright © 2017 Bill & Melinda Gates Foundation
@@ -22,25 +23,54 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Valentin Genev <valentin.genev@modusbox.com>
+ * Georgi Georgiev <georgi.georgiev@modusbox.com>
  --------------
  ******/
 'use strict'
 
-const Boom = require('boom')
-
-/**
- * Operations on /transfers/{id}/error
- */
-module.exports = {
-  /**
-     * summary: Abort a transfer
-     * description:
-     * parameters: content-type, date, x-forwarded-for, fspiop-source, fspiop-destination, fspiop-encryption, fspiop-signature, fspiop-uri, fspiop-http-method, id, body
-     * produces:
-     * responses: default
-     */
-  put: function putTransfersIdError (request, h) {
-    return Boom.notImplemented()
+const headers = {
+  FSPIOP: {
+    SWITCH: {
+      regex: /^switch$/i,
+      value: 'switch'
+    },
+    SOURCE: 'fspiop-source',
+    DESTINATION: 'fspiop-destination',
+    HTTP_METHOD: 'fspiop-http-method',
+    SIGNATURE: 'fspiop-signature',
+    URI: 'fspiop-uri'
+  },
+  GENERAL: {
+    ACCEPT: 'accept',
+    DATE: 'date',
+    CONTENT_LENGTH: 'content-length'
   }
+}
+
+const methods = {
+  FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST: 'post',
+  FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR: 'put',
+  FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT: 'put'
+}
+
+const transferEventAction = {
+  BULK_PREPARE: 'bulk-prepare',
+  BULK_COMMIT: 'bulk-commit'
+}
+
+const messageStatus = {
+  SUCCESS: 'success',
+  ERROR: 'error'
+}
+
+const errorMessages = {
+  MISSINGFUNCTIONPARAMETERS: 'Missing parameters for function'
+}
+
+module.exports = {
+  headers,
+  methods,
+  transferEventAction,
+  messageStatus,
+  errorMessages
 }

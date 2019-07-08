@@ -1,5 +1,4 @@
 /*****
- * @file This registers all handlers for the central-ledger API
  License
  --------------
  Copyright © 2017 Bill & Melinda Gates Foundation
@@ -23,27 +22,31 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Georgi Georgiev <georgi.georgiev@modusbox.com>
+ * Lazola Lucas <lazola.lucas@modusbox.com>
+ * Rajiv Mothilal <rajiv.mothilal@modusbox.com>
+ * Miguel de Barros <miguel.debarros@modusbox.com>
+ * Shashikant Hirugade <shashikant.hirugade@modusbox.com>
+
  --------------
+
  ******/
 'use strict'
 
-const Crypto = require('crypto')
+/**
+ * @module src/handlers/api/plugin
+ */
 
 /**
- * Method to create the hash for a given payload
+ * @function Register Handler Routes HAPI
  *
- * @param payload Payload for which a hash is to be create
- * @returns Hash for the provided payload
+ * @async
+ * @description Registers registers plugins on HAPI server. This retrieves all routes to be exposed from the routes.js file
+ * @returns {Promise} - Returns a promise: resolve if successful, or rejection if failed
  */
-const createHash = (payload) => {
-  const hashSha256 = Crypto.createHash('sha256')
-  let hash = JSON.stringify(payload)
-  hash = hashSha256.update(hash)
-  hash = hashSha256.digest(hash).toString('base64').slice(0, -1) // removing the trailing '=' as per the specification
-  return hash
-}
 
-module.exports = {
-  createHash
+exports.plugin = {
+  name: 'handler metrics routes',
+  register: function (server) {
+    server.route(require('./routes'))
+  }
 }

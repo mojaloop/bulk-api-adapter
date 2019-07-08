@@ -213,65 +213,6 @@ paths:
           schema:
             type: string
           description: Successful
-  '/transfers/{id}/error':
-    put:
-      summary: Abort a transfer
-      operationId: putTransfersIdError
-      parameters:
-        - type: string
-          pattern: 'application\/vnd.interoperability[.]'
-          name: content-type
-          in: header
-          required: true
-        - type: string
-          format: date
-          name: date
-          in: header
-          required: true
-        - type: string
-          name: x-forwarded-for
-          in: header
-          required: false
-        - type: string
-          name: fspiop-source
-          in: header
-          required: true
-        - type: string
-          name: fspiop-destination
-          in: header
-          required: false
-        - type: string
-          name: fspiop-encryption
-          in: header
-          required: false
-        - type: string
-          name: fspiop-signature
-          in: header
-          required: false
-        - type: string
-          name: fspiop-uri
-          in: header
-          required: false
-        - type: string
-          name: fspiop-http-method
-          in: header
-          required: false
-        - type: string
-          description: path
-          name: id
-          in: path
-          required: true
-        - in: body
-          name: body
-          schema:
-            $ref: '#/definitions/Error'
-      tags:
-        - transfers
-      responses:
-        default:
-          schema:
-            type: string
-          description: Successful
 
 definitions:
   Amount:

@@ -2,4 +2,4 @@
 Bulk Transfers API and notifications
 
 ## API Definition
-Swagger API [location](./src/api/config/swagger.yaml)
+Swagger API [location](./src/interface/swagger.yaml)

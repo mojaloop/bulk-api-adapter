@@ -23,27 +23,32 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Georgi Georgiev <georgi.georgiev@modusbox.com>
+ * Georgi Georgiev <georgi.georgiev@modusbox.com> << central-services-shared
+ * Miguel de Barros <miguel.debarros@modusbox.com>
  --------------
  ******/
+
 'use strict'
 
-const Crypto = require('crypto')
+/**
+ * @module src/handlers/register
+ */
+
+const NotificationHandler = require('./notification')
 
 /**
- * Method to create the hash for a given payload
+ * @function RegisterAllHandlers
  *
- * @param payload Payload for which a hash is to be create
- * @returns Hash for the provided payload
+ * @async
+ * @description Registers all handlers by using the require-glob to retrieve all handler exports in sub directories and access the registerAllHandlers()
+ * in each of them. Every handler in the sub-folders must have a registerAllHandlers() function
+ * @returns {boolean} - Returns a boolean: true if successful, or throws and error if failed
  */
-const createHash = (payload) => {
-  const hashSha256 = Crypto.createHash('sha256')
-  let hash = JSON.stringify(payload)
-  hash = hashSha256.update(hash)
-  hash = hashSha256.digest(hash).toString('base64').slice(0, -1) // removing the trailing '=' as per the specification
-  return hash
+const registerAllHandlers = async (request, h) => {
+  return NotificationHandler.startConsumer()
 }
 
 module.exports = {
-  createHash
+  registerAllHandlers: registerAllHandlers,
+  registerNotificationHandler: NotificationHandler.startConsumer
 }
