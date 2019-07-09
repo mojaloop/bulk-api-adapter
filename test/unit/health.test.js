@@ -4,7 +4,7 @@ const Test = require('tape')
 const Hapi = require('hapi')
 const HapiOpenAPI = require('hapi-openapi')
 const Path = require('path')
-const Mockgen = require('../data/mockgen.js')
+const Mockgen = require('./data/mockgen')
 
 /**
  * Test for /health
@@ -23,8 +23,8 @@ Test('/health', function (t) {
     await server.register({
       plugin: HapiOpenAPI,
       options: {
-        api: Path.resolve(__dirname, '../config/swagger.yaml'),
-        handlers: Path.join(__dirname, '../handlers'),
+        api: Path.resolve(__dirname, '../../src/interface/swagger.yaml'),
+        handlers: Path.join(__dirname, '../../src/api/handlers'),
         outputvalidation: true
       }
     })

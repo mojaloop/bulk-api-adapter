@@ -1,7 +1,7 @@
 'use strict'
 var Swagmock = require('swagmock')
 var Path = require('path')
-var apiPath = Path.resolve(__dirname, '../config/swagger.yaml')
+var apiPath = Path.resolve(__dirname, '../../../src/interface/swagger.yaml')
 var mockgen
 
 module.exports = function () {

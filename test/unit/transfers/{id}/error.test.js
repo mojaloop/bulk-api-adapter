@@ -4,35 +4,36 @@ const Test = require('tape')
 const Hapi = require('hapi')
 const HapiOpenAPI = require('hapi-openapi')
 const Path = require('path')
-const Mockgen = require('../data/mockgen.js')
+const Mockgen = require('../../data/mockgen')
+// const imp = require('../../../../src/interface/swagger.yaml')
 
 /**
- * Test for /bulkTransfers
+ * Test for /transfers/{id}/error
  */
-Test('/bulkTransfers', function (t) {
+Test('/transfers/{id}/error', function (t) {
   /**
-     * summary: Transfer API.
+     * summary: Abort a transfer
      * description:
-     * parameters: accept, content-type, content-length, date, x-forwarded-for, fspiop-source, fspiop-destination, fspiop-encryption, fspiop-signature, fspiop-uri, fspiop-http-method, body
+     * parameters: content-type, date, x-forwarded-for, fspiop-source, fspiop-destination, fspiop-encryption, fspiop-signature, fspiop-uri, fspiop-http-method, id, body
      * produces:
      * responses: default
      */
-  t.test('test postBulkTransfers post operation', async function (t) {
+  t.test('test putTransfersIdError put operation', async function (t) {
     const server = new Hapi.Server()
 
     await server.register({
       plugin: HapiOpenAPI,
       options: {
-        api: Path.resolve(__dirname, '../config/swagger.yaml'),
-        handlers: Path.join(__dirname, '../handlers'),
+        api: Path.resolve(__dirname, '../../../../src/interface/swagger.yaml'),
+        handlers: Path.join(__dirname, '../../../../src/api/handlers'),
         outputvalidation: true
       }
     })
 
     const requests = new Promise((resolve, reject) => {
       Mockgen().requests({
-        path: '/bulkTransfers',
-        operation: 'post'
+        path: '/transfers/{id}/error',
+        operation: 'put'
       }, function (error, mock) {
         return error ? reject(error) : resolve(mock)
       })
@@ -45,7 +46,7 @@ Test('/bulkTransfers', function (t) {
     // Get the resolved path from mock request
     // Mock request Path templates({}) are resolved using path parameters
     const options = {
-      method: 'post',
+      method: 'put',
       url: '' + mock.request.path
     }
     if (mock.request.body) {

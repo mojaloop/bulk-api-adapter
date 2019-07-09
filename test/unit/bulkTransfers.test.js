@@ -4,35 +4,35 @@ const Test = require('tape')
 const Hapi = require('hapi')
 const HapiOpenAPI = require('hapi-openapi')
 const Path = require('path')
-const Mockgen = require('../data/mockgen.js')
+const Mockgen = require('./data/mockgen')
 
 /**
- * Test for /metrics
+ * Test for /bulkTransfers
  */
-Test('/metrics', function (t) {
+Test('/bulkTransfers', function (t) {
   /**
-     * summary: Prometheus metrics endpoint
+     * summary: Transfer API.
      * description:
-     * parameters:
+     * parameters: accept, content-type, content-length, date, x-forwarded-for, fspiop-source, fspiop-destination, fspiop-encryption, fspiop-signature, fspiop-uri, fspiop-http-method, body
      * produces:
      * responses: default
      */
-  t.test('test getMetrics get operation', async function (t) {
+  t.test('test postBulkTransfers post operation', async function (t) {
     const server = new Hapi.Server()
 
     await server.register({
       plugin: HapiOpenAPI,
       options: {
-        api: Path.resolve(__dirname, '../config/swagger.yaml'),
-        handlers: Path.join(__dirname, '../handlers'),
+        api: Path.resolve(__dirname, '../../src/interface/swagger.yaml'),
+        handlers: Path.join(__dirname, '../../src/api/handlers'),
         outputvalidation: true
       }
     })
 
     const requests = new Promise((resolve, reject) => {
       Mockgen().requests({
-        path: '/metrics',
-        operation: 'get'
+        path: '/bulkTransfers',
+        operation: 'post'
       }, function (error, mock) {
         return error ? reject(error) : resolve(mock)
       })
@@ -45,7 +45,7 @@ Test('/metrics', function (t) {
     // Get the resolved path from mock request
     // Mock request Path templates({}) are resolved using path parameters
     const options = {
-      method: 'get',
+      method: 'post',
       url: '' + mock.request.path
     }
     if (mock.request.body) {

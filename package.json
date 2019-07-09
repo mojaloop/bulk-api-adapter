@@ -39,16 +39,18 @@
     "pre-commit": "1.2.2",
     "standard": "12.0.1",
     "swagmock": "1.0.0",
-    "tap-xunit": "2.4.1",
+    "tap-xunit": "^2.4.1",
     "tape": "4.11.0",
     "tapes": "4.1.0"
   },
   "scripts": {
     "start": "run-p start:api",
     "start:api": "node src/api/index.js",
-    "test": "tape 'tests/**/*.js'",
-    "cover": "istanbul cover tape -- 'tests/**/*.js'",
-    "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.yaml'"
+    "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.yaml'",
+    "test:unit": "tape 'test/unit/**/*.test.js'",
+    "test:xunit": "tape 'test/unit/**/*.test.js' | tap-xunit",
+    "test:coverage": "istanbul cover tape -- 'test/unit/**/*.test.js'",
+    "test:coverage-check": "npm run test:coverage && istanbul check-coverage"
   },
   "generator-swaggerize": {
     "version": "4.1.0"
