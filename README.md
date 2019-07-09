@@ -4,7 +4,7 @@
 [![Docker pulls](https://img.shields.io/docker/pulls/mojaloop/bulk-api-adapter.svg?style=flat)](https://hub.docker.com/r/mojaloop/bulk-api-adapter)
 [![CircleCI](https://circleci.com/gh/mojaloop/bulk-api-adapter.svg?style=svg)](https://circleci.com/gh/mojaloop/bulk-api-adapter)
 
-Bulk Transfers API and notifications
+Bulk Transfers API and notifications.
 
 ## API Definition
 Swagger API [location](./src/interface/swagger.yaml)
