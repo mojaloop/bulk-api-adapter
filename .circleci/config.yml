@@ -593,28 +593,28 @@ workflows:
               ignore:
                 - /feature*/
                 - /bugfix*/
-      - test-integration:
-          context: org-global
-          requires:
-            - setup
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              ignore:
-                - /feature*/
-                - /bugfix*/
-      - test-functional:
-          context: org-global
-          requires:
-            - setup
-          filters:
-            tags:
-              only: /.*/
-            branches:
-              ignore:
-                - /feature*/
-                - /bugfix*/
+#      - test-integration:
+#          context: org-global
+#          requires:
+#            - setup
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              ignore:
+#                - /feature*/
+#                - /bugfix*/
+#      - test-functional:
+#          context: org-global
+#          requires:
+#            - setup
+#          filters:
+#            tags:
+#              only: /.*/
+#            branches:
+#              ignore:
+#                - /feature*/
+#                - /bugfix*/
     #   - test-spec:
     #       context: org-global
     #       requires:
@@ -630,10 +630,10 @@ workflows:
           context: org-global
           requires:
             - setup
-            - test-unit
-            - test-coverage
-            - test-integration
-            - test-functional
+#            - test-unit
+#            - test-coverage
+#            - test-integration
+#            - test-functional
             # - test-spec
           filters:
             tags:
@@ -651,89 +651,14 @@ workflows:
             branches:
               ignore:
                 - /.*/
-      - build-poc:
-          context: org-global
-          requires:
-            - setup
-            - test-unit
-            - test-coverage
-            - test-integration
-            - test-functional
-            # - test-spec
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*\-poc/
-            branches:
-              ignore:
-                - /.*/
-      - deploy-poc:
-          context: org-global
-          requires:
-            - build-poc
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*\-poc/
-            branches:
-              ignore:
-                - /.*/
-      - build-pocdb:
-          context: org-global
-          requires:
-            - setup
-            - test-unit
-            - test-coverage
-            - test-integration
-            - test-functional
-            # - test-spec
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*\-pocdb/
-            branches:
-              ignore:
-                - /.*/
-      - deploy-pocdb:
-          context: org-global
-          requires:
-            - build-pocdb
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*\-pocdb/
-            branches:
-              ignore:
-                - /.*/
-      - build-base:
-          context: org-global
-          requires:
-            - setup
-            - test-unit
-            - test-coverage
-            - test-integration
-            - test-functional
-            # - test-spec
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*\-base/
-            branches:
-              ignore:
-                - /.*/
-      - deploy-base:
-          context: org-global
-          requires:
-            - build-base
-          filters:
-            tags:
-              only: /v[0-9]+(\.[0-9]+)*\-base/
-            branches:
-              ignore:
-                - /.*/
       - build:
           context: org-global
           requires:
             - setup
             - test-unit
             - test-coverage
-            - test-integration
-            - test-functional
+#            - test-integration
+#            - test-functional
             # - test-spec
           filters:
             tags:
