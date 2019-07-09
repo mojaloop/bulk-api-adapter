@@ -30,6 +30,7 @@
     "mustache": "3.0.1",
     "rc": "1.2.8",
     "request": "2.88.0",
+    "run-s": "0.0.0",
     "uuid4": "1.1.4"
   },
   "devDependencies": {
@@ -47,6 +48,8 @@
     "start": "run-p start:api",
     "start:api": "node src/api/index.js",
     "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.yaml'",
+    "test": "npm run test:unit | faucet",
+    "test:all": "run-s test",
     "test:unit": "tape 'test/unit/**/*.test.js'",
     "test:xunit": "tape 'test/unit/**/*.test.js' | tap-xunit",
     "test:coverage": "istanbul cover tape -- 'test/unit/**/*.test.js'",
