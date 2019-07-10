@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/bulk-api-adapter",
-  "version": "7.1.0",
+  "version": "7.1.1",
   "description": "Mojaloop Bulk API Adapter",
   "license": "Apache-2.0",
   "author": "ModusBox",
@@ -24,6 +24,7 @@
     "boom": "7.3.0",
     "catbox": "10.0.6",
     "catbox-memory": "4.0.1",
+    "commander": "2.20.0",
     "hapi": "18.1.0",
     "hapi-openapi": "1.2.2",
     "immutable": "4.0.0-rc.12",

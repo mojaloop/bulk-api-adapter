@@ -22,28 +22,25 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- # ModusBox
- - Valentin Genev <valentin.genev@modusbox.com>
+ * ModusBox
  - Miguel de Barros <miguel.debarros@modusbox.com>
+
  --------------
  ******/
 
 'use strict'
 
-const Metrics = require('@mojaloop/central-services-metrics')
+const tags = ['api', 'root']
 
-/**
- * Operations on /metrics
- */
-module.exports = {
-  /**
-     * summary: Prometheus metrics endpoint
-     * description:
-     * parameters:
-     * produces:
-     * responses: default
-     */
-  get: function getMetrics (request, h) {
-    return h.response(Metrics.getMetricsForPrometheus()).code(200)
+module.exports = [
+  {
+    method: 'GET',
+    path: '/health',
+    handler: function (request, h) {
+      return h.response({ status: 'OK' }).code(200)
+    },
+    options: {
+      tags
+    }
   }
-}
+]
