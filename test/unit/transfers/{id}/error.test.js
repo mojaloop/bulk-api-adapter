@@ -5,7 +5,6 @@ const Hapi = require('hapi')
 const HapiOpenAPI = require('hapi-openapi')
 const Path = require('path')
 const Mockgen = require('../../data/mockgen')
-// const imp = require('../../../../src/interface/swagger.yaml')
 
 /**
  * Test for /transfers/{id}/error
