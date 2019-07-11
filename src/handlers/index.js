@@ -22,8 +22,9 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Georgi Georgiev <georgi.georgiev@modusbox.com> << central-services-shared
- * Miguel de Barros <miguel.debarros@modusbox.com>
+ * ModusBox
+ - Georgi Georgiev <georgi.georgiev@modusbox.com> << central-services-shared
+ - Miguel de Barros <miguel.debarros@modusbox.com>
  --------------
  ******/
 
@@ -37,8 +38,8 @@ const Logger = require('@mojaloop/central-services-shared').Logger
 const Config = require('../lib/config')
 const Setup = require('../shared/setup')
 const PJson = require('../../package.json')
-const HealthPlugin = require('./api/plugin')
-const MetricsPlugin = require('../api/metrics/plugin')
+const HealthPlugin = require('./api/health/plugin')
+const MetricsPlugin = require('./api/metrics/plugin')
 const { Command } = require('commander')
 
 const Program = new Command()

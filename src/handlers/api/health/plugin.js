@@ -22,28 +22,30 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- # ModusBox
- - Valentin Genev <valentin.genev@modusbox.com>
- - Miguel de Barros <miguel.debarros@modusbox.com>
- --------------
- ******/
+ * Lazola Lucas <lazola.lucas@modusbox.com>
+ * Rajiv Mothilal <rajiv.mothilal@modusbox.com>
+ * Miguel de Barros <miguel.debarros@modusbox.com>
 
+ --------------
+
+ ******/
 'use strict'
 
-const Metrics = require('@mojaloop/central-services-metrics')
+/**
+ * @module src/handlers
+ */
 
 /**
- * Operations on /metrics
+ * @function Register Handler Routes HAPI
+ *
+ * @async
+ * @description Registers registers plugins on HAPI server. This retrieves all routes to be exposed from the routes.js file
+ * @returns {Promise} - Returns a promise: resolve if successful, or rejection if failed
  */
-module.exports = {
-  /**
-     * summary: Prometheus metrics endpoint
-     * description:
-     * parameters:
-     * produces:
-     * responses: default
-     */
-  get: function getMetrics (request, h) {
-    return h.response(Metrics.getMetricsForPrometheus()).code(200)
+
+exports.plugin = {
+  name: 'handler routes',
+  register: function (server) {
+    server.route(require('./routes'))
   }
 }

@@ -18,17 +18,17 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Georgi Georgiev <georgi.georgiev@modusbox.com>
- * Shashikant Hiruagde <shashikant.hirugade@modusbox.com>
- * Valentin Genev <valentin.genev@modusbox.com>
+ * ModusBox
+ - Georgi Georgiev <georgi.georgiev@modusbox.com>
+ - Shashikant Hiruagde <shashikant.hirugade@modusbox.com>
+ - Valentin Genev <valentin.genev@modusbox.com>
+ - Miguel de Barros <miguel.debarros@modusbox.com>
  --------------
  ******/
 
 'use strict'
 
 const Hapi = require('hapi')
-const HapiOpenAPI = require('hapi-openapi')
-const Path = require('path')
 const Logger = require('@mojaloop/central-services-shared').Logger
 const Boom = require('boom')
 const RegisterHandlers = require('../handlers/register')
@@ -76,14 +76,8 @@ const createServer = async (port, modules) => {
   })
   let db = await connectMongoose()
   server.app.db = db
-  await server.register({
-    plugin: HapiOpenAPI,
-    options: {
-      api: Path.resolve(__dirname, '../interface/swagger.yaml'),
-      handlers: Path.resolve(__dirname, '../api/handlers')
-    }
-  })
 
+  await server.register(modules)
   await server.start()
   Logger.debug(`Server running at: ${server.info.uri}`)
   return server

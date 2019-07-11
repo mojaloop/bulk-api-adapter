@@ -22,28 +22,21 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- # ModusBox
- - Valentin Genev <valentin.genev@modusbox.com>
+ * ModusBox
+ - Georgi Georgiev <georgi.georgiev@modusbox.com> << central-services-shared
  - Miguel de Barros <miguel.debarros@modusbox.com>
  --------------
  ******/
 
 'use strict'
 
-const Metrics = require('@mojaloop/central-services-metrics')
+const HapiOpenAPI = require('hapi-openapi')
+const Path = require('path')
 
-/**
- * Operations on /metrics
- */
 module.exports = {
-  /**
-     * summary: Prometheus metrics endpoint
-     * description:
-     * parameters:
-     * produces:
-     * responses: default
-     */
-  get: function getMetrics (request, h) {
-    return h.response(Metrics.getMetricsForPrometheus()).code(200)
+  plugin: HapiOpenAPI,
+  options: {
+    api: Path.resolve(__dirname, '../interface/swagger.yaml'),
+    handlers: Path.resolve(__dirname, './handlers')
   }
 }
