@@ -1,5 +1,5 @@
 'use strict'
-var Mockgen = require('../../mockgen.js')
+const Mockgen = require('../../mockgen')
 /**
  * Operations on /transfers/{id}/error
  */

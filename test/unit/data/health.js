@@ -1,5 +1,5 @@
 'use strict'
-var Mockgen = require('./mockgen.js')
+var Mockgen = require('./mockgen')
 /**
  * Operations on /health
  */
