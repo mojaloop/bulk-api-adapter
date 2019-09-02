@@ -25,7 +25,7 @@
 
 'use strict'
 
-const ENUM = require('../../lib/enum')
+const HttpEnum = require('@mojaloop/central-services-shared').Enum.Http
 
 /**
  * @module src/domain/bulkTransfer/transformer
@@ -57,14 +57,14 @@ const transformHeaders = (headers, config) => {
   var normalizedHeaders = {}
 
   // check to see if FSPIOP-Destination header has been left out of the initial request. If so then add it.
-  if (!normalizedKeys.hasOwnProperty(ENUM.headers.FSPIOP.DESTINATION)) {
-    headers[ENUM.headers.FSPIOP.DESTINATION] = ''
+  if (!normalizedKeys.hasOwnProperty(HttpEnum.headers.FSPIOP.DESTINATION)) {
+    headers[HttpEnum.headers.FSPIOP.DESTINATION] = ''
   }
 
   for (var headerKey in headers) {
     var headerValue = headers[headerKey]
     switch (headerKey.toLowerCase()) {
-      case (ENUM.headers.GENERAL.DATE):
+      case (HttpEnum.headers.GENERAL.DATE):
         var tempDate = {}
         if (typeof headerValue === 'object' && headerValue instanceof Date) {
           tempDate = headerValue.toUTCString()
@@ -80,21 +80,21 @@ const transformHeaders = (headers, config) => {
         }
         normalizedHeaders[headerKey] = tempDate
         break
-      case (ENUM.headers.GENERAL.CONTENT_LENGTH):
+      case (HttpEnum.headers.GENERAL.CONTENT_LENGTH):
         // Do nothing here, do not map. This will be inserted correctly by the Hapi framework.
         break
-      case (ENUM.headers.FSPIOP.URI):
+      case (HttpEnum.headers.FSPIOP.URI):
         // Check to see if we find a regex match the source header containing the switch name.
         // If so we include the uri otherwise we remove it.
 
-        if (headers[normalizedKeys[ENUM.headers.FSPIOP.SOURCE]].match(ENUM.headers.FSPIOP.SWITCH.regex) === null) {
+        if (headers[normalizedKeys[HttpEnum.headers.FSPIOP.SOURCE]].match(HttpEnum.headers.FSPIOP.SWITCH.regex) === null) {
           normalizedHeaders[headerKey] = headerValue
         }
         break
-      case (ENUM.headers.FSPIOP.HTTP_METHOD):
+      case (HttpEnum.headers.FSPIOP.HTTP_METHOD):
         // Check to see if we find a regex match the source header containing the switch name.
         // If so we include the signature otherwise we remove it.
-        if (headers[normalizedKeys[ENUM.headers.FSPIOP.SOURCE]].match(ENUM.headers.FSPIOP.SWITCH.regex) === null) {
+        if (headers[normalizedKeys[HttpEnum.headers.FSPIOP.SOURCE]].match(HttpEnum.headers.FSPIOP.SWITCH.regex) === null) {
           if (config.httpMethod.toLowerCase() === headerValue.toLowerCase()) {
             // HTTP Methods match, and thus no change is required
             normalizedHeaders[headerKey] = headerValue
@@ -112,10 +112,10 @@ const transformHeaders = (headers, config) => {
           }
         }
         break
-      case (ENUM.headers.FSPIOP.SOURCE):
+      case (HttpEnum.headers.FSPIOP.SOURCE):
         normalizedHeaders[headerKey] = config.sourceFsp
         break
-      case (ENUM.headers.FSPIOP.DESTINATION):
+      case (HttpEnum.headers.FSPIOP.DESTINATION):
         normalizedHeaders[headerKey] = config.destinationFsp
         break
       default:
@@ -123,16 +123,16 @@ const transformHeaders = (headers, config) => {
     }
   }
 
-  if (normalizedHeaders[normalizedKeys[ENUM.headers.FSPIOP.SOURCE]].match(ENUM.headers.FSPIOP.SWITCH.regex) !== null) {
+  if (normalizedHeaders[normalizedKeys[HttpEnum.headers.FSPIOP.SOURCE]].match(HttpEnum.headers.FSPIOP.SWITCH.regex) !== null) {
     // Check to see if we find a regex match the source header containing the switch name.
     // If so we remove the signature added by default.
-    delete normalizedHeaders[ENUM.headers.FSPIOP.SIGNATURE]
+    delete normalizedHeaders[HttpEnum.headers.FSPIOP.SIGNATURE]
     // Aslo remove FSPIOP-URI and make FSPIOP-HTTP-Method ALL-CAPS #737
-    delete normalizedHeaders[ENUM.headers.FSPIOP.URI]
+    delete normalizedHeaders[HttpEnum.headers.FSPIOP.URI]
   }
 
-  if (config && config.httpMethod !== ENUM.methods.FSPIOP_CALLBACK_URL_TRANSFER_POST) {
-    delete normalizedHeaders[ENUM.headers.GENERAL.ACCEPT]
+  if (config && config.httpMethod !== HttpEnum.methods.FSPIOP_CALLBACK_URL_TRANSFER_POST) {
+    delete normalizedHeaders[HttpEnum.headers.GENERAL.ACCEPT]
   }
   return normalizedHeaders
 }

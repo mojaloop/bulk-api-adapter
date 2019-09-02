@@ -33,13 +33,10 @@ const Callback = require('./callbacks.js')
 
 const NOTIFICATION = 'notification'
 const EVENT = 'event'
-const FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST = 'FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST'
-const FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT = 'FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT'
-const FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR = 'FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR'
 let notificationConsumer = {}
 let autoCommitEnabled = true
 const Metrics = require('@mojaloop/central-services-metrics')
-const ENUM = require('../../lib/enum')
+const HttpEnum = require('@mojaloop/central-services-shared').Enum.Http
 const decodePayload = require('@mojaloop/central-services-stream').Kafka.Protocol.decodePayload
 const BulkTransfer = require('@mojaloop/central-object-store').Models.BulkTransfer
 
@@ -163,43 +160,43 @@ const processMessage = async (msg) => {
     let id = JSON.parse(decodedPayload.body.toString()).transferId || (content.uriParams && content.uriParams.id)
     let payloadForCallback = decodedPayload.body.toString()
 
-    if (actionLower === ENUM.transferEventAction.BULK_PREPARE && statusLower === ENUM.messageStatus.SUCCESS) {
+    if (actionLower === 'bulk-prepare' && statusLower === 'success') {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST, id)
-      let methodTo = ENUM.methods.FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST
+      let callbackURLTo = await Participant.getEndpoint(to, HttpEnum.RestMethods.POST, id)
+      let methodTo = HttpEnum.RestMethods.POST
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodTo}, ${JSON.stringify(content.headers)}, ${payloadForCallback}, ${id}, ${from}, ${to})`)
       let bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
       return Callback.sendCallback(callbackURLTo, methodTo, content.headers, JSON.stringify(responsePayload), id, from, to)
     }
 
-    if (actionLower === ENUM.transferEventAction.BULK_PREPARE && statusLower !== ENUM.messageStatus.SUCCESS) {
+    if (actionLower === 'bulk-prepare' && statusLower !== 'success') {
       id = JSON.parse(payloadForCallback).bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
-      let methodFrom = ENUM.methods.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR
+      let callbackURLTo = await Participant.getEndpoint(to, HttpEnum.RestMethods.PUT, id)
+      let methodFrom = HttpEnum.RestMethods.PUT
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodFrom}, ${JSON.stringify(content.headers)}, ${payloadForCallback}, ${id}, ${from}, ${to})`)
       return Callback.sendCallback(callbackURLTo, methodFrom, content.headers, payloadForCallback, id, from, to)
     }
 
-    if (actionLower === ENUM.transferEventAction.BULK_COMMIT && statusLower === ENUM.messageStatus.SUCCESS) {
+    if (actionLower === 'bulk-commit' && statusLower === 'success') {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT, id)
-      let methodTo = ENUM.methods.FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT
+      let callbackURLTo = await Participant.getEndpoint(to, HttpEnum.RestMethods.PUT, id)
+      let methodTo = HttpEnum.RestMethods.PUT
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodTo}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
       let bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
       return Callback.sendCallback(callbackURLTo, methodTo, content.headers, JSON.stringify(responsePayload), id, from, to)
     }
 
-    if (actionLower === ENUM.transferEventAction.BULK_COMMIT && statusLower !== ENUM.messageStatus.SUCCESS) {
+    if (actionLower === 'bulk-commit' && statusLower !== 'success') {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
-      let methodFrom = ENUM.methods.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR
+      let callbackURLTo = await Participant.getEndpoint(to, HttpEnum.RestMethods.PUT, id)
+      let methodFrom = HttpEnum.RestMethods.PUT
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodFrom}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
       return Callback.sendCallback(callbackURLTo, methodFrom, content.headers, JSON.stringify(responsePayload), id, from, to)
     }

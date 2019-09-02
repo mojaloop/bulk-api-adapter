@@ -27,6 +27,8 @@
  ******/
 'use strict'
 
+const HttpEnum = require('@mojaloop/central-services-shared').Enum.Http
+
 // const Boom = require('boom')
 
 /**
@@ -41,6 +43,6 @@ module.exports = {
      * responses: default
      */
   get: function getHealth (request, h) {
-    return { status: 'OK' }
+    return { status: HttpEnum.ReturnCodes.OK.DESCRIPTION }
   }
 }

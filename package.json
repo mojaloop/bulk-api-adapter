@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/bulk-api-adapter",
-  "version": "7.1.1",
+  "version": "7.4.2",
   "description": "Mojaloop Bulk API Adapter",
   "license": "Apache-2.0",
   "author": "ModusBox",
@@ -19,7 +19,7 @@
   "dependencies": {
     "@mojaloop/central-object-store": "7.1.0",
     "@mojaloop/central-services-metrics": "5.2.0",
-    "@mojaloop/central-services-shared": "6.4.1",
+    "@mojaloop/central-services-shared": "7.4.8",
     "@mojaloop/central-services-stream": "6.2.2",
     "boom": "7.3.0",
     "catbox": "10.0.6",

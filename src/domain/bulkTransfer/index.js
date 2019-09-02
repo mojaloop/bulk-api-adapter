@@ -27,6 +27,7 @@ const Logger = require('@mojaloop/central-services-shared').Logger
 const Uuid = require('uuid4')
 const Utility = require('../../lib/utility')
 const Kafka = require('../../lib/kafka')
+const HttpEnum = require('@mojaloop/central-services-shared').Enum.Http
 
 const PREPARE = 'prepare'
 const FULFIL = 'fulfil'
@@ -90,9 +91,9 @@ const bulkFulfil = async (messageId, headers, message) => {
   try {
     const messageProtocol = {
       id: messageId,
-      to: headers['fspiop-destination'],
-      from: headers['fspiop-source'],
-      type: 'application/json',
+      to: headers[HttpEnum.Headers.FSPIOP.DESTINATION],
+      from: headers[HttpEnum.Headers.FSPIOP.SOURCE],
+      type: HttpEnum.Headers.DEFAULT.APPLICATION_JSON,
       content: {
         uriParams: { id: message.bulkTransferId },
         headers: headers,

@@ -35,6 +35,7 @@ const Boom = require('boom')
 const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
 const Util = require('../../lib/util')
 const Uuid = require('uuid4')
+const HttpEnum = require('@mojaloop/central-services-shared').Enum.Http
 
 /**
  * Operations on /bulkTransfers
@@ -58,7 +59,7 @@ module.exports = {
       await new BulkTransferModel(doc).save()
       const message = { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList, hash }
       await TransferService.bulkPrepare(messageId, request.headers, message)
-      return h.response().code(202)
+      return h.response().code(HttpEnum.ReturnCodes.ACCEPTED.CODE)
     } catch (err) {
       Logger.error(err)
       throw Boom.boomify(err, { message: 'An error has occurred' })
