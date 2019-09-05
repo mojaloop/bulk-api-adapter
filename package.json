@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/bulk-api-adapter",
-  "version": "7.4.2",
+  "version": "7.4.0",
   "description": "Mojaloop Bulk API Adapter",
   "license": "Apache-2.0",
   "author": "ModusBox",
@@ -19,16 +19,16 @@
   "dependencies": {
     "@mojaloop/central-object-store": "7.1.0",
     "@mojaloop/central-services-metrics": "5.2.0",
-    "@mojaloop/central-services-shared": "7.4.8",
-    "@mojaloop/central-services-stream": "6.2.2",
+    "@mojaloop/central-services-shared": "7.5.0",
+    "@mojaloop/central-services-stream": "7.4.2",
     "boom": "7.3.0",
     "catbox": "10.0.6",
     "catbox-memory": "4.0.1",
-    "commander": "2.20.0",
+    "commander": "3.0.1",
     "hapi": "18.1.0",
     "hapi-openapi": "1.2.2",
     "immutable": "4.0.0-rc.12",
-    "mustache": "3.0.1",
+    "mustache": "3.0.3",
     "rc": "1.2.8",
     "request": "2.88.0",
     "run-s": "0.0.0",
@@ -37,15 +37,21 @@
   "devDependencies": {
     "faucet": "0.0.1",
     "istanbul": "1.1.0-alpha.1",
-    "nodemon": "1.19.1",
+    "nodemon": "1.19.2",
+    "npm-check-updates": "3.1.21",
     "npm-run-all": "4.1.5",
     "pre-commit": "1.2.2",
-    "standard": "12.0.1",
+    "standard": "14.1.0",
     "swagmock": "1.0.0",
     "tap-xunit": "2.4.1",
     "tape": "4.11.0",
     "tapes": "4.1.0"
   },
+  "pre-commit": [
+    "standard",
+    "dep:check",
+    "test"
+  ],
   "scripts": {
     "start": "run-p start:api",
     "start:api": "node src/api/index.js",
@@ -56,7 +62,9 @@
     "test:unit": "tape 'test/unit/**/*.test.js'",
     "test:xunit": "tape 'test/unit/**/*.test.js' | tap-xunit",
     "test:coverage": "istanbul cover tape -- 'test/unit/**/*.test.js'",
-    "test:coverage-check": "npm run test:coverage && istanbul check-coverage"
+    "test:coverage-check": "npm run test:coverage && istanbul check-coverage",
+    "dep:check": "npx ncu -e 2",
+    "dep:update": "npx ncu -u"
   },
   "generator-swaggerize": {
     "version": "4.1.0"

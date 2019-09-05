@@ -30,7 +30,7 @@
 
 'use strict'
 
-const HttpEnum = require('@mojaloop/central-services-shared').Enum.Http
+const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
 
 const tags = ['api', 'root']
 
@@ -39,7 +39,7 @@ module.exports = [
     method: 'GET',
     path: '/health',
     handler: function (request, h) {
-      return h.response({ status: HttpEnum.ReturnCodes.OK.DESCRIPTION }).code(HttpEnum.ReturnCodes.OK.CODE)
+      return h.response({ status: HTTPENUM.ReturnCodes.OK.DESCRIPTION }).code(HTTPENUM.ReturnCodes.OK.CODE)
     },
     options: {
       tags

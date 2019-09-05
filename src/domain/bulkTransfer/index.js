@@ -25,13 +25,9 @@
 
 const Logger = require('@mojaloop/central-services-shared').Logger
 const Uuid = require('uuid4')
-const Utility = require('../../lib/utility')
-const Kafka = require('../../lib/kafka')
-const HttpEnum = require('@mojaloop/central-services-shared').Enum.Http
-
-const PREPARE = 'prepare'
-const FULFIL = 'fulfil'
-const BULK_TRANSFER = 'bulk'
+const Config = require('../../lib/config')
+const ENUM = require('@mojaloop/central-services-shared').Enum
+const Util = require('@mojaloop/central-services-shared').Util
 
 /**
  * @module src/domain/bulkTransfer
@@ -73,12 +69,13 @@ const bulkPrepare = async (messageId, headers, message) => {
         }
       }
     }
-    const topicConfig = Utility.createGeneralTopicConf(BULK_TRANSFER, PREPARE)
-    const kafkaConfig = Utility.getKafkaConfig(Utility.ENUMS.PRODUCER, BULK_TRANSFER.toUpperCase(), PREPARE.toUpperCase())
+    const topicConfig = Util.Kafka.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.NOTIFICATION, ENUM.Events.Event.Action.EVENT)
+    // ity.createGeneralTopicConf(BULK_TRANSFER, PREPARE)
+    const kafkaConfig = Util.Kafka.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.PRODUCER, ENUM.Events.Event.Type.BULK.toUpperCase(), ENUM.Events.Event.Type.PREPARE.toUpperCase())
     Logger.debug(`domain::bulkTransfer::prepare::messageProtocol - ${messageProtocol}`)
     Logger.debug(`domain::bulkTransfer::prepare::topicConfig - ${topicConfig}`)
     Logger.debug(`domain::bulkTransfer::prepare::kafkaConfig - ${kafkaConfig}`)
-    await Kafka.Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
+    await Util.Kafka.Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
     return true
   } catch (err) {
     Logger.error(`domain::bulkTransfer::prepare::Kafka error:: ERROR:'${err}'`)
@@ -91,9 +88,9 @@ const bulkFulfil = async (messageId, headers, message) => {
   try {
     const messageProtocol = {
       id: messageId,
-      to: headers[HttpEnum.Headers.FSPIOP.DESTINATION],
-      from: headers[HttpEnum.Headers.FSPIOP.SOURCE],
-      type: HttpEnum.Headers.DEFAULT.APPLICATION_JSON,
+      to: headers[ENUM.Http.Headers.FSPIOP.DESTINATION],
+      from: headers[ENUM.Http.Headers.FSPIOP.SOURCE],
+      type: ENUM.Http.Headers.DEFAULT.APPLICATION_JSON,
       content: {
         uriParams: { id: message.bulkTransferId },
         headers: headers,
@@ -112,12 +109,12 @@ const bulkFulfil = async (messageId, headers, message) => {
         }
       }
     }
-    const topicConfig = Utility.createGeneralTopicConf(BULK_TRANSFER, FULFIL)
-    const kafkaConfig = Utility.getKafkaConfig(Utility.ENUMS.PRODUCER, BULK_TRANSFER.toUpperCase(), FULFIL.toUpperCase())
+    const topicConfig = Util.Kafka.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.BULK, ENUM.Events.Event.Type.FULFIL)
+    const kafkaConfig = Util.Kafka.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.PRODUCER, ENUM.Events.Event.Type.BULK.toUpperCase(), ENUM.Events.Event.Type.FULFIL.toUpperCase())
     Logger.debug(`domain::bulkTransfer::fulfil::messageProtocol - ${messageProtocol}`)
     Logger.debug(`domain::bulkTransfer::fulfil::topicConfig - ${topicConfig}`)
     Logger.debug(`domain::bulkTransfer::fulfil::kafkaConfig - ${kafkaConfig}`)
-    await Kafka.Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
+    await Util.Kafka.Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
     return true
   } catch (err) {
     Logger.error(`domain::bulkTransfer::fulfil::Kafka error:: ERROR:'${err}'`)

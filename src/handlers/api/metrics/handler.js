@@ -26,9 +26,9 @@
 
 'use strict'
 
-const HttpEnum = require('@mojaloop/central-services-shared').Enum.Http
+const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
 const Metrics = require('@mojaloop/central-services-metrics')
 
 exports.metrics = function (request, h) {
-  return h.response(Metrics.getMetricsForPrometheus()).code(HttpEnum.ReturnCodes.OK.CODE)
+  return h.response(Metrics.getMetricsForPrometheus()).code(HTTPENUM.ReturnCodes.OK.CODE)
 }

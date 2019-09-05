@@ -28,15 +28,13 @@
 const Consumer = require('@mojaloop/central-services-stream').Kafka.Consumer
 const Logger = require('@mojaloop/central-services-shared').Logger
 const Participant = require('../../domain/participant')
-const Utility = require('../../lib/utility')
-const Callback = require('./callbacks.js')
+const Config = require('../../lib/config')
 
-const NOTIFICATION = 'notification'
-const EVENT = 'event'
 let notificationConsumer = {}
 let autoCommitEnabled = true
 const Metrics = require('@mojaloop/central-services-metrics')
-const HttpEnum = require('@mojaloop/central-services-shared').Enum.Http
+const ENUM = require('@mojaloop/central-services-shared').Enum
+const Util = require('@mojaloop/central-services-shared').Util
 const decodePayload = require('@mojaloop/central-services-stream').Kafka.Protocol.decodePayload
 const BulkTransfer = require('@mojaloop/central-object-store').Models.BulkTransfer
 
@@ -59,9 +57,9 @@ const startConsumer = async () => {
   Logger.info('Notification::startConsumer')
   let topicName
   try {
-    topicName = Utility.getNotificationTopicName()
+    topicName = Util.Kafka.transformGeneralTopicName(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Kafka.Topics.NOTIFICATION, ENUM.Kafka.Topics.EVENT)
     Logger.info(`Notification::startConsumer - starting Consumer for topicNames: [${topicName}]`)
-    let config = Utility.getKafkaConfig(Utility.ENUMS.CONSUMER, NOTIFICATION.toUpperCase(), EVENT.toUpperCase())
+    let config = Util.Kafka.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.CONSUMER, ENUM.Kafka.Topics.NOTIFICATION.toUpperCase(), ENUM.Kafka.Topics.EVENT.toUpperCase())
     config.rdkafkaConf['client.id'] = topicName
 
     if (config.rdkafkaConf['enable.auto.commit'] !== undefined) {
@@ -160,45 +158,45 @@ const processMessage = async (msg) => {
     let id = JSON.parse(decodedPayload.body.toString()).transferId || (content.uriParams && content.uriParams.id)
     let payloadForCallback = decodedPayload.body.toString()
 
-    if (actionLower === 'bulk-prepare' && statusLower === 'success') {
+    if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, HttpEnum.RestMethods.POST, id)
-      let methodTo = HttpEnum.RestMethods.POST
+      let callbackURLTo = await Participant.getEndpoint(to, ENUM.Http.RestMethods.POST, id)
+      let methodTo = ENUM.Http.RestMethods.POST
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodTo}, ${JSON.stringify(content.headers)}, ${payloadForCallback}, ${id}, ${from}, ${to})`)
       let bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
-      return Callback.sendCallback(callbackURLTo, methodTo, content.headers, JSON.stringify(responsePayload), id, from, to)
+      return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodTo, JSON.stringify(responsePayload))
     }
 
     if (actionLower === 'bulk-prepare' && statusLower !== 'success') {
       id = JSON.parse(payloadForCallback).bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, HttpEnum.RestMethods.PUT, id)
-      let methodFrom = HttpEnum.RestMethods.PUT
+      let callbackURLTo = await Participant.getEndpoint(to, ENUM.Http.RestMethods.PUT, id)
+      let methodFrom = ENUM.Http.RestMethods.PUT
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodFrom}, ${JSON.stringify(content.headers)}, ${payloadForCallback}, ${id}, ${from}, ${to})`)
-      return Callback.sendCallback(callbackURLTo, methodFrom, content.headers, payloadForCallback, id, from, to)
+      return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodFrom, payloadForCallback)
     }
 
     if (actionLower === 'bulk-commit' && statusLower === 'success') {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, HttpEnum.RestMethods.PUT, id)
-      let methodTo = HttpEnum.RestMethods.PUT
+      let callbackURLTo = await Participant.getEndpoint(to, ENUM.Http.RestMethods.PUT, id)
+      let methodTo = ENUM.Http.RestMethods.PUT
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodTo}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
       let bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
-      return Callback.sendCallback(callbackURLTo, methodTo, content.headers, JSON.stringify(responsePayload), id, from, to)
+      return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodTo, payloadForCallback)
     }
 
     if (actionLower === 'bulk-commit' && statusLower !== 'success') {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, HttpEnum.RestMethods.PUT, id)
-      let methodFrom = HttpEnum.RestMethods.PUT
+      let callbackURLTo = await Participant.getEndpoint(to, ENUM.Http.RestMethods.PUT, id)
+      let methodFrom = ENUM.Http.RestMethods.PUT
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodFrom}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Callback.sendCallback(callbackURLTo, methodFrom, content.headers, JSON.stringify(responsePayload), id, from, to)
+      return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodFrom, JSON.stringify(responsePayload))
     }
 
     Logger.warn(`Unknown action received from kafka: ${action}`)

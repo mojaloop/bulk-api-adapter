@@ -25,7 +25,7 @@
 
 'use strict'
 
-const HttpEnum = require('@mojaloop/central-services-shared').Enum.Http
+const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
 
 /**
  * @module src/domain/bulkTransfer/transformer
@@ -57,14 +57,14 @@ const transformHeaders = (headers, config) => {
   var normalizedHeaders = {}
 
   // check to see if FSPIOP-Destination header has been left out of the initial request. If so then add it.
-  if (!normalizedKeys.hasOwnProperty(HttpEnum.headers.FSPIOP.DESTINATION)) {
-    headers[HttpEnum.headers.FSPIOP.DESTINATION] = ''
+  if (!normalizedKeys.hasOwnProperty(HTTPENUM.headers.FSPIOP.DESTINATION)) {
+    headers[HTTPENUM.headers.FSPIOP.DESTINATION] = ''
   }
 
   for (var headerKey in headers) {
     var headerValue = headers[headerKey]
     switch (headerKey.toLowerCase()) {
-      case (HttpEnum.headers.GENERAL.DATE):
+      case (HTTPENUM.headers.GENERAL.DATE):
         var tempDate = {}
         if (typeof headerValue === 'object' && headerValue instanceof Date) {
           tempDate = headerValue.toUTCString()
@@ -80,21 +80,21 @@ const transformHeaders = (headers, config) => {
         }
         normalizedHeaders[headerKey] = tempDate
         break
-      case (HttpEnum.headers.GENERAL.CONTENT_LENGTH):
+      case (HTTPENUM.headers.GENERAL.CONTENT_LENGTH):
         // Do nothing here, do not map. This will be inserted correctly by the Hapi framework.
         break
-      case (HttpEnum.headers.FSPIOP.URI):
+      case (HTTPENUM.headers.FSPIOP.URI):
         // Check to see if we find a regex match the source header containing the switch name.
         // If so we include the uri otherwise we remove it.
 
-        if (headers[normalizedKeys[HttpEnum.headers.FSPIOP.SOURCE]].match(HttpEnum.headers.FSPIOP.SWITCH.regex) === null) {
+        if (headers[normalizedKeys[HTTPENUM.headers.FSPIOP.SOURCE]].match(HTTPENUM.headers.FSPIOP.SWITCH.regex) === null) {
           normalizedHeaders[headerKey] = headerValue
         }
         break
-      case (HttpEnum.headers.FSPIOP.HTTP_METHOD):
+      case (HTTPENUM.headers.FSPIOP.HTTP_METHOD):
         // Check to see if we find a regex match the source header containing the switch name.
         // If so we include the signature otherwise we remove it.
-        if (headers[normalizedKeys[HttpEnum.headers.FSPIOP.SOURCE]].match(HttpEnum.headers.FSPIOP.SWITCH.regex) === null) {
+        if (headers[normalizedKeys[HTTPENUM.headers.FSPIOP.SOURCE]].match(HTTPENUM.headers.FSPIOP.SWITCH.regex) === null) {
           if (config.httpMethod.toLowerCase() === headerValue.toLowerCase()) {
             // HTTP Methods match, and thus no change is required
             normalizedHeaders[headerKey] = headerValue
@@ -112,10 +112,10 @@ const transformHeaders = (headers, config) => {
           }
         }
         break
-      case (HttpEnum.headers.FSPIOP.SOURCE):
+      case (HTTPENUM.headers.FSPIOP.SOURCE):
         normalizedHeaders[headerKey] = config.sourceFsp
         break
-      case (HttpEnum.headers.FSPIOP.DESTINATION):
+      case (HTTPENUM.headers.FSPIOP.DESTINATION):
         normalizedHeaders[headerKey] = config.destinationFsp
         break
       default:
@@ -123,16 +123,16 @@ const transformHeaders = (headers, config) => {
     }
   }
 
-  if (normalizedHeaders[normalizedKeys[HttpEnum.headers.FSPIOP.SOURCE]].match(HttpEnum.headers.FSPIOP.SWITCH.regex) !== null) {
+  if (normalizedHeaders[normalizedKeys[HTTPENUM.headers.FSPIOP.SOURCE]].match(HTTPENUM.headers.FSPIOP.SWITCH.regex) !== null) {
     // Check to see if we find a regex match the source header containing the switch name.
     // If so we remove the signature added by default.
-    delete normalizedHeaders[HttpEnum.headers.FSPIOP.SIGNATURE]
+    delete normalizedHeaders[HTTPENUM.headers.FSPIOP.SIGNATURE]
     // Aslo remove FSPIOP-URI and make FSPIOP-HTTP-Method ALL-CAPS #737
-    delete normalizedHeaders[HttpEnum.headers.FSPIOP.URI]
+    delete normalizedHeaders[HTTPENUM.headers.FSPIOP.URI]
   }
 
-  if (config && config.httpMethod !== HttpEnum.methods.FSPIOP_CALLBACK_URL_TRANSFER_POST) {
-    delete normalizedHeaders[HttpEnum.headers.GENERAL.ACCEPT]
+  if (config && config.httpMethod !== HTTPENUM.methods.FSPIOP_CALLBACK_URL_TRANSFER_POST) {
+    delete normalizedHeaders[HTTPENUM.headers.GENERAL.ACCEPT]
   }
   return normalizedHeaders
 }
