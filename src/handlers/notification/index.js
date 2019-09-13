@@ -161,7 +161,7 @@ const processMessage = async (msg) => {
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, ENUM.Http.RestMethods.POST, id)
+      let callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST, id)
       let methodTo = ENUM.Http.RestMethods.POST
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodTo}, ${JSON.stringify(content.headers)}, ${payloadForCallback}, ${id}, ${from}, ${to})`)
       let bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
@@ -169,7 +169,7 @@ const processMessage = async (msg) => {
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodTo, JSON.stringify(responsePayload))
     }
 
-    if (actionLower === 'bulk-prepare' && statusLower !== 'success') {
+    if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
       id = JSON.parse(payloadForCallback).bulkTransferId
       let callbackURLTo = await Participant.getEndpoint(to, ENUM.Http.RestMethods.PUT, id)
       let methodFrom = ENUM.Http.RestMethods.PUT
@@ -177,7 +177,7 @@ const processMessage = async (msg) => {
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodFrom, payloadForCallback)
     }
 
-    if (actionLower === 'bulk-commit' && statusLower === 'success') {
+    if (actionLower === ENUM.Events.Event.Action.BULK_COMMIT && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
@@ -189,7 +189,7 @@ const processMessage = async (msg) => {
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodTo, payloadForCallback)
     }
 
-    if (actionLower === 'bulk-commit' && statusLower !== 'success') {
+    if (actionLower === ENUM.Events.Event.Action.BULK_COMMIT && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
