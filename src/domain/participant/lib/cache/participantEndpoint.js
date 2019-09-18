@@ -26,6 +26,7 @@
 'use strict'
 
 const Logger = require('@mojaloop/central-services-shared').Logger
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const Config = require('../../../../lib/config')
 const Catbox = require('catbox')
 const Model = require('../../../../models/participant/participantEndpoint')
@@ -62,7 +63,7 @@ const initializeCache = async () => {
     return true
   } catch (err) {
     Logger.error(`participantEndpointCache::Cache error:: ERROR:'${err}'`)
-    throw err
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
@@ -101,9 +102,9 @@ const getEndpoint = async (fsp, enpointType) => {
     let endpoints = await policy.get(fsp)
     let url = new Map(endpoints).get(enpointType)
     return url
-  } catch (e) {
-    Logger.error(`participantEndpointCache::getEndpoint:: ERROR:'${e}'`)
-    throw e
+  } catch (err) {
+    Logger.error(`participantEndpointCache::getEndpoint:: ERROR:'${err}'`)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 

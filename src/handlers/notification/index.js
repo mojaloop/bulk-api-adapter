@@ -26,6 +26,7 @@
 'use strict'
 
 const Consumer = require('@mojaloop/central-services-stream').Kafka.Consumer
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const Logger = require('@mojaloop/central-services-shared').Logger
 const Participant = require('../../domain/participant')
 const Utility = require('../../lib/utility')
@@ -79,7 +80,7 @@ const startConsumer = async () => {
     return true
   } catch (err) {
     Logger.error(`Notification::startConsumer - error for topicNames: [${topicName}] - ${err}`)
-    throw err
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
@@ -146,7 +147,7 @@ const processMessage = async (msg) => {
     Logger.info('Notification::processMessage')
 
     if (!msg.value || !msg.value.content || !msg.value.content.headers || !msg.value.content.payload) {
-      throw new Error('Invalid message received from kafka')
+      throw ErrorHandler.Factory.createFSPIOPError(ErrorHandler.Enums.FSPIOPErrorCodes.VALIDATION_ERROR, 'Invalid message received from kafka')
     }
 
     const { metadata, from, to, content } = msg.value
@@ -205,9 +206,9 @@ const processMessage = async (msg) => {
     }
 
     Logger.warn(`Unknown action received from kafka: ${action}`)
-  } catch (e) {
-    Logger.error(`Error processing the message - ${e}`)
-    throw e
+  } catch (err) {
+    Logger.error(`Error processing the message - ${err}`)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 

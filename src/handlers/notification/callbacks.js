@@ -25,6 +25,7 @@
 'use strict'
 
 const Logger = require('@mojaloop/central-services-shared').Logger
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const request = require('request')
 const Transformer = require('../../domain/bulkTransfer/transformer')
 const Config = require('../../lib/config')
@@ -52,7 +53,7 @@ const Enum = require('../../lib/enum')
 const sendCallback = async (url, method, headers, message, cid, sourceFsp, destinationFsp) => {
   // validate incoming request parameters are not null or undefined
   if (!url || !method || !headers || !message || !cid || !sourceFsp || !destinationFsp) {
-    throw new Error(Enum.errorMessages.MISSINGFUNCTIONPARAMETERS)
+    throw ErrorHandler.Factory.createFSPIOPError(ErrorHandler.Enums.FSPIOPErrorCodes.MISSING_ELEMENT, 'No other properties are allowed when participants is provided')
   }
 
   // Transform headers into Mojaloop v1.0 Specifications

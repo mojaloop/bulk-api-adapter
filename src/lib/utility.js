@@ -29,6 +29,7 @@ const Config = require('./config')
 const Mustache = require('mustache')
 const KafkaConfig = Config.KAFKA_CONFIG
 const Logger = require('@mojaloop/central-services-shared').Logger
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 
 /**
  * @module src/lib/utility
@@ -123,9 +124,9 @@ exports.ENUMS = {
 const fulfilTopicTemplate = () => {
   try {
     return Mustache.render(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.FULFIL_TOPIC_TEMPLATE.TEMPLATE)
-  } catch (e) {
-    Logger.error(e)
-    throw e
+  } catch (err) {
+    Logger.error(err)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
@@ -139,9 +140,9 @@ const fulfilTopicTemplate = () => {
 const getTransferByIdTopicTemplate = () => {
   try {
     return Mustache.render(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GET_TRANSFERS_TOPIC_TEMPLATE.TEMPLATE)
-  } catch (e) {
-    Logger.error(e)
-    throw e
+  } catch (err) {
+    Logger.error(err)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 /**
@@ -154,9 +155,9 @@ const getTransferByIdTopicTemplate = () => {
 const notificationTopicTemplate = () => {
   try {
     return Mustache.render(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.NOTIFICATION_TOPIC_TEMPLATE.TEMPLATE)
-  } catch (e) {
-    Logger.error(e)
-    throw e
+  } catch (err) {
+    Logger.error(err)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
@@ -168,9 +169,9 @@ const notificationTopicTemplate = () => {
 const getNotificationTopicName = () => {
   try {
     return notificationTopicTemplate()
-  } catch (e) {
-    Logger.error(e)
-    throw e
+  } catch (err) {
+    Logger.error(err)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
@@ -188,8 +189,8 @@ const getNotificationTopicName = () => {
 const transformGeneralTopicName = (functionality, action) => {
   try {
     return generalTopicTemplate(functionality, action)
-  } catch (e) {
-    throw e
+  } catch (err) {
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
@@ -206,9 +207,9 @@ const transformGeneralTopicName = (functionality, action) => {
 const generalTopicTemplate = (functionality, action) => {
   try {
     return Mustache.render(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, { functionality, action })
-  } catch (e) {
-    Logger.error(e)
-    throw e
+  } catch (err) {
+    Logger.error(err)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
@@ -222,8 +223,8 @@ const generalTopicTemplate = (functionality, action) => {
 const getFulfilTopicName = () => {
   try {
     return fulfilTopicTemplate()
-  } catch (e) {
-    throw e
+  } catch (err) {
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
@@ -237,8 +238,8 @@ const getFulfilTopicName = () => {
 const getTransferByIdTopicName = () => {
   try {
     return getTransferByIdTopicTemplate()
-  } catch (e) {
-    throw e
+  } catch (err) {
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
@@ -259,7 +260,7 @@ const getKafkaConfig = (flow, functionality, action) => {
     actionObject.config.logger = Logger
     return actionObject.config
   } catch (e) {
-    throw new Error(`No config found for flow='${flow}', functionality='${functionality}', action='${action}'`)
+    throw ErrorHandler.Factory.createInternalServerFSPIOPError(`No config found for flow='${flow}', functionality='${functionality}', action='${action}'`)
   }
 }
 

@@ -30,7 +30,7 @@
 
 const Hapi = require('hapi')
 const Logger = require('@mojaloop/central-services-shared').Logger
-const Boom = require('boom')
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const RegisterHandlers = require('../handlers/register')
 const Config = require('../lib/config')
 const ParticipantEndpointCache = require('../domain/participant/lib/cache/participantEndpoint')
@@ -57,9 +57,11 @@ const connectMongoose = async () => {
       promiseLibrary: global.Promise
     })
     return db
-  } catch (error) {
-    Logger.error(`error - ${error}`) // TODO: ADD PROPER ERROR HANDLING HERE POST-POC
-    return null
+  } catch (err) {
+    Logger.error(`error - ${err}`) // TODO: ADD PROPER ERROR HANDLING HERE POST-POC
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
+    // TODO: review as code is being changed from returning null to returning a FSPIOPError
+    // return null
   }
 }
 
@@ -69,7 +71,7 @@ const createServer = async (port, modules) => {
     routes: {
       validate: {
         failAction: async (request, h, err) => {
-          throw Boom.boomify(err)
+          throw ErrorHandler.Factory.reformatFSPIOPError(err)
         }
       }
     }
@@ -120,7 +122,7 @@ const createHandlers = async (handlers) => {
         default:
           var error = `Handler Setup - ${JSON.stringify(handler)} is not a valid handler to register!`
           Logger.error(error)
-          throw new Error(error)
+          throw ErrorHandler.Factory.reformatFSPIOPError(error)
       }
     }
   }
@@ -167,7 +169,7 @@ const initialize = async function ({ service, port, modules = [], runHandlers = 
       break
     default:
       Logger.error(`No valid service type ${service} found!`)
-      throw new Error(`No valid service type ${service} found!`)
+      throw ErrorHandler.Factory.createFSPIOPError(ErrorHandler.Enums.FSPIOPErrorCodes.VALIDATION_ERROR, `No valid service type ${service} found!`)
   }
   if (runHandlers) {
     if (Array.isArray(handlers) && handlers.length > 0) {

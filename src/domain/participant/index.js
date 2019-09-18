@@ -26,6 +26,7 @@
 'use strict'
 
 const Logger = require('@mojaloop/central-services-shared').Logger
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const Facade = require('../../models/participant/facade')
 /**
  * @module src/domain/participant
@@ -49,9 +50,9 @@ const getEndpoint = async (fsp, enpointType, transferId = null) => {
 
   try {
     return Facade.getEndpoint(fsp, enpointType, transferId)
-  } catch (e) {
-    Logger.error(`participantEndpointCache::getEndpoint:: ERROR:'${e}'`)
-    throw e
+  } catch (err) {
+    Logger.error(`participantEndpointCache::getEndpoint:: ERROR:'${err}'`)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 

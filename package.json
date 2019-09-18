@@ -21,6 +21,7 @@
     "@mojaloop/central-services-metrics": "5.2.0",
     "@mojaloop/central-services-shared": "6.4.1",
     "@mojaloop/central-services-stream": "6.2.2",
+    "@mojaloop/central-services-error-handling": "7.5.0",
     "boom": "7.3.0",
     "catbox": "10.0.6",
     "catbox-memory": "4.0.1",

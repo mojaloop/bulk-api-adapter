@@ -24,6 +24,7 @@
 'use strict'
 
 const Logger = require('@mojaloop/central-services-shared').Logger
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const Uuid = require('uuid4')
 const Utility = require('../../lib/utility')
 const Kafka = require('../../lib/kafka')
@@ -81,7 +82,7 @@ const bulkPrepare = async (messageId, headers, message) => {
     return true
   } catch (err) {
     Logger.error(`domain::bulkTransfer::prepare::Kafka error:: ERROR:'${err}'`)
-    throw err
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
@@ -120,7 +121,7 @@ const bulkFulfil = async (messageId, headers, message) => {
     return true
   } catch (err) {
     Logger.error(`domain::bulkTransfer::fulfil::Kafka error:: ERROR:'${err}'`)
-    throw err
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 

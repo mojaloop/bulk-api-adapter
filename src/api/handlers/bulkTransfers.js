@@ -31,7 +31,7 @@
 
 const TransferService = require('../../domain/bulkTransfer')
 const Logger = require('@mojaloop/central-services-shared').Logger
-const Boom = require('boom')
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
 const Util = require('../../lib/util')
 const Uuid = require('uuid4')
@@ -61,7 +61,7 @@ module.exports = {
       return h.response().code(202)
     } catch (err) {
       Logger.error(err)
-      throw Boom.boomify(err, { message: 'An error has occurred' })
+      throw ErrorHandler.Factory.reformatFSPIOPError(err)
     }
   }
 }

@@ -25,16 +25,17 @@
 'use strict'
 
 const Config = require('../lib/config')
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 
-const BAD_REQUEST_ERROR_CODE = 400
-const BAD_REQUEST_ERROR_DESC = 'Bad Request'
+// const BAD_REQUEST_ERROR_CODE = 400
+// const BAD_REQUEST_ERROR_DESC = 'Bad Request'
 const DEFAULT_LAG_SECONDS = 300
 
 const fulfilTransfer = (request) => {
   let validationPassed = true
   let errorInformation = {
-    errorCode: BAD_REQUEST_ERROR_CODE,
-    errorDescription: BAD_REQUEST_ERROR_DESC,
+    errorCode: ErrorHandler.Enums.FSPIOPErrorCodes.VALIDATION_ERROR,
+    errorDescription: 'Bad Request',
     extensionList: {
       extension: []
     }
