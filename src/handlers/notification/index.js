@@ -161,8 +161,8 @@ const processMessage = async (msg) => {
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST, id)
-      let methodTo = ENUM.Http.RestMethods.POST
+      let methodTo = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST
+      let callbackURLTo = await Participant.getEndpoint(to, methodTo, id)
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodTo}, ${JSON.stringify(content.headers)}, ${payloadForCallback}, ${id}, ${from}, ${to})`)
       let bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
@@ -171,8 +171,8 @@ const processMessage = async (msg) => {
 
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
       id = JSON.parse(payloadForCallback).bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, ENUM.Http.RestMethods.PUT, id)
-      let methodFrom = ENUM.Http.RestMethods.PUT
+      let methodFrom = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR
+      let callbackURLTo = await Participant.getEndpoint(to, methodFrom, id)
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodFrom}, ${JSON.stringify(content.headers)}, ${payloadForCallback}, ${id}, ${from}, ${to})`)
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodFrom, payloadForCallback)
     }
@@ -181,8 +181,8 @@ const processMessage = async (msg) => {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, ENUM.Http.RestMethods.PUT, id)
-      let methodTo = ENUM.Http.RestMethods.PUT
+      let methodTo = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT
+      let callbackURLTo = await Participant.getEndpoint(to, methodTo, id)
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodTo}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
       let bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
@@ -193,8 +193,8 @@ const processMessage = async (msg) => {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
-      let callbackURLTo = await Participant.getEndpoint(to, ENUM.Http.RestMethods.PUT, id)
-      let methodFrom = ENUM.Http.RestMethods.PUT
+      let methodFrom = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR
+      let callbackURLTo = await Participant.getEndpoint(to, methodFrom, id)
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodFrom}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodFrom, JSON.stringify(responsePayload))
     }

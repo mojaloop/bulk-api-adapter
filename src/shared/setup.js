@@ -28,6 +28,7 @@
 
 'use strict'
 
+const Plugins = require('./plugins')
 const Hapi = require('hapi')
 const Logger = require('@mojaloop/central-services-shared').Logger
 const Boom = require('boom')
@@ -71,12 +72,17 @@ const createServer = async (port, modules) => {
         failAction: async (request, h, err) => {
           throw Boom.boomify(err)
         }
+      },
+      payload: {
+        parse: true,
+        output: 'stream'
       }
     }
   })
   let db = await connectMongoose()
   server.app.db = db
 
+  await Plugins.registerPlugins(server)
   await server.register(modules)
   await server.start()
   Logger.debug(`Server running at: ${server.info.uri}`)

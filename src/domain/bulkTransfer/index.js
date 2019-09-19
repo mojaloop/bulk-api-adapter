@@ -41,7 +41,7 @@ const Util = require('@mojaloop/central-services-shared').Util
 * @param {object} headers - the http header from the request
 * @param {object} message - the transfer bulkPrepare message
 *
-* @returns {boolean} Returns true on successful publishing of message to kafka, throws error on falires
+* @returns {boolean} Returns true on successful publishing of message to kafka, throws error on failures
 */
 const bulkPrepare = async (messageId, headers, message) => {
   Logger.debug('domain::bulk-transfer::prepare::start(%s, %s)', headers, message)
@@ -69,7 +69,7 @@ const bulkPrepare = async (messageId, headers, message) => {
         }
       }
     }
-    const topicConfig = Util.Kafka.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.NOTIFICATION, ENUM.Events.Event.Action.EVENT)
+    const topicConfig = Util.Kafka.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.BULK, ENUM.Events.Event.Action.PREPARE)
     // ity.createGeneralTopicConf(BULK_TRANSFER, PREPARE)
     const kafkaConfig = Util.Kafka.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.PRODUCER, ENUM.Events.Event.Type.BULK.toUpperCase(), ENUM.Events.Event.Type.PREPARE.toUpperCase())
     Logger.debug(`domain::bulkTransfer::prepare::messageProtocol - ${messageProtocol}`)
