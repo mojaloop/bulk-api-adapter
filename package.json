@@ -30,8 +30,6 @@
     "@now-ims/hapi-now-auth": "2.0.0",
     "blipp": "4.0.1",
     "boom": "7.3.0",
-    "catbox": "10.0.6",
-    "catbox-memory": "4.0.1",
     "commander": "3.0.1",
     "hapi": "18.1.0",
     "hapi-openapi": "1.2.2",
