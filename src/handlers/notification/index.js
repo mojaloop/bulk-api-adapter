@@ -26,7 +26,7 @@
 'use strict'
 
 const Consumer = require('@mojaloop/central-services-stream').Kafka.Consumer
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Participant = require('../../domain/participant')
 const Utility = require('../../lib/utility')
 const Callback = require('./callbacks.js')
@@ -198,6 +198,14 @@ const processMessage = async (msg) => {
       let responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
+      let callbackURLTo = await Participant.getEndpoint(to, FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
+      let methodFrom = ENUM.methods.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR
+      Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodFrom}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
+      return Callback.sendCallback(callbackURLTo, methodFrom, content.headers, JSON.stringify(responsePayload), id, from, to)
+    }
+
+    if (actionLower === ENUM.transferEventAction.BULK_ABORT && statusLower !== ENUM.messageStatus.SUCCESS) {
+      let responsePayload = JSON.parse(payloadForCallback)
       let callbackURLTo = await Participant.getEndpoint(to, FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
       let methodFrom = ENUM.methods.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodFrom}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)

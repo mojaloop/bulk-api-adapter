@@ -28,7 +28,7 @@
 const Config = require('./config')
 const Mustache = require('mustache')
 const KafkaConfig = Config.KAFKA_CONFIG
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 
 /**
  * @module src/lib/utility

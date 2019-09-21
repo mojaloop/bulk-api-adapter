@@ -23,7 +23,7 @@
  ******/
 'use strict'
 
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Uuid = require('uuid4')
 const Utility = require('../../lib/utility')
 const Kafka = require('../../lib/kafka')

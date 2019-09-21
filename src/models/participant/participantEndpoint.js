@@ -25,7 +25,7 @@
 
 'use strict'
 
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Config = require('../../lib/config')
 const Mustache = require('mustache')
 const request = require('request')

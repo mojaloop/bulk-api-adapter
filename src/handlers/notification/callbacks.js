@@ -24,7 +24,7 @@
 
 'use strict'
 
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const request = require('request')
 const Transformer = require('../../domain/bulkTransfer/transformer')
 const Config = require('../../lib/config')

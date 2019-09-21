@@ -55,7 +55,8 @@ const methods = {
 
 const transferEventAction = {
   BULK_PREPARE: 'bulk-prepare',
-  BULK_COMMIT: 'bulk-commit'
+  BULK_COMMIT: 'bulk-commit',
+  BULK_ABORT: 'bulk-abort'
 }
 
 const messageStatus = {
