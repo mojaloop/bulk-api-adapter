@@ -53,7 +53,7 @@ module.exports = {
       const { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList } = request.payload
       const hash = Util.createHash(JSON.stringify(request.payload))
       const messageId = Uuid()
-      let BulkTransferModel = BulkTransferModels.getBulkTransferModel()
+      const BulkTransferModel = BulkTransferModels.getBulkTransferModel()
       const doc = Object.assign({}, { messageId, headers: request.headers }, request.payload)
       await new BulkTransferModel(doc).save()
       const message = { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList, hash }
