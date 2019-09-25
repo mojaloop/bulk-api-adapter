@@ -26,7 +26,7 @@
 const Logger = require('@mojaloop/central-services-logger')
 const Uuid = require('uuid4')
 const Utility = require('../../lib/utility')
-const Kafka = require('../../lib/kafka')
+const KafkaUtil = require('@mojaloop/central-services-shared').Util.Kafka
 
 const PREPARE = 'prepare'
 const FULFIL = 'fulfil'
@@ -49,7 +49,7 @@ const BULK_TRANSFER = 'bulk'
 const bulkPrepare = async (messageId, headers, message) => {
   Logger.debug('domain::bulk-transfer::prepare::start(%s, %s)', headers, message)
   try {
-    let { payerFsp, payeeFsp } = message
+    const { payerFsp, payeeFsp } = message
     const messageProtocol = {
       id: messageId,
       to: payeeFsp,
@@ -77,7 +77,7 @@ const bulkPrepare = async (messageId, headers, message) => {
     Logger.debug(`domain::bulkTransfer::prepare::messageProtocol - ${messageProtocol}`)
     Logger.debug(`domain::bulkTransfer::prepare::topicConfig - ${topicConfig}`)
     Logger.debug(`domain::bulkTransfer::prepare::kafkaConfig - ${kafkaConfig}`)
-    await Kafka.Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
+    await KafkaUtil.Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
     return true
   } catch (err) {
     Logger.error(`domain::bulkTransfer::prepare::Kafka error:: ERROR:'${err}'`)
@@ -116,7 +116,7 @@ const bulkFulfil = async (messageId, headers, message) => {
     Logger.debug(`domain::bulkTransfer::fulfil::messageProtocol - ${messageProtocol}`)
     Logger.debug(`domain::bulkTransfer::fulfil::topicConfig - ${topicConfig}`)
     Logger.debug(`domain::bulkTransfer::fulfil::kafkaConfig - ${kafkaConfig}`)
-    await Kafka.Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
+    await KafkaUtil.Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
     return true
   } catch (err) {
     Logger.error(`domain::bulkTransfer::fulfil::Kafka error:: ERROR:'${err}'`)

@@ -32,7 +32,7 @@ const DEFAULT_LAG_SECONDS = 300
 
 const fulfilTransfer = (request) => {
   let validationPassed = true
-  let errorInformation = {
+  const errorInformation = {
     errorCode: BAD_REQUEST_ERROR_CODE,
     errorDescription: BAD_REQUEST_ERROR_DESC,
     extensionList: {
