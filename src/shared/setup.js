@@ -30,7 +30,7 @@
 
 const Plugins = require('./plugins')
 const Hapi = require('hapi')
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Boom = require('boom')
 const RegisterHandlers = require('../handlers/register')
 const Config = require('../lib/config')

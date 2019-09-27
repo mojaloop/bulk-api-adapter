@@ -26,8 +26,13 @@
 'use strict'
 
 const Consumer = require('@mojaloop/central-services-stream').Kafka.Consumer
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
+const EventSdk = require('@mojaloop/event-sdk')
+const KafkaUtil = require('@mojaloop/central-services-shared').Util.Kafka
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
+const Config = require('../../lib/config')
 const Participant = require('../../domain/participant')
+const Callback = require('@mojaloop/central-services-shared').Util.Request
 const Config = require('../../lib/config')
 
 let notificationConsumer = {}
@@ -46,27 +51,26 @@ const BulkTransfer = require('@mojaloop/central-object-store').Models.BulkTransf
  */
 
 /**
-* @function startConsumer
-* @async
-* @description This will create a kafka consumer which will listen to the notification topics configured in the config
-*
-* @returns {boolean} Returns true on sucess and throws error on failure
-*/
-
+ * @function startConsumer
+ * @async
+ * @description This will create a kafka consumer which will listen to the notification topics configured in the config
+ *
+ * @returns {boolean} Returns true on success and throws error on failure
+ */
 const startConsumer = async () => {
   Logger.info('Notification::startConsumer')
   let topicName
   try {
-    topicName = Util.Kafka.transformGeneralTopicName(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Kafka.Topics.NOTIFICATION, ENUM.Kafka.Topics.EVENT)
+    const topicConfig = KafkaUtil.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.NOTIFICATION, ENUM.Events.Event.Action.EVENT)
+    topicName = topicConfig.topicName
     Logger.info(`Notification::startConsumer - starting Consumer for topicNames: [${topicName}]`)
-    let config = Util.Kafka.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.CONSUMER, ENUM.Kafka.Topics.NOTIFICATION.toUpperCase(), ENUM.Kafka.Topics.EVENT.toUpperCase())
+    const config = KafkaUtil.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.CONSUMER, ENUM.Events.Event.Type.NOTIFICATION.toUpperCase(), ENUM.Events.Event.Action.EVENT.toUpperCase())
     config.rdkafkaConf['client.id'] = topicName
 
     if (config.rdkafkaConf['enable.auto.commit'] !== undefined) {
       autoCommitEnabled = config.rdkafkaConf['enable.auto.commit']
     }
     notificationConsumer = new Consumer([topicName], config)
-
     await notificationConsumer.connect()
     Logger.info(`Notification::startConsumer - Kafka Consumer connected for topicNames: [${topicName}]`)
     await notificationConsumer.consume(consumeMessage)
@@ -74,56 +78,78 @@ const startConsumer = async () => {
     return true
   } catch (err) {
     Logger.error(`Notification::startConsumer - error for topicNames: [${topicName}] - ${err}`)
-    throw err
+    const fspiopError = ErrorHandler.Factory.reformatFSPIOPError(err)
+    Logger.error(fspiopError)
+    throw fspiopError
   }
 }
 
 /**
-* @function consumeMessage
-* @async
-* @description This is the callback function for the kafka consumer, this will receive the message from kafka, commit the message and send it for processing
-* processMessage - called to process the message received from kafka
-* @param {object} error - the error message received form kafka in case of error
-* @param {object} message - the message received form kafka
+ * @function consumeMessage
+ * @async
+ * @description This is the callback function for the kafka consumer, this will receive the message from kafka, commit the message and send it for processing
+ * processMessage - called to process the message received from kafka
+ * @param {object} error - the error message received form kafka in case of error
+ * @param {object} message - the message received form kafka
 
-* @returns {boolean} Returns true on success or false on failure
-*/
-
+ * @returns {boolean} Returns true on success or false on failure
+ */
 const consumeMessage = async (error, message) => {
   Logger.info('Notification::consumeMessage')
-  return new Promise(async (resolve, reject) => {
-    const histTimerEnd = Metrics.getHistogram(
-      'notification_event',
-      'Consume a notification message from the kafka topic and process it accordingly',
-      ['success']
-    ).startTimer()
+  const histTimerEnd = Metrics.getHistogram(
+    'notification_event',
+    'Consume a notification message from the kafka topic and process it accordingly',
+    ['success']
+  ).startTimer()
+  try {
     if (error) {
-      Logger.error(`Error while reading message from kafka ${error}`)
-      return reject(error)
+      const fspiopError = ErrorHandler.Factory.createInternalServerFSPIOPError(`Error while reading message from kafka ${error}`, error)
+      Logger.error(fspiopError)
+      throw fspiopError
     }
     Logger.info(`Notification:consumeMessage message: - ${JSON.stringify(message)}`)
 
     message = (!Array.isArray(message) ? [message] : message)
     let combinedResult = true
-    for (let msg of message) {
+    for (const msg of message) {
       Logger.info('Notification::consumeMessage::processMessage')
-      let res = await processMessage(msg).catch(err => {
-        Logger.error(`Error processing the kafka message - ${err}`)
+      const contextFromMessage = EventSdk.Tracer.extractContextFromMessage(msg.value)
+      const span = EventSdk.Tracer.createChildSpanFromContext('ml_notification_event', contextFromMessage)
+      try {
+        await span.audit(msg, EventSdk.AuditEventAction.start)
+        const res = await processMessage(msg, span).catch(err => {
+          const fspiopError = ErrorHandler.Factory.createInternalServerFSPIOPError('Error processing notification message', err)
+          Logger.error(fspiopError)
+          if (!autoCommitEnabled) {
+            notificationConsumer.commitMessageSync(msg)
+          }
+          throw fspiopError // We return 'resolved' since we have dealt with the error here
+        })
         if (!autoCommitEnabled) {
           notificationConsumer.commitMessageSync(msg)
         }
-        // return reject(err) // This is not handled correctly as we need to deal with the error here
-        return resolve(err) // We return 'resolved' since we have dealt with the error here
-      })
-      if (!autoCommitEnabled) {
-        notificationConsumer.commitMessageSync(msg)
+        Logger.debug(`Notification:consumeMessage message processed: - ${res}`)
+        combinedResult = (combinedResult && res)
+      } catch (err) {
+        const fspiopError = ErrorHandler.Factory.reformatFSPIOPError(err)
+        const state = new EventSdk.EventStateMetadata(EventSdk.EventStatusType.failed, fspiopError.apiErrorCode.code, fspiopError.apiErrorCode.message)
+        await span.error(fspiopError, state)
+        await span.finish(fspiopError.message, state)
+        throw fspiopError
+      } finally {
+        if (!span.isFinished) {
+          await span.finish()
+        }
       }
-      Logger.debug(`Notification:consumeMessage message processed: - ${res}`)
-      combinedResult = (combinedResult && res)
     }
     histTimerEnd({ success: true })
-    return resolve(combinedResult)
-  })
+    return combinedResult
+  } catch (err) {
+    histTimerEnd({ success: false })
+    const fspiopError = ErrorHandler.Factory.reformatFSPIOPError(err)
+    Logger.error(fspiopError)
+    throw fspiopError
+  }
 }
 
 /**
@@ -136,7 +162,7 @@ const consumeMessage = async (error, message) => {
 * @returns {boolean} Returns true on sucess and throws error on failure
 */
 
-const processMessage = async (msg) => {
+const processMessage = async (msg, span) => {
   try {
     Logger.info('Notification::processMessage')
 
@@ -154,9 +180,9 @@ const processMessage = async (msg) => {
 
     Logger.info('Notification::processMessage action: ' + action)
     Logger.info('Notification::processMessage status: ' + status)
-    let decodedPayload = decodePayload(content.payload, { asParsed: false })
+    const decodedPayload = decodePayload(content.payload, { asParsed: false })
     let id = JSON.parse(decodedPayload.body.toString()).transferId || (content.uriParams && content.uriParams.id)
-    let payloadForCallback = decodedPayload.body.toString()
+    const payloadForCallback = decodedPayload.body.toString()
 
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
       let responsePayload = JSON.parse(payloadForCallback)

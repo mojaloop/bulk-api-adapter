@@ -31,9 +31,9 @@ const DEFAULT_LAG_SECONDS = 300
 
 const fulfilTransfer = (request) => {
   let validationPassed = true
-  let errorInformation = {
+  const errorInformation = {
     errorCode: Enum.Http.ReturnCodes.BADREQUEST.CODE,
-    errorDescription: Enum.Http.ReturnCodes.BADREQUEST,
+    errorDescription: Enum.Http.ReturnCodes.BADREQUEST.DESCRIPTION,
     extensionList: {
       extension: []
     }
