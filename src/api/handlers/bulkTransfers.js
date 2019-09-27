@@ -30,10 +30,10 @@
 'use strict'
 
 const TransferService = require('../../domain/bulkTransfer')
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
-const Util = require('../../lib/util')
+const Hash = require('@mojaloop/central-services-shared').Util.Hash
 const Uuid = require('uuid4')
 
 /**
@@ -51,9 +51,9 @@ module.exports = {
     try {
       Logger.debug('create::payload(%s)', JSON.stringify(request.payload))
       const { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList } = request.payload
-      const hash = Util.createHash(JSON.stringify(request.payload))
+      const hash = Hash.generateSha256(JSON.stringify(request.payload))
       const messageId = Uuid()
-      let BulkTransferModel = BulkTransferModels.getBulkTransferModel()
+      const BulkTransferModel = BulkTransferModels.getBulkTransferModel()
       const doc = Object.assign({}, { messageId, headers: request.headers }, request.payload)
       await new BulkTransferModel(doc).save()
       const message = { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList, hash }

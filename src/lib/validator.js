@@ -33,9 +33,9 @@ const DEFAULT_LAG_SECONDS = 300
 
 const fulfilTransfer = (request) => {
   let validationPassed = true
-  let errorInformation = {
-    errorCode: ErrorHandler.Enums.FSPIOPErrorCodes.VALIDATION_ERROR,
-    errorDescription: 'Bad Request',
+  const errorInformation = {
+    errorCode: BAD_REQUEST_ERROR_CODE,
+    errorDescription: BAD_REQUEST_ERROR_DESC,
     extensionList: {
       extension: []
     }
