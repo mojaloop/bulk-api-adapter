@@ -25,7 +25,7 @@
 
 'use strict'
 
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Facade = require('../../models/participant/facade')
 /**
  * @module src/domain/participant

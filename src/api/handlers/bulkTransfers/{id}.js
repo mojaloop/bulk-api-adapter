@@ -29,10 +29,10 @@
 'use strict'
 
 const TransferService = require('../../../domain/bulkTransfer')
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Boom = require('boom')
 const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
-const Util = require('../../../lib/util')
+const Hash = require('@mojaloop/central-services-shared').Util.Hash
 const Uuid = require('uuid4')
 const Validator = require('../../../lib/validator')
 
@@ -48,16 +48,12 @@ module.exports = {
    * responses: default
    */
   get: async function getBulkTransfersId (request, h) {
-    let { id } = request.params
-    let IndividualTransferModel = BulkTransferModels.getIndividualTransferModel()
-    try {
-      let indvidualTransfers = await IndividualTransferModel
-        .find({ bulkTransferId: id }, '-dataUri -_id')
-        .populate('_id_bulkTransfers', 'headers -_id') // TODO in bulk-handler first get only headers, then compose each individual transfer without population
-      return h.response(indvidualTransfers)
-    } catch (e) {
-      throw e
-    }
+    const { id } = request.params
+    const IndividualTransferModel = BulkTransferModels.getIndividualTransferModel()
+    const indvidualTransfers = await IndividualTransferModel
+      .find({ bulkTransferId: id }, '-dataUri -_id')
+      .populate('_id_bulkTransfers', 'headers -_id') // TODO in bulk-handler first get only headers, then compose each individual transfer without population
+    return h.response(indvidualTransfers)
   },
   /**
    * summary: Fulfil bulkTransfer
@@ -68,7 +64,7 @@ module.exports = {
    */
   put: async function BulkTransfersByIDPut (request, h) {
     try {
-      let { validationPassed, reason } = Validator.fulfilTransfer(request)
+      const { validationPassed, reason } = Validator.fulfilTransfer(request)
       if (!validationPassed) {
         return h.response(reason).code(reason.errorCode)
       }
@@ -76,9 +72,9 @@ module.exports = {
       Logger.debug('create::payload(%s)', JSON.stringify(request.payload))
       const bulkTransferId = request.params.id
       const { bulkTransferState, completedTimestamp, extensionList } = request.payload
-      const hash = Util.createHash(JSON.stringify(request.payload))
+      const hash = Hash.generateSha256(JSON.stringify(request.payload))
       const messageId = Uuid()
-      let BulkTransferFulfilModel = BulkTransferModels.getBulkTransferFulfilModel()
+      const BulkTransferFulfilModel = BulkTransferModels.getBulkTransferFulfilModel()
       const doc = Object.assign({}, { messageId, headers: request.headers, bulkTransferId }, request.payload)
       await new BulkTransferFulfilModel(doc).save()
       const count = request.payload.individualTransferResults.length

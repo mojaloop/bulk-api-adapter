@@ -28,7 +28,7 @@
 const Config = require('./config')
 const Mustache = require('mustache')
 const KafkaConfig = Config.KAFKA_CONFIG
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 
 /**
  * @module src/lib/utility
@@ -186,11 +186,7 @@ const getNotificationTopicName = () => {
  * @returns {string} - Returns topic name to be created, throws error if failure occurs
  */
 const transformGeneralTopicName = (functionality, action) => {
-  try {
-    return generalTopicTemplate(functionality, action)
-  } catch (e) {
-    throw e
-  }
+  return generalTopicTemplate(functionality, action)
 }
 
 /**
@@ -208,36 +204,6 @@ const generalTopicTemplate = (functionality, action) => {
     return Mustache.render(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, { functionality, action })
   } catch (e) {
     Logger.error(e)
-    throw e
-  }
-}
-
-/**
- * @method GetFulfilTopicName
- *
- * @description fulfilTopicTemplate called which generates a fulfil topic name found in the default.json
- *
- * @returns {string} - Returns topic name to be created, throws error if failure occurs
- */
-const getFulfilTopicName = () => {
-  try {
-    return fulfilTopicTemplate()
-  } catch (e) {
-    throw e
-  }
-}
-
-/**
- * @method GetFulfilTopicName
- *
- * @description fulfilTopicTemplate called which generates a fulfil topic name found in the default.json
- *
- * @returns {string} - Returns topic name to be created, throws error if failure occurs
- */
-const getTransferByIdTopicName = () => {
-  try {
-    return getTransferByIdTopicTemplate()
-  } catch (e) {
     throw e
   }
 }
@@ -285,8 +251,8 @@ const createGeneralTopicConf = (functionality, action, key = null, partition = n
 }
 
 // exports.getParticipantTopicName = getParticipantTopicName
-exports.getFulfilTopicName = getFulfilTopicName
+exports.getFulfilTopicName = fulfilTopicTemplate
 exports.getKafkaConfig = getKafkaConfig
 exports.getNotificationTopicName = getNotificationTopicName
-exports.getTransferByIdTopicName = getTransferByIdTopicName
+exports.getTransferByIdTopicName = getTransferByIdTopicTemplate
 exports.createGeneralTopicConf = createGeneralTopicConf
