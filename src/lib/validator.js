@@ -25,10 +25,9 @@
 'use strict'
 
 const Config = require('../lib/config')
-const ErrorHandler = require('@mojaloop/central-services-error-handling')
 
-// const BAD_REQUEST_ERROR_CODE = 400
-// const BAD_REQUEST_ERROR_DESC = 'Bad Request'
+const BAD_REQUEST_ERROR_CODE = 400
+const BAD_REQUEST_ERROR_DESC = 'Bad Request'
 const DEFAULT_LAG_SECONDS = 300
 
 const fulfilTransfer = (request) => {
