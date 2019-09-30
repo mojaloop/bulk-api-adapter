@@ -35,6 +35,7 @@ const BulkTransferModels = require('@mojaloop/central-object-store').Models.Bulk
 const Hash = require('@mojaloop/central-services-shared').Util.Hash
 const Uuid = require('uuid4')
 const Validator = require('../../../lib/validator')
+const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
 
 /**
  * Operations on /bulkTransfers/{id}
@@ -80,7 +81,7 @@ module.exports = {
       const count = request.payload.individualTransferResults.length
       const message = { bulkTransferId, bulkTransferState, completedTimestamp, extensionList, count, hash }
       await TransferService.bulkFulfil(messageId, request.headers, message)
-      return h.response().code(202)
+      return h.response().code(HTTPENUM.ReturnCodes.ACCEPTED.CODE)
     } catch (err) {
       Logger.error(err)
       throw Boom.boomify(err, { message: 'An error has occurred' })
