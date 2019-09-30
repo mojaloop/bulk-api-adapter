@@ -28,7 +28,7 @@ Test('health handler', (handlerTest) => {
   })
 
   handlerTest.test('/health should', healthTest => {
-    healthTest.test('returns the correct response when the health check is up', async test => {
+    healthTest.test('return the correct response when the health check is up', async test => {
       Notification.isConnected.resolves(true)
       axios.get.resolves({ data: { status: 'OK' } })
       const expectedResponseCode = 200
@@ -40,7 +40,7 @@ Test('health handler', (handlerTest) => {
       test.end()
     })
 
-    healthTest.test('returns the correct response when the health check is up in API mode only (Config.HANDLERS_DISABLED=true)', async test => {
+    healthTest.test('return the correct response when the health check is up in API mode only (Config.HANDLERS_DISABLED=true)', async test => {
       Notification.isConnected.resolves(true)
 
       Config.HANDLERS_DISABLED = true
@@ -55,7 +55,7 @@ Test('health handler', (handlerTest) => {
       test.end()
     })
 
-    healthTest.test('returns the correct response when the health check is down', async test => {
+    healthTest.test('return the correct response when the health check is down', async test => {
       healthHandler = proxyquire('../../src/api/handlers/health', {})
       Notification.isConnected.throws(new Error('Error connecting to consumer'))
       axios.get.resolves({ data: { status: 'OK' } })
