@@ -23,6 +23,7 @@
  - Name Surname <name.surname@gatesfoundation.com>
 
  * ModusBox
+ - Miguel de Barros <miguel.debarros@modusbox.com>
  - Steven Oderayi <steven.oderayi@modusbox.com>
 
  --------------
