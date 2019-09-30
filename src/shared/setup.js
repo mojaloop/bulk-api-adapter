@@ -28,6 +28,7 @@
 
 'use strict'
 
+const Plugins = require('./plugins')
 const Hapi = require('hapi')
 const Logger = require('@mojaloop/central-services-logger')
 const Boom = require('boom')
@@ -53,7 +54,7 @@ const ObjStoreDb = require('@mojaloop/central-object-store').Db.Mongoose
 
 const connectMongoose = async () => {
   try {
-    let db = await ObjStoreDb.connect(Config.MONGODB_URI, {
+    const db = await ObjStoreDb.connect(Config.MONGODB_URI, {
       promiseLibrary: global.Promise
     })
     return db
@@ -71,12 +72,17 @@ const createServer = async (port, modules) => {
         failAction: async (request, h, err) => {
           throw Boom.boomify(err)
         }
+      },
+      payload: {
+        parse: true,
+        output: 'stream'
       }
     }
   })
-  let db = await connectMongoose()
+  const db = await connectMongoose()
   server.app.db = db
 
+  await Plugins.registerPlugins(server)
   await server.register(modules)
   await server.start()
   Logger.debug(`Server running at: ${server.info.uri}`)
@@ -99,7 +105,7 @@ const createServer = async (port, modules) => {
  */
 const createHandlers = async (handlers) => {
   let handlerIndex
-  let registerdHandlers = {
+  const registerdHandlers = {
     connection: {},
     register: {},
     ext: {},

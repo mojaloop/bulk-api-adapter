@@ -98,8 +98,8 @@ const getEndpoint = async (fsp, enpointType) => {
   Logger.debug(`participantEndpointCache::getEndpoint::fsp - ${fsp}`)
   Logger.debug(`participantEndpointCache::getEndpoint::enpointType - ${enpointType}`)
   try {
-    let endpoints = await policy.get(fsp)
-    let url = new Map(endpoints).get(enpointType)
+    const endpoints = await policy.get(fsp)
+    const url = new Map(endpoints).get(enpointType)
     return url
   } catch (e) {
     Logger.error(`participantEndpointCache::getEndpoint:: ERROR:'${e}'`)

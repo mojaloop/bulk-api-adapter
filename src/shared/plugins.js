@@ -17,18 +17,63 @@
  optionally within square brackets <email>.
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
-
- - Pedro Barreto <pedrob@crosslaketech.com>
- - Rajiv Mothilal <rajivmothilal@gmail.com>
- - Shashikant Hirugade <shashikant.hirugade@modusbox.com>
---------------
+ --------------
  ******/
 
 'use strict'
 
-const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
-const Metrics = require('@mojaloop/central-services-metrics')
+const Package = require('../../package')
+const Inert = require('@hapi/inert')
+const Vision = require('@hapi/vision')
+const Blipp = require('blipp')
+const ErrorHandling = require('@mojaloop/central-services-error-handling')
+const CentralServices = require('@mojaloop/central-services-shared')
+/**
+ * @module src/shared/plugin
+ */
 
-exports.metrics = function (request, h) {
-  return h.response(Metrics.getMetricsForPrometheus()).code(HTTPENUM.ReturnCodes.OK.CODE)
+const registerPlugins = async (server) => {
+  await server.register({
+    plugin: require('hapi-swagger'),
+    options: {
+      info: {
+        title: 'ml api adapter API Documentation',
+        version: Package.version
+      }
+    }
+  })
+
+  await server.register({
+    plugin: require('@hapi/good'),
+    options: {
+      ops: {
+        interval: 10000
+      }
+    }
+  })
+
+  await server.register({
+    plugin: require('@hapi/basic')
+  })
+
+  await server.register({
+    plugin: require('@now-ims/hapi-now-auth')
+  })
+
+  await server.register({
+    plugin: require('hapi-auth-bearer-token')
+  })
+
+  await server.register([
+    Inert,
+    Vision,
+    Blipp,
+    ErrorHandling,
+    CentralServices.Util.Hapi.HapiRawPayload,
+    CentralServices.Util.Hapi.HapiEventPlugin
+  ])
+}
+
+module.exports = {
+  registerPlugins
 }
