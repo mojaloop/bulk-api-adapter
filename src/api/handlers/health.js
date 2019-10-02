@@ -27,23 +27,14 @@ const HealthCheck = require('@mojaloop/central-services-shared').HealthCheck.Hea
 const { defaultHealthHandler } = require('@mojaloop/central-services-health')
 const packageJson = require('../../../package.json')
 const Config = require('../../lib/config')
-
-const {
-  getSubServiceHealthBroker,
-  getSubServiceHealthCentralLedger
-} = require('../../lib/healthCheck/subServiceHealth')
+const { getSubServiceHealthBroker, getSubServiceHealthCentralLedger } = require('../../lib/healthCheck/subServiceHealth')
 
 let healthCheck
 
 if (!Config.HANDLERS_DISABLED) {
-  healthCheck = new HealthCheck(packageJson, [
-    getSubServiceHealthBroker,
-    getSubServiceHealthCentralLedger
-  ])
+  healthCheck = new HealthCheck(packageJson, [getSubServiceHealthBroker, getSubServiceHealthCentralLedger])
 } else {
-  // TODO: Include getSubServiceHealthBroker once 'getMetadata' enhancement has been added to the central-services-stream Producer
-  healthCheck = new HealthCheck(packageJson, [
-  ])
+  healthCheck = new HealthCheck(packageJson, [])
 }
 
 /**
