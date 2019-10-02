@@ -32,8 +32,6 @@ const KafkaUtil = require('@mojaloop/central-services-shared').Util.Kafka
 const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const Config = require('../../lib/config')
 const Participant = require('../../domain/participant')
-const Callback = require('@mojaloop/central-services-shared').Util.Request
-const Config = require('../../lib/config')
 
 let notificationConsumer = {}
 let autoCommitEnabled = true
@@ -185,42 +183,42 @@ const processMessage = async (msg, span) => {
     const payloadForCallback = decodedPayload.body.toString()
 
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
-      let responsePayload = JSON.parse(payloadForCallback)
+      const responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
-      let methodTo = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST
-      let callbackURLTo = await Participant.getEndpoint(to, methodTo, id)
+      const methodTo = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST
+      const callbackURLTo = await Participant.getEndpoint(to, methodTo, id)
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodTo}, ${JSON.stringify(content.headers)}, ${payloadForCallback}, ${id}, ${from}, ${to})`)
-      let bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
+      const bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodTo, JSON.stringify(responsePayload))
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
       id = JSON.parse(payloadForCallback).bulkTransferId
-      let methodFrom = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR
-      let callbackURLTo = await Participant.getEndpoint(to, methodFrom, id)
+      const methodFrom = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR
+      const callbackURLTo = await Participant.getEndpoint(to, methodFrom, id)
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodFrom}, ${JSON.stringify(content.headers)}, ${payloadForCallback}, ${id}, ${from}, ${to})`)
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodFrom, payloadForCallback)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_COMMIT && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
-      let responsePayload = JSON.parse(payloadForCallback)
+      const responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
-      let methodTo = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT
-      let callbackURLTo = await Participant.getEndpoint(to, methodTo, id)
+      const methodTo = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT
+      const callbackURLTo = await Participant.getEndpoint(to, methodTo, id)
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodTo}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      let bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
+      const bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodTo, payloadForCallback)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_COMMIT && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
-      let responsePayload = JSON.parse(payloadForCallback)
+      const responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
       delete responsePayload.bulkTransferId
-      let methodFrom = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR
-      let callbackURLTo = await Participant.getEndpoint(to, methodFrom, id)
+      const methodFrom = ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR
+      const callbackURLTo = await Participant.getEndpoint(to, methodFrom, id)
       Logger.debug(`Notification::processMessage - Callback.sendCallback(${callbackURLTo}, ${methodFrom}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, methodFrom, JSON.stringify(responsePayload))
     }
@@ -232,8 +230,56 @@ const processMessage = async (msg, span) => {
   }
 }
 
+/**
+ * @function getMetadataPromise
+ *
+ * @description a Promisified version of getMetadata on the kafka consumer
+ *
+ * @param {Kafka.Consumer} consumer The consumer
+ * @param {string} topic The topic name
+ * @returns {Promise<object>} Metadata response
+ */
+const getMetadataPromise = (consumer, topic) => {
+  return new Promise((resolve, reject) => {
+    const cb = (err, metadata) => {
+      if (err) {
+        return reject(new Error(`Error connecting to consumer: ${err}`))
+      }
+
+      return resolve(metadata)
+    }
+
+    consumer.getMetadata({ topic, timeout: 3000 }, cb)
+  })
+}
+
+/**
+ * @function isConnected
+ *
+ *
+ * @description Use this to determine whether or not we are connected to the broker. Internally, it calls `getMetadata` to determine
+ * if the broker client is connected.
+ *
+ * @returns {true} - if connected
+ * @throws {Error} - if we can't find the topic name, or the consumer is not connected
+ */
+const isConnected = async () => {
+  const topicConfig = KafkaUtil.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.NOTIFICATION, ENUM.Events.Event.Action.EVENT)
+  const topicName = topicConfig.topicName
+  const metadata = await getMetadataPromise(notificationConsumer, topicName)
+
+  const foundTopics = metadata.topics.map(topic => topic.name)
+  if (foundTopics.indexOf(topicName) === -1) {
+    Logger.debug(`Connected to consumer, but ${topicName} not found.`)
+    throw new Error(`Connected to consumer, but ${topicName} not found.`)
+  }
+
+  return true
+}
+
 module.exports = {
   startConsumer,
   processMessage,
-  consumeMessage
+  consumeMessage,
+  isConnected
 }

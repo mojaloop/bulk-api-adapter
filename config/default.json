@@ -2,6 +2,7 @@
   "PORT": 3003,
   "HOSTNAME": "http://bulk-api-adapter",
   "ENDPOINT_SOURCE_URL": "http://localhost:3001/participants/{{fsp}}/endpoints",
+  "ENDPOINT_HEALTH_URL": "http://localhost:3001/health",
   "ENDPOINT_CACHE_CONFIG": {
     "expiresIn": 180000,
     "generateTimeout": 30000
@@ -86,7 +87,7 @@
               "socket.keepalive.enable": true,
               "queue.buffering.max.messages": 10000000
             },
-            "topicConf": {  
+            "topicConf": {
               "request.required.acks": "all"
             }
           }
@@ -104,7 +105,7 @@
               "socket.keepalive.enable": true,
               "queue.buffering.max.messages": 10000000
             },
-            "topicConf": {  
+            "topicConf": {
               "request.required.acks": "all"
             }
           }
