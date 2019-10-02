@@ -31,6 +31,7 @@
 'use strict'
 
 const Metrics = require('@mojaloop/central-services-metrics')
+const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
 
 /**
  * Operations on /metrics
@@ -44,6 +45,6 @@ module.exports = {
      * responses: default
      */
   get: function getMetrics (request, h) {
-    return h.response(Metrics.getMetricsForPrometheus()).code(200)
+    return h.response(Metrics.getMetricsForPrometheus()).code(HTTPENUM.ReturnCodes.OK.CODE)
   }
 }

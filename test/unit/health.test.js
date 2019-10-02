@@ -1,71 +1,75 @@
 'use strict'
 
-const Test = require('tape')
-const Hapi = require('hapi')
-const HapiOpenAPI = require('hapi-openapi')
-const Path = require('path')
-const Mockgen = require('./data/mockgen')
+const Test = require('tapes')(require('tape'))
+const Sinon = require('sinon')
+const axios = require('axios')
+const proxyquire = require('proxyquire')
 
-/**
- * Test for /health
- */
-Test('/health', function (t) {
-  /**
-     * summary: Status of adapter
-     * description:
-     * parameters:
-     * produces:
-     * responses: default
-     */
-  t.test('test getHealth get operation', async function (t) {
-    const server = new Hapi.Server()
+const Config = require('../../src/lib/config')
+const Notification = require('../../src/handlers/notification')
+const { createRequest, unwrapResponse } = require('../helpers')
 
-    await server.register({
-      plugin: HapiOpenAPI,
-      options: {
-        api: Path.resolve(__dirname, '../../src/interface/swagger.yaml'),
-        handlers: Path.join(__dirname, '../../src/api/handlers'),
-        outputvalidation: true
-      }
-    })
+Test('health handler', (handlerTest) => {
+  let sandbox
+  let healthHandler
 
-    const requests = new Promise((resolve, reject) => {
-      Mockgen().requests({
-        path: '/health',
-        operation: 'get'
-      }, function (error, mock) {
-        return error ? reject(error) : resolve(mock)
-      })
-    })
-
-    const mock = await requests
-
-    t.ok(mock)
-    t.ok(mock.request)
-    // Get the resolved path from mock request
-    // Mock request Path templates({}) are resolved using path parameters
-    const options = {
-      method: 'get',
-      url: '' + mock.request.path
-    }
-    if (mock.request.body) {
-      // Send the request body
-      options.payload = mock.request.body
-    } else if (mock.request.formData) {
-      // Send the request form data
-      options.payload = mock.request.formData
-      // Set the Content-Type as application/x-www-form-urlencoded
-      options.headers = options.headers || {}
-      options.headers['Content-Type'] = 'application/x-www-form-urlencoded'
-    }
-    // If headers are present, set the headers.
-    if (mock.request.headers && mock.request.headers.length > 0) {
-      options.headers = mock.request.headers
-    }
-
-    const response = await server.inject(options)
-
-    t.equal(response.statusCode, 200, 'Ok response status')
+  handlerTest.beforeEach(t => {
+    sandbox = Sinon.createSandbox()
+    sandbox.stub(Notification, 'isConnected')
+    sandbox.stub(axios, 'get')
+    healthHandler = proxyquire('../../src/api/handlers/health', {})
     t.end()
   })
+
+  handlerTest.afterEach(t => {
+    sandbox.restore()
+    Config.HANDLERS_DISABLED = false
+    t.end()
+  })
+
+  handlerTest.test('/health should', healthTest => {
+    healthTest.test('return the correct response when the health check is up', async test => {
+      Notification.isConnected.resolves(true)
+      axios.get.resolves({ data: { status: 'OK' } })
+      const expectedResponseCode = 200
+      const {
+        responseCode
+      } = await unwrapResponse((reply) => healthHandler.get(createRequest({}), reply))
+
+      test.deepEqual(responseCode, expectedResponseCode, 'The response code matches')
+      test.end()
+    })
+
+    healthTest.test('return the correct response when the health check is up in API mode only (Config.HANDLERS_DISABLED=true)', async test => {
+      Notification.isConnected.resolves(true)
+
+      Config.HANDLERS_DISABLED = true
+      healthHandler = proxyquire('../../src/api/handlers/health', {})
+      axios.get.resolves({ data: { status: 'OK' } })
+      const expectedResponseCode = 200
+      const {
+        responseCode
+      } = await unwrapResponse((reply) => healthHandler.get(createRequest({}), reply))
+
+      test.deepEqual(responseCode, expectedResponseCode, 'The response code matches')
+      test.end()
+    })
+
+    healthTest.test('return the correct response when the health check is down', async test => {
+      healthHandler = proxyquire('../../src/api/handlers/health', {})
+      Notification.isConnected.throws(new Error('Error connecting to consumer'))
+      axios.get.resolves({ data: { status: 'OK' } })
+      const expectedResponseCode = 502
+      const {
+        responseCode
+      } = await unwrapResponse((reply) => healthHandler.get(createRequest({ query: { detailed: true } }), reply))
+
+      test.deepEqual(responseCode, expectedResponseCode, 'The response code matches')
+      test.end()
+    })
+
+    healthTest.end()
+  })
+
+  handlerTest.end()
 })

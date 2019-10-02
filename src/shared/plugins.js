@@ -19,10 +19,61 @@
  - Name Surname <name.surname@gatesfoundation.com>
  --------------
  ******/
+
 'use strict'
 
-const Producer = require('./producer')
+const Package = require('../../package')
+const Inert = require('@hapi/inert')
+const Vision = require('@hapi/vision')
+const Blipp = require('blipp')
+const ErrorHandling = require('@mojaloop/central-services-error-handling')
+const CentralServices = require('@mojaloop/central-services-shared')
+/**
+ * @module src/shared/plugin
+ */
+
+const registerPlugins = async (server) => {
+  await server.register({
+    plugin: require('hapi-swagger'),
+    options: {
+      info: {
+        title: 'bulk api adapter API Documentation',
+        version: Package.version
+      }
+    }
+  })
+
+  await server.register({
+    plugin: require('@hapi/good'),
+    options: {
+      ops: {
+        interval: 10000
+      }
+    }
+  })
+
+  await server.register({
+    plugin: require('@hapi/basic')
+  })
+
+  await server.register({
+    plugin: require('@now-ims/hapi-now-auth')
+  })
+
+  await server.register({
+    plugin: require('hapi-auth-bearer-token')
+  })
+
+  await server.register([
+    Inert,
+    Vision,
+    Blipp,
+    ErrorHandling,
+    CentralServices.Util.Hapi.HapiRawPayload,
+    CentralServices.Util.Hapi.HapiEventPlugin
+  ])
+}
 
 module.exports = {
-  Producer
+  registerPlugins
 }

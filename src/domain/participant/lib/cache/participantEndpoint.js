@@ -25,7 +25,7 @@
 
 'use strict'
 
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Config = require('../../../../lib/config')
 const Catbox = require('catbox')
 const Model = require('../../../../models/participant/participantEndpoint')
@@ -98,8 +98,8 @@ const getEndpoint = async (fsp, enpointType) => {
   Logger.debug(`participantEndpointCache::getEndpoint::fsp - ${fsp}`)
   Logger.debug(`participantEndpointCache::getEndpoint::enpointType - ${enpointType}`)
   try {
-    let endpoints = await policy.get(fsp)
-    let url = new Map(endpoints).get(enpointType)
+    const endpoints = await policy.get(fsp)
+    const url = new Map(endpoints).get(enpointType)
     return url
   } catch (e) {
     Logger.error(`participantEndpointCache::getEndpoint:: ERROR:'${e}'`)

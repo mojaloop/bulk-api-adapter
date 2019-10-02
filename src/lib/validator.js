@@ -24,17 +24,16 @@
 
 'use strict'
 
+const Enum = require('@mojaloop/central-services-shared').Enum
 const Config = require('../lib/config')
 
-const BAD_REQUEST_ERROR_CODE = 400
-const BAD_REQUEST_ERROR_DESC = 'Bad Request'
 const DEFAULT_LAG_SECONDS = 300
 
 const fulfilTransfer = (request) => {
   let validationPassed = true
-  let errorInformation = {
-    errorCode: BAD_REQUEST_ERROR_CODE,
-    errorDescription: BAD_REQUEST_ERROR_DESC,
+  const errorInformation = {
+    errorCode: Enum.Http.ReturnCodes.BADREQUEST.CODE,
+    errorDescription: Enum.Http.ReturnCodes.BADREQUEST.DESCRIPTION,
     extensionList: {
       extension: []
     }

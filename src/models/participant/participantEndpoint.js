@@ -25,7 +25,7 @@
 
 'use strict'
 
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Config = require('../../lib/config')
 const Mustache = require('mustache')
 const request = require('request')
@@ -62,8 +62,8 @@ const getEndpoint = async (fsp) => {
       }
       Logger.info(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := successful with body: ${JSON.stringify(response.body)}`)
       Logger.debug(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := successful with response: ${JSON.stringify(response)}`)
-      let endpoints = JSON.parse(body)
-      let endpointMap = {}
+      const endpoints = JSON.parse(body)
+      const endpointMap = {}
 
       if (Array.isArray(endpoints)) {
         endpoints.forEach(item => {

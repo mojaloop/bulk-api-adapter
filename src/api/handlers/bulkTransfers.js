@@ -30,11 +30,12 @@
 'use strict'
 
 const TransferService = require('../../domain/bulkTransfer')
-const Logger = require('@mojaloop/central-services-shared').Logger
+const Logger = require('@mojaloop/central-services-logger')
 const Boom = require('boom')
 const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
-const Util = require('../../lib/util')
+const Hash = require('@mojaloop/central-services-shared').Util.Hash
 const Uuid = require('uuid4')
+const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
 
 /**
  * Operations on /bulkTransfers
@@ -51,14 +52,14 @@ module.exports = {
     try {
       Logger.debug('create::payload(%s)', JSON.stringify(request.payload))
       const { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList } = request.payload
-      const hash = Util.createHash(JSON.stringify(request.payload))
+      const hash = Hash.generateSha256(JSON.stringify(request.payload))
       const messageId = Uuid()
-      let BulkTransferModel = BulkTransferModels.getBulkTransferModel()
+      const BulkTransferModel = BulkTransferModels.getBulkTransferModel()
       const doc = Object.assign({}, { messageId, headers: request.headers }, request.payload)
       await new BulkTransferModel(doc).save()
       const message = { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList, hash }
       await TransferService.bulkPrepare(messageId, request.headers, message)
-      return h.response().code(202)
+      return h.response().code(HTTPENUM.ReturnCodes.ACCEPTED.CODE)
     } catch (err) {
       Logger.error(err)
       throw Boom.boomify(err, { message: 'An error has occurred' })

@@ -24,23 +24,19 @@
 
  * ModusBox
  - Miguel de Barros <miguel.debarros@modusbox.com>
+ - Steven Oderayi <steven.oderayi@modusbox.com>
 
  --------------
  ******/
 
 'use strict'
 
-const tags = ['api', 'root']
+const healthHandler = require('../../../api/handlers/health')
 
 module.exports = [
   {
     method: 'GET',
     path: '/health',
-    handler: function (request, h) {
-      return h.response({ status: 'OK' }).code(200)
-    },
-    options: {
-      tags
-    }
+    handler: healthHandler.get
   }
 ]
