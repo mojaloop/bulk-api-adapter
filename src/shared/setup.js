@@ -54,7 +54,7 @@ const ObjStoreDb = require('@mojaloop/central-object-store').Db.Mongoose
 
 const connectMongoose = async () => {
   try {
-    let db = await ObjStoreDb.connect(Config.MONGODB_URI, {
+    const db = await ObjStoreDb.connect(Config.MONGODB_URI, {
       promiseLibrary: global.Promise
     })
     return db
@@ -81,7 +81,7 @@ const createServer = async (port, modules) => {
       }
     }
   })
-  let db = await connectMongoose()
+  const db = await connectMongoose()
   server.app.db = db
 
   await Plugins.registerPlugins(server)
@@ -107,7 +107,7 @@ const createServer = async (port, modules) => {
  */
 const createHandlers = async (handlers) => {
   let handlerIndex
-  let registerdHandlers = {
+  const registerdHandlers = {
     connection: {},
     register: {},
     ext: {},
