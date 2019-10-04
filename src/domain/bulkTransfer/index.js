@@ -29,6 +29,7 @@ const Uuid = require('uuid4')
 const Config = require('../../lib/config')
 const ENUM = require('@mojaloop/central-services-shared').Enum
 const KafkaUtil = require('@mojaloop/central-services-shared').Util.Kafka
+const Producer = require('@mojaloop/central-services-stream').Util.Producer
 
 /**
  * @module src/domain/bulkTransfer
@@ -76,7 +77,7 @@ const bulkPrepare = async (messageId, headers, message) => {
     Logger.debug(`domain::bulkTransfer::prepare::messageProtocol - ${messageProtocol}`)
     Logger.debug(`domain::bulkTransfer::prepare::topicConfig - ${topicConfig}`)
     Logger.debug(`domain::bulkTransfer::prepare::kafkaConfig - ${kafkaConfig}`)
-    await KafkaUtil.Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
+    await Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
     return true
   } catch (err) {
     Logger.error(`domain::bulkTransfer::prepare::Kafka error:: ERROR:'${err}'`)
@@ -115,7 +116,7 @@ const bulkFulfil = async (messageId, headers, message) => {
     Logger.debug(`domain::bulkTransfer::fulfil::messageProtocol - ${messageProtocol}`)
     Logger.debug(`domain::bulkTransfer::fulfil::topicConfig - ${topicConfig}`)
     Logger.debug(`domain::bulkTransfer::fulfil::kafkaConfig - ${kafkaConfig}`)
-    await KafkaUtil.Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
+    await Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
     return true
   } catch (err) {
     Logger.error(`domain::bulkTransfer::fulfil::Kafka error:: ERROR:'${err}'`)
