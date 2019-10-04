@@ -24,7 +24,7 @@
 
 'use strict'
 
-const Enum = require('@mojaloop/central-services-shared').Enum
+const ENUM = require('@mojaloop/central-services-shared').Enum
 const Config = require('../lib/config')
 
 const DEFAULT_LAG_SECONDS = 300
@@ -32,8 +32,8 @@ const DEFAULT_LAG_SECONDS = 300
 const fulfilTransfer = (request) => {
   let validationPassed = true
   const errorInformation = {
-    errorCode: Enum.Http.ReturnCodes.BADREQUEST.CODE,
-    errorDescription: Enum.Http.ReturnCodes.BADREQUEST.DESCRIPTION,
+    errorCode: ENUM.Http.ReturnCodes.BADREQUEST.CODE,
+    errorDescription: ENUM.Http.ReturnCodes.BADREQUEST.DESCRIPTION,
     extensionList: {
       extension: []
     }

@@ -30,7 +30,7 @@
 
 const TransferService = require('../../../domain/bulkTransfer')
 const Logger = require('@mojaloop/central-services-logger')
-const Boom = require('boom')
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
 const Hash = require('@mojaloop/central-services-shared').Util.Hash
 const Uuid = require('uuid4')
@@ -51,10 +51,10 @@ module.exports = {
   get: async function getBulkTransfersId (request, h) {
     const { id } = request.params
     const IndividualTransferModel = BulkTransferModels.getIndividualTransferModel()
-    const indvidualTransfers = await IndividualTransferModel
+    const individualTransfers = await IndividualTransferModel
       .find({ bulkTransferId: id }, '-dataUri -_id')
       .populate('_id_bulkTransfers', 'headers -_id') // TODO in bulk-handler first get only headers, then compose each individual transfer without population
-    return h.response(indvidualTransfers)
+    return h.response(individualTransfers)
   },
   /**
    * summary: Fulfil bulkTransfer
@@ -84,7 +84,7 @@ module.exports = {
       return h.response().code(HTTPENUM.ReturnCodes.ACCEPTED.CODE)
     } catch (err) {
       Logger.error(err)
-      throw Boom.boomify(err, { message: 'An error has occurred' })
+      throw ErrorHandler.Factory.reformatFSPIOPError(err)
     }
   }
 }

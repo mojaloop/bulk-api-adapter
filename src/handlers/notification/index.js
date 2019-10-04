@@ -38,7 +38,7 @@ let autoCommitEnabled = true
 const Metrics = require('@mojaloop/central-services-metrics')
 const ENUM = require('@mojaloop/central-services-shared').Enum
 const Util = require('@mojaloop/central-services-shared').Util
-const decodePayload = require('@mojaloop/central-services-stream').Kafka.Protocol.decodePayload
+const decodePayload = require('@mojaloop/central-services-shared').Util.StreamingProtocol.decodePayload
 const BulkTransfer = require('@mojaloop/central-object-store').Models.BulkTransfer
 
 // note that incoming headers shoud be lowercased by node
@@ -165,7 +165,7 @@ const processMessage = async (msg, span) => {
     Logger.info('Notification::processMessage')
 
     if (!msg.value || !msg.value.content || !msg.value.content.headers || !msg.value.content.payload) {
-      throw new Error('Invalid message received from kafka')
+      throw ErrorHandler.Factory.createFSPIOPError(ErrorHandler.Enums.FSPIOPErrorCodes.VALIDATION_ERROR, 'Invalid message received from kafka')
     }
 
     const { metadata, from, to, content } = msg.value
@@ -224,9 +224,9 @@ const processMessage = async (msg, span) => {
     }
 
     Logger.warn(`Unknown action received from kafka: ${action}`)
-  } catch (e) {
-    Logger.error(`Error processing the message - ${e}`)
-    throw e
+  } catch (err) {
+    Logger.error(`Error processing the message - ${err}`)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
   }
 }
 
