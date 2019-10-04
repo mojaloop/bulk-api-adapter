@@ -26,10 +26,9 @@
 const Logger = require('@mojaloop/central-services-logger')
 const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const Uuid = require('uuid4')
-const KafkaUtil = require('@mojaloop/central-services-shared').Util.Kafka
 const Config = require('../../lib/config')
 const ENUM = require('@mojaloop/central-services-shared').Enum
-const Util = require('@mojaloop/central-services-shared').Util
+const KafkaUtil = require('@mojaloop/central-services-shared').Util.Kafka
 
 /**
  * @module src/domain/bulkTransfer
@@ -71,9 +70,9 @@ const bulkPrepare = async (messageId, headers, message) => {
         }
       }
     }
-    const topicConfig = Util.Kafka.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.BULK, ENUM.Events.Event.Action.PREPARE)
+    const topicConfig = KafkaUtil.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.BULK, ENUM.Events.Event.Action.PREPARE)
     // ity.createGeneralTopicConf(BULK_TRANSFER, PREPARE)
-    const kafkaConfig = Util.Kafka.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.PRODUCER, ENUM.Events.Event.Type.BULK.toUpperCase(), ENUM.Events.Event.Type.PREPARE.toUpperCase())
+    const kafkaConfig = KafkaUtil.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.PRODUCER, ENUM.Events.Event.Type.BULK.toUpperCase(), ENUM.Events.Event.Type.PREPARE.toUpperCase())
     Logger.debug(`domain::bulkTransfer::prepare::messageProtocol - ${messageProtocol}`)
     Logger.debug(`domain::bulkTransfer::prepare::topicConfig - ${topicConfig}`)
     Logger.debug(`domain::bulkTransfer::prepare::kafkaConfig - ${kafkaConfig}`)
@@ -111,8 +110,8 @@ const bulkFulfil = async (messageId, headers, message) => {
         }
       }
     }
-    const topicConfig = Util.Kafka.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.BULK, ENUM.Events.Event.Type.FULFIL)
-    const kafkaConfig = Util.Kafka.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.PRODUCER, ENUM.Events.Event.Type.BULK.toUpperCase(), ENUM.Events.Event.Type.FULFIL.toUpperCase())
+    const topicConfig = KafkaUtil.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.BULK, ENUM.Events.Event.Type.FULFIL)
+    const kafkaConfig = KafkaUtil.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.PRODUCER, ENUM.Events.Event.Type.BULK.toUpperCase(), ENUM.Events.Event.Type.FULFIL.toUpperCase())
     Logger.debug(`domain::bulkTransfer::fulfil::messageProtocol - ${messageProtocol}`)
     Logger.debug(`domain::bulkTransfer::fulfil::topicConfig - ${topicConfig}`)
     Logger.debug(`domain::bulkTransfer::fulfil::kafkaConfig - ${kafkaConfig}`)

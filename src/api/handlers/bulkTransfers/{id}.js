@@ -49,16 +49,12 @@ module.exports = {
    * responses: default
    */
   get: async function getBulkTransfersId (request, h) {
-    let { id } = request.params
-    let IndividualTransferModel = BulkTransferModels.getIndividualTransferModel()
-    try {
-      let indvidualTransfers = await IndividualTransferModel
-        .find({ bulkTransferId: id }, '-dataUri -_id')
-        .populate('_id_bulkTransfers', 'headers -_id') // TODO in bulk-handler first get only headers, then compose each individual transfer without population
-      return h.response(indvidualTransfers)
-    } catch (e) {
-      throw e
-    }
+    const { id } = request.params
+    const IndividualTransferModel = BulkTransferModels.getIndividualTransferModel()
+    const individualTransfers = await IndividualTransferModel
+      .find({ bulkTransferId: id }, '-dataUri -_id')
+      .populate('_id_bulkTransfers', 'headers -_id') // TODO in bulk-handler first get only headers, then compose each individual transfer without population
+    return h.response(individualTransfers)
   },
   /**
    * summary: Fulfil bulkTransfer
