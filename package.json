@@ -74,6 +74,7 @@
     "start:api": "node src/api/index.js",
     "watch:api": "nodemon src/api/index.js",
     "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.yaml'",
+    "standard": "standard",
     "test": "npm run test:unit | faucet",
     "test:all": "run-s test",
     "test:unit": "tape 'test/unit/**/*.test.js'",
