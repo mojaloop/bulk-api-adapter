@@ -18,8 +18,9 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Georgi Georgiev <georgi.georgiev@modusbox.com>
- * Shashikant Hirugade <shashikant.hirugade@modusbox.com>
+ * ModusBox
+ - Georgi Georgiev <georgi.georgiev@modusbox.com>
+ - Shashikant Hirugade <shashikant.hirugade@modusbox.com>
  --------------
  ******/
 
@@ -187,7 +188,7 @@ const processMessage = async (msg, span) => {
       id = responsePayload.bulkTransferId
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST, id)
       const bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
-      responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
+      responsePayload.individualTransfers = bulkResponseMessage.individualTransferResults
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.POST}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, ENUM.Http.RestMethods.POST, JSON.stringify(responsePayload))
     }
