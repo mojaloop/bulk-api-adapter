@@ -195,7 +195,7 @@ const processMessage = async (msg, span) => {
 
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
       const responsePayload = JSON.parse(payloadForCallback)
-      id = responsePayload.bulkTransferId
+      id = responsePayload.bulkTransferId || content.uriParams.id
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
       return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
@@ -214,7 +214,7 @@ const processMessage = async (msg, span) => {
 
     if (actionLower === ENUM.Events.Event.Action.BULK_COMMIT && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
       const responsePayload = JSON.parse(payloadForCallback)
-      id = responsePayload.bulkTransferId
+      id = responsePayload.bulkTransferId || content.uriParams.id
       delete responsePayload.bulkTransferId
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
