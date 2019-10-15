@@ -329,27 +329,27 @@ jobs:
           path: ./audit/results
           prefix: audit
 
-    audit-licenses:
-      <<: *defaults_working_directory
-      <<: *defaults_docker_node
-      steps:
-        - run:
-            name: Install general dependencies
-            command: *defaults_Dependencies
-        - run:
-            <<: *defaults_license_scanner
-        - checkout
-        - restore_cache:
-            key: dependency-cache-{{ checksum "package.json" }}
-        - run:
-            name: Prune non-production packages before running license-scanner
-            command: npm prune --production
-        - run:
-            name: Run the license-scanner
-            command: cd /tmp/license-scanner && pathToRepo=$CIRCLE_WORKING_DIRECTORY make run
-        - store_artifacts:
-            path: /tmp/license-scanner/results
-            prefix: licenses
+  audit-licenses:
+    <<: *defaults_working_directory
+    <<: *defaults_docker_node
+    steps:
+      - run:
+          name: Install general dependencies
+          command: *defaults_Dependencies
+      - run:
+          <<: *defaults_license_scanner
+      - checkout
+      - restore_cache:
+          key: dependency-cache-{{ checksum "package.json" }}
+      - run:
+          name: Prune non-production packages before running license-scanner
+          command: npm prune --production
+      - run:
+          name: Run the license-scanner
+          command: cd /tmp/license-scanner && pathToRepo=$CIRCLE_WORKING_DIRECTORY make run
+      - store_artifacts:
+          path: /tmp/license-scanner/results
+          prefix: licenses
 
   build-snapshot:
     machine: true
