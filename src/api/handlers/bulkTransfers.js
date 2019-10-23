@@ -22,16 +22,17 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Georgi Georgiev <georgi.georgiev@modusbox.com>
- * Miguel de Barros <miguel.debarros@modusbox.com>
- * Valentin Genev <valentin.genev@modusbox.com>
+ * ModusBox
+ - Georgi Georgiev <georgi.georgiev@modusbox.com>
+ - Miguel de Barros <miguel.debarros@modusbox.com>
+ - Valentin Genev <valentin.genev@modusbox.com>
  --------------
  ******/
 'use strict'
 
 const TransferService = require('../../domain/bulkTransfer')
 const Logger = require('@mojaloop/central-services-logger')
-const Boom = require('boom')
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
 const Hash = require('@mojaloop/central-services-shared').Util.Hash
 const Uuid = require('uuid4')
@@ -54,15 +55,23 @@ module.exports = {
       const { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList } = request.payload
       const hash = Hash.generateSha256(JSON.stringify(request.payload))
       const messageId = Uuid()
-      const BulkTransferModel = BulkTransferModels.getBulkTransferModel()
-      const doc = Object.assign({}, { messageId, headers: request.headers }, request.payload)
-      await new BulkTransferModel(doc).save()
+      /**
+       * Disabled writing to ML Object Store (bulkTransfers) as it is not used:
+       */
+      // const BulkTransferModel = BulkTransferModels.getBulkTransferModel()
+      // const doc = Object.assign({}, { messageId, headers: request.headers }, request.payload)
+      // await new BulkTransferModel(doc).save()
+
+      const IndividualTransferModel = BulkTransferModels.getIndividualTransferModel()
+      await Promise.all(request.payload.individualTransfers.map(payload => {
+        new IndividualTransferModel({ messageId, payload }).save()
+      }))
       const message = { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList, hash }
       await TransferService.bulkPrepare(messageId, request.headers, message)
       return h.response().code(HTTPENUM.ReturnCodes.ACCEPTED.CODE)
     } catch (err) {
       Logger.error(err)
-      throw Boom.boomify(err, { message: 'An error has occurred' })
+      throw ErrorHandler.Factory.reformatFSPIOPError(err)
     }
   }
 }

@@ -22,15 +22,16 @@
  * Gates Foundation
  - Name Surname <name.surname@gatesfoundation.com>
 
- * Georgi Georgiev <georgi.georgiev@modusbox.com>
- * Valentin Genev <valentin.genev@modusbox.com>
+ * ModusBox
+ - Georgi Georgiev <georgi.georgiev@modusbox.com>
+ - Valentin Genev <valentin.genev@modusbox.com>
  --------------
  ******/
 'use strict'
 
 const TransferService = require('../../../domain/bulkTransfer')
 const Logger = require('@mojaloop/central-services-logger')
-const Boom = require('boom')
+const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
 const Hash = require('@mojaloop/central-services-shared').Util.Hash
 const Uuid = require('uuid4')
@@ -51,10 +52,10 @@ module.exports = {
   get: async function getBulkTransfersId (request, h) {
     const { id } = request.params
     const IndividualTransferModel = BulkTransferModels.getIndividualTransferModel()
-    const indvidualTransfers = await IndividualTransferModel
+    const individualTransfers = await IndividualTransferModel
       .find({ bulkTransferId: id }, '-dataUri -_id')
       .populate('_id_bulkTransfers', 'headers -_id') // TODO in bulk-handler first get only headers, then compose each individual transfer without population
-    return h.response(indvidualTransfers)
+    return h.response(individualTransfers)
   },
   /**
    * summary: Fulfil bulkTransfer
@@ -75,16 +76,24 @@ module.exports = {
       const { bulkTransferState, completedTimestamp, extensionList } = request.payload
       const hash = Hash.generateSha256(JSON.stringify(request.payload))
       const messageId = Uuid()
-      const BulkTransferFulfilModel = BulkTransferModels.getBulkTransferFulfilModel()
-      const doc = Object.assign({}, { messageId, headers: request.headers, bulkTransferId }, request.payload)
-      await new BulkTransferFulfilModel(doc).save()
+      /**
+       * Disabled writing to ML Object Store (bulkTransferFulfils) as it is not used:
+       */
+      // const BulkTransferFulfilModel = BulkTransferModels.getBulkTransferFulfilModel()
+      // const doc = Object.assign({}, { messageId, headers: request.headers, bulkTransferId }, request.payload)
+      // await new BulkTransferFulfilModel(doc).save()
+
+      const IndividualTransferFulfilModel = BulkTransferModels.getIndividualTransferFulfilModel()
+      await Promise.all(request.payload.individualTransferResults.map(payload => {
+        new IndividualTransferFulfilModel({ messageId, bulkTransferId, payload }).save()
+      }))
       const count = request.payload.individualTransferResults.length
       const message = { bulkTransferId, bulkTransferState, completedTimestamp, extensionList, count, hash }
       await TransferService.bulkFulfil(messageId, request.headers, message)
       return h.response().code(HTTPENUM.ReturnCodes.ACCEPTED.CODE)
     } catch (err) {
       Logger.error(err)
-      throw Boom.boomify(err, { message: 'An error has occurred' })
+      throw ErrorHandler.Factory.reformatFSPIOPError(err)
     }
   }
 }
