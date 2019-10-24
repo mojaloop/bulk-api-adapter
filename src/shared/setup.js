@@ -36,7 +36,7 @@ const RegisterHandlers = require('../handlers/register')
 const Config = require('../lib/config')
 const ParticipantEndpointCache = require('../domain/participant/lib/cache/participantEndpoint')
 const Metrics = require('@mojaloop/central-services-metrics')
-const ObjStoreDb = require('@mojaloop/central-object-store').Db.Mongoose
+const ObjStoreDb = require('@mojaloop/central-object-store').Db
 
 /**
  * @module src/shared/setup
@@ -54,14 +54,11 @@ const ObjStoreDb = require('@mojaloop/central-object-store').Db.Mongoose
 
 const connectMongoose = async () => {
   try {
-    const db = await ObjStoreDb.connect(Config.MONGODB_URI, {
-      promiseLibrary: global.Promise
-    })
-    return db
+    return ObjStoreDb.connect(Config.MONGODB_URI)
   } catch (err) {
-    Logger.error(`error - ${err}`) // TODO: ADD PROPER ERROR HANDLING HERE POST-POC
     throw ErrorHandler.Factory.reformatFSPIOPError(err)
     // TODO: review as code is being changed from returning null to returning a FSPIOPError
+    // Logger.error(`error - ${err}`)
     // return null
   }
 }
