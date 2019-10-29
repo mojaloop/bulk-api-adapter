@@ -5,6 +5,7 @@ const Sinon = require('sinon')
 const axios = require('axios')
 const proxyquire = require('proxyquire')
 
+const Endpoints = require('@mojaloop/central-services-shared').Util.Endpoints
 const Config = require('../../src/lib/config')
 const Notification = require('../../src/handlers/notification')
 const { createRequest, unwrapResponse } = require('../helpers')
@@ -30,8 +31,10 @@ Test('endpointcache handler', (handlerTest) => {
   handlerTest.test('/endpointcache should', endpointcacheTest => {
     endpointcacheTest.test('return the correct response when the endpointcache check is up', async test => {
       Notification.isConnected.resolves(true)
-      axios.delete.resolves({ data: { status: 'OK' } })
+      axios.get.resolves({ data: { status: 'OK' } })
       const expectedResponseCode = 202
+      // TODO: initializeCache call explicitly here as it is NOT being called as part of Base.setup(), replace with proper mock
+      await Endpoints.initializeCache(Config.ENDPOINT_CACHE_CONFIG)
       const {
         responseCode
       } = await unwrapResponse((reply) => endpointcacheHandler.delete(createRequest({}), reply))
