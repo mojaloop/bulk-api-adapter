@@ -8,6 +8,24 @@ info:
   version: 6.2.1
 tags: []
 paths:
+  /endpointcache:
+    delete:
+      description: The HTTP request DELETE /endpointcache is used to reset the endpoint cache by performing an stopCache and initializeCache the Admin API.
+      summary: Endpoint Cache
+      tags:
+        - cache
+      operationId: EndpointCache
+      parameters:
+        - type: string
+          format: date
+          name: date
+          in: header
+          required: true
+      responses:
+        default:
+          schema:
+            type: string
+          description: Successful
   /health:
     get:
       summary: Status of adapter
