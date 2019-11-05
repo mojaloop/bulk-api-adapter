@@ -21,6 +21,8 @@
  * ModusBox
  - Georgi Georgiev <georgi.georgiev@modusbox.com>
  - Shashikant Hirugade <shashikant.hirugade@modusbox.com>
+ - Steven Oderayi <steven.oderayi@modusbox.com>
+
  --------------
  ******/
 
@@ -33,14 +35,15 @@ const KafkaUtil = require('@mojaloop/central-services-shared').Util.Kafka
 const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const Config = require('../../lib/config')
 const Participant = require('../../domain/participant')
-
-let notificationConsumer = {}
-let autoCommitEnabled = true
+const createCallbackHeaders = require('../../lib/headers').createCallbackHeaders
 const Metrics = require('@mojaloop/central-services-metrics')
 const ENUM = require('@mojaloop/central-services-shared').Enum
 const Util = require('@mojaloop/central-services-shared').Util
 const decodePayload = require('@mojaloop/central-services-shared').Util.StreamingProtocol.decodePayload
 const BulkTransfer = require('@mojaloop/central-object-store').Models.BulkTransfer
+
+let notificationConsumer = {}
+let autoCommitEnabled = true
 
 // note that incoming headers shoud be lowercased by node
 // const jwsHeaders = ['fspiop-signature', 'fspiop-http-method', 'fspiop-uri']
@@ -122,7 +125,7 @@ const consumeMessage = async (error, message) => {
           if (!autoCommitEnabled) {
             notificationConsumer.commitMessageSync(msg)
           }
-          throw fspiopError // We return 'resolved' since we have dealt with the error here
+          throw fspiopError
         })
         if (!autoCommitEnabled) {
           notificationConsumer.commitMessageSync(msg)
@@ -154,11 +157,11 @@ const consumeMessage = async (error, message) => {
 /**
 * @function processMessage
 * @async
-* @description This is the function that will process the message received from kafka, it determined the action and status from the message and sends calls to appropriate fsp
+* @description This is the function that will process the message received from kafka, it determines the action and status from the message and send calls to appropriate fsp
 * Callback.sendCallback - called to send the notification callback
-* @param {object} message - the message received form kafka
+* @param {object} message - the message received from kafka
 
-* @returns {boolean} Returns true on sucess and throws error on failure
+* @returns {boolean} Returns true on success and throws error on failure
 */
 
 const processMessage = async (msg, span) => {
@@ -182,6 +185,7 @@ const processMessage = async (msg, span) => {
     const decodedPayload = decodePayload(content.payload, { asParsed: false })
     let id = JSON.parse(decodedPayload.body.toString()).transferId || (content.uriParams && content.uriParams.id)
     const payloadForCallback = decodedPayload.body.toString()
+    let callbackHeaders
 
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
       const responsePayload = JSON.parse(payloadForCallback)
@@ -189,16 +193,18 @@ const processMessage = async (msg, span) => {
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_POST, id)
       const bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
       responsePayload.individualTransfers = bulkResponseMessage.individualTransferResults
-      Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.POST}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, ENUM.Http.RestMethods.POST, JSON.stringify(responsePayload))
+      callbackHeaders = createCallbackHeaders({ headers: content.headers, httpMethod: ENUM.Http.RestMethods.POST, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_POST })
+      Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.POST}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.POST, JSON.stringify(responsePayload))
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
       const responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId || content.uriParams.id
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
-      Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
+      callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR })
+      Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_COMMIT && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
@@ -208,8 +214,9 @@ const processMessage = async (msg, span) => {
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT, id)
       const bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
-      Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
+      callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT })
+      Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_COMMIT && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
@@ -217,8 +224,9 @@ const processMessage = async (msg, span) => {
       id = responsePayload.bulkTransferId || content.uriParams.id
       delete responsePayload.bulkTransferId
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
-      Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(content.headers)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, content.headers, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
+      callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR })
+      Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
     }
 
     Logger.warn(`Unknown action received from kafka: ${action}`)
