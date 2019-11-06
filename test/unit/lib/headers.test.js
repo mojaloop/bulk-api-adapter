@@ -47,14 +47,16 @@ Test('Headers Test', headersTest => {
   headersTest.test('createCallbackHeaders should', createCallbackHeadersTest => {
     createCallbackHeadersTest.test('return correct headers for BULK_TRANSFERS_POST endpoint template', test => {
       const id = Uuid()
+      const payerFsp = 'payerfsp'
       const params = {
-        headers: {},
-        dfspId: 'payerfsp',
+        headers: { 'fspiop-source': payerFsp },
+        dfspId: payerFsp,
         transferId: id,
         httpMethod: ENUM.Http.RestMethods.POST,
         endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_POST
       }
       const expected = {
+        'fspiop-source': payerFsp,
         'fspiop-http-method': ENUM.Http.RestMethods.POST,
         'fspiop-uri': '/bulkTransfers'
       }
@@ -67,13 +69,14 @@ Test('Headers Test', headersTest => {
       const id = Uuid()
       const payerFsp = 'payerfsp'
       const params = {
-        headers: {},
+        headers: { 'fspiop-source': payerFsp },
         dfspId: payerFsp,
         transferId: id,
         httpMethod: ENUM.Http.RestMethods.PUT,
         endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT
       }
       const expected = {
+        'fspiop-source': payerFsp,
         'fspiop-http-method': ENUM.Http.RestMethods.PUT,
         'fspiop-uri': `/${payerFsp}/bulkTransfers/${id}`
       }
@@ -86,13 +89,14 @@ Test('Headers Test', headersTest => {
       const id = Uuid()
       const payerFsp = 'payerfsp'
       const params = {
-        headers: {},
+        headers: { 'fspiop-source': payerFsp },
         dfspId: payerFsp,
         transferId: id,
         httpMethod: ENUM.Http.RestMethods.PUT,
         endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR
       }
       const expected = {
+        'fspiop-source': payerFsp,
         'fspiop-http-method': ENUM.Http.RestMethods.PUT,
         'fspiop-uri': `/${payerFsp}/bulkTransfers/${id}/error`
       }
