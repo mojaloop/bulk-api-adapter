@@ -51,31 +51,6 @@ services:
       retries: 5
       start_period: 40s
 
-  ml-api-adapter:
-    image: mojaloop/ml-api-adapter
-    container_name: ba_ml-api-adapter
-    command:
-      - "sh"
-      - "-c"
-      - "sh /opt/wait-for/wait-for-ml-api-adapter.sh && node src/api/index.js"
-    ports:
-      - "3000:3000"
-    environment:
-      - LOG_LEVEL=info
-    volumes:
-       - ./docker/ml-api-adapter/default.json:/opt/ml-api-adapter/config/default.json
-       - ./docker/wait-for:/opt/wait-for
-    networks:
-      - ba-mojaloop-net
-    depends_on:
-      - central-ledger
-      - kafka
-    healthcheck:
-      test: ["CMD", "sh", "-c" ,"apk --no-cache add curl", ";", "curl", "http://localhost:3000/health"]
-      timeout: 20s
-      retries: 10
-      interval: 30s
-
   central-ledger:
     image: mojaloop/central-ledger:latest
     container_name: ba_central-ledger
