@@ -29,7 +29,7 @@
 'use strict'
 
 const Plugins = require('./plugins')
-const Hapi = require('hapi')
+const Hapi = require('@hapi/hapi')
 const Logger = require('@mojaloop/central-services-logger')
 const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const RegisterHandlers = require('../handlers/register')
