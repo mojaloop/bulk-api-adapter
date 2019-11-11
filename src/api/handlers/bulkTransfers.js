@@ -64,7 +64,7 @@ module.exports = {
 
       const IndividualTransferModel = BulkTransferModels.getIndividualTransferModel()
       await Promise.all(request.payload.individualTransfers.map(payload => {
-        new IndividualTransferModel({ messageId, payload }).save()
+        return new IndividualTransferModel({ messageId, payload }).save()
       }))
       const message = { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList, hash }
       await TransferService.bulkPrepare(messageId, request.headers, message)
