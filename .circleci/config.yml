@@ -376,9 +376,8 @@ jobs:
       - run:
           <<: *defaults_build_docker_login
       - run:
-          name: setup environment vars for LATEST release
-          command: |
-            echo 'export RELEASE_TAG=$RELEASE_TAG_PROD' >> $BASH_ENV
+          name: setup environment vars for publish/deploy
+          command: ./.circleci/_set_up_deploy_envs.sh
       - run:
           name: Re-tag pre built image
           command: |
@@ -391,6 +390,7 @@ jobs:
   deploy:
     executor: helm-kube
     steps:
+      - checkout
       - run:
           name: Install AWS CLI dependencies
           command: *defaults_awsCliDependencies
