@@ -20,6 +20,7 @@ services:
       - "3003:3003"
     environment:
       - LOG_LEVEL=info
+      - CSL_LOG_TRANSPORT=file
     volumes:
        - ./docker/bulk-api-adapter/default.json:/opt/bulk-api-adapter/config/default.json
        - ./docker/wait-for:/opt/wait-for
