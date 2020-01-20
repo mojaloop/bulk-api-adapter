@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/bulk-api-adapter",
-  "version": "8.7.0-snapshot",
+  "version": "8.8.0-snapshot",
   "description": "Mojaloop Bulk API Adapter",
   "license": "Apache-2.0",
   "author": "ModusBox",
