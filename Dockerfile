@@ -1,4 +1,4 @@
-FROM node:10.15.3-alpine as builder
+FROM node:12.16.0-alpine as builder
 USER root
 
 WORKDIR /opt/bulk-api-adapter
@@ -15,7 +15,7 @@ RUN npm install
 COPY src /opt/bulk-api-adapter/src
 COPY config /opt/bulk-api-adapter/config
 
-FROM node:10.15.3-alpine
+FROM node:12.16.0-alpine
 WORKDIR /opt/bulk-api-adapter
 
 COPY --from=builder /opt/bulk-api-adapter .
