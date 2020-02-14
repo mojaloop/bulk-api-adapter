@@ -146,8 +146,8 @@ defaults_working_directory: &defaults_working_directory
 executors:
   default-docker:
     working_directory: /home/circleci/project
-    docker: 
-      - image: node:10.15.3-alpine
+    docker:
+      - image: node:12.16.0-alpine
 
   default-machine:
     machine:
@@ -155,7 +155,7 @@ executors:
 
   helm-kube:
     working_directory: /home/circleci/project
-    docker: 
+    docker:
       - image: hypnoglow/kubernetes-helm
 
 ##
@@ -302,7 +302,7 @@ jobs:
           root: /tmp
           paths:
             - ./docker-image.tar
-  
+
   license-scan:
     executor: default-machine
     # <<: *defaults_test_env
@@ -361,7 +361,7 @@ jobs:
             aws s3 cp anchore-reports ${AWS_S3_DIR_ANCHORE_REPORTS}/${CIRCLE_PROJECT_REPONAME}/ --recursive
             aws s3 rm ${AWS_S3_DIR_ANCHORE_REPORTS}/latest/ --recursive --exclude "*" --include "${CIRCLE_PROJECT_REPONAME}*"
             aws s3 cp anchore-reports ${AWS_S3_DIR_ANCHORE_REPORTS}/latest/ --recursive
-        
+
             # TODO: Enable this when we want to increase the strictness of our security policies
             # failCount=$(cat anchore-reports/*policy*.json | grep 'fail' | wc -l)
             # echo "FailCount is: ${failCount}"
