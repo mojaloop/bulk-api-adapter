@@ -306,8 +306,11 @@ jobs:
     steps:
       - checkout
       - deploy-kube/setup_and_run:
-          # TODO: update me
-          helm_set_values: --set .quoting-service.image.repository=$DOCKER_ORG/$CIRCLE_PROJECT_REPONAME --set .quoting-service.image.tag=$CIRCLE_TAG
+          helm_set_values: |
+            --set .mojaloop-bulk.bulk-api-adapter.bulk-api-adapter-service.image.repository=$DOCKER_ORG/$CIRCLE_PROJECT_REPONAME \
+            --set .mojaloop-bulk.bulk-api-adapter.bulk-api-adapter-service.image.tag=$CIRCLE_TAG \
+            --set .mojaloop-bulk.bulk-api-adapter.bulk-api-adapter-handler-notification.image.repository=$DOCKER_ORG/$CIRCLE_PROJECT_REPONAME \
+            --set .mojaloop-bulk.bulk-api-adapter.bulk-api-adapter-handler-notification.image.tag=$CIRCLE_TAG
 
 ##
 # Workflows
