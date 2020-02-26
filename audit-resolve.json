@@ -1,0 +1,10 @@
+{
+  "decisions": {
+    "1482|@hapi/hapi": {
+      "decision": "postpone",
+      "madeAt": 1582713600583
+    }
+  },
+  "rules": {},
+  "version": 1
+}
