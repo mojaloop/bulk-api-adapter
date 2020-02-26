@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/bulk-api-adapter",
-  "version": "9.2.0-snapshot",
+  "version": "9.2.1-snapshot",
   "description": "Mojaloop Bulk API Adapter",
   "license": "Apache-2.0",
   "author": "ModusBox",
@@ -20,7 +20,7 @@
   "dependencies": {
     "@hapi/basic": "6.0.0",
     "@hapi/good": "9.0.0",
-    "@hapi/hapi": "^19.1.1",
+    "@hapi/hapi": "18.4.0",
     "@hapi/inert": "5.2.2",
     "@hapi/vision": "5.5.4",
     "@mojaloop/central-object-store": "8.5.0-snapshot",
