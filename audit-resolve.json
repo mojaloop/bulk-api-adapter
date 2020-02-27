@@ -1,17 +1,8 @@
 {
   "decisions": {
-    "1476|@hapi/hapi>@hapi/subtext": {
-      "decision": "fix",
-      "madeAt": 1582626591298
-    },
-    "1480|@hapi/hapi>@hapi/subtext": {
-      "decision": "fix",
-      "madeAt": 1582626591298
-    },
     "1482|@hapi/hapi": {
-      "decision": "ignore",
-      "madeAt": 1582626661957,
-      "expiresAt": 1583231444466
+      "decision": "postpone",
+      "madeAt": 1582713600583
     }
   },
   "rules": {},
