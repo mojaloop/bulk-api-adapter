@@ -1,8 +1,59 @@
 {
   "decisions": {
-    "1482|@hapi/hapi": {
-      "decision": "postpone",
-      "madeAt": 1582713600583
+    "1179|@mojaloop/central-services-health>@mojaloop/central-services-shared>@mojaloop/event-sdk>grpc>node-pre-gyp>mkdirp>minimist": {
+      "decision": "ignore",
+      "madeAt": 1586767435550,
+      "expiresAt": 1589359249493
+    },
+    "1179|@mojaloop/central-services-shared>@mojaloop/event-sdk>grpc>node-pre-gyp>mkdirp>minimist": {
+      "decision": "ignore",
+      "madeAt": 1586767435550,
+      "expiresAt": 1589359249493
+    },
+    "1179|@mojaloop/event-sdk>grpc>node-pre-gyp>mkdirp>minimist": {
+      "decision": "ignore",
+      "madeAt": 1586767435550,
+      "expiresAt": 1589359249493
+    },
+    "1179|@mojaloop/central-services-health>@mojaloop/central-services-shared>@mojaloop/event-sdk>grpc>node-pre-gyp>tar>mkdirp>minimist": {
+      "decision": "ignore",
+      "madeAt": 1586767435550,
+      "expiresAt": 1589359249493
+    },
+    "1179|@mojaloop/central-services-shared>@mojaloop/event-sdk>grpc>node-pre-gyp>tar>mkdirp>minimist": {
+      "decision": "ignore",
+      "madeAt": 1586767435550,
+      "expiresAt": 1589359249493
+    },
+    "1179|@mojaloop/event-sdk>grpc>node-pre-gyp>tar>mkdirp>minimist": {
+      "decision": "ignore",
+      "madeAt": 1586767435550,
+      "expiresAt": 1589359249493
+    },
+    "1179|@mojaloop/central-services-health>@mojaloop/central-services-shared>@mojaloop/event-sdk>grpc>node-pre-gyp>rc>minimist": {
+      "decision": "ignore",
+      "madeAt": 1586767435550,
+      "expiresAt": 1589359249493
+    },
+    "1179|@mojaloop/central-services-shared>@mojaloop/event-sdk>grpc>node-pre-gyp>rc>minimist": {
+      "decision": "ignore",
+      "madeAt": 1586767435550,
+      "expiresAt": 1589359249493
+    },
+    "1179|@mojaloop/event-sdk>grpc>node-pre-gyp>rc>minimist": {
+      "decision": "ignore",
+      "madeAt": 1586767435550,
+      "expiresAt": 1589359249493
+    },
+    "1179|faucet>minimist": {
+      "decision": "ignore",
+      "madeAt": 1586767435550,
+      "expiresAt": 1589359249493
+    },
+    "1488|standard>eslint>espree>acorn": {
+      "decision": "ignore",
+      "madeAt": 1586767570711,
+      "expiresAt": 1589359562143
     }
   },
   "rules": {},
