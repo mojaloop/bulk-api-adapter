@@ -124,7 +124,47 @@ const bulkFulfil = async (messageId, headers, message) => {
   }
 }
 
+const bulkTransferError = async (messageId, headers, message) => {
+  Logger.debug('domain::bulk-transfer::abort::start(%s, %s)', headers, message)
+  try {
+    const messageProtocol = {
+      id: messageId,
+      to: headers[ENUM.Http.Headers.FSPIOP.DESTINATION],
+      from: headers[ENUM.Http.Headers.FSPIOP.SOURCE],
+      type: ENUM.Http.Headers.DEFAULT.APPLICATION_JSON,
+      content: {
+        uriParams: { id: message.bulkTransferId },
+        headers: headers,
+        payload: message
+      },
+      metadata: {
+        event: {
+          id: Uuid(),
+          type: 'bulk-fulfil',
+          action: 'bulk-abort',
+          createdAt: new Date(),
+          state: {
+            status: 'success',
+            code: 0
+          }
+        }
+      }
+    }
+    const topicConfig = KafkaUtil.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.BULK, ENUM.Events.Event.Type.FULFIL)
+    const kafkaConfig = KafkaUtil.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.PRODUCER, ENUM.Events.Event.Type.BULK.toUpperCase(), ENUM.Events.Event.Type.FULFIL.toUpperCase())
+    Logger.debug(`domain::bulkTransfer::abort::messageProtocol - ${messageProtocol}`)
+    Logger.debug(`domain::bulkTransfer::abort::topicConfig - ${topicConfig}`)
+    Logger.debug(`domain::bulkTransfer::abort::kafkaConfig - ${kafkaConfig}`)
+    await Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
+    return true
+  } catch (err) {
+    Logger.error(`domain::bulkTransfer::abort::Kafka error:: ERROR:'${err}'`)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
+  }
+}
+
 module.exports = {
   bulkPrepare,
-  bulkFulfil
+  bulkFulfil,
+  bulkTransferError
 }

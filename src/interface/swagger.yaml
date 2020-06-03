@@ -231,6 +231,67 @@ paths:
           schema:
             type: string
           description: Successful
+  /bulkTransfers/{id}/error:
+    put:
+      summary: BulkTransfersErrorByIDPut
+      operationId: BulkTransfersErrorByIDPut
+      parameters:
+        - type: string
+          pattern: 'application\/vnd.interoperability[.]'
+          name: content-type
+          in: header
+          required: true
+        - type: string
+          format: date
+          name: date
+          in: header
+          required: true
+        - type: string
+          name: x-forwarded-for
+          in: header
+          required: false
+        - type: string
+          name: fspiop-source
+          in: header
+          required: true
+        - type: string
+          name: fspiop-destination
+          in: header
+          required: false
+        - type: string
+          name: fspiop-encryption
+          in: header
+          required: false
+        - type: string
+          name: fspiop-signature
+          in: header
+          required: false
+        - type: string
+          name: fspiop-uri
+          in: header
+          required: false
+        - type: string
+          name: fspiop-http-method
+          in: header
+          required: false
+        - type: string
+          description: path
+          name: id
+          in: path
+          required: true
+        - in: body
+          name: body
+          required: true
+          schema:
+            $ref: '#/definitions/ErrorInformation'
+      tags:
+        - bulkTransfers
+      responses:
+        default:
+          schema:
+            type: string
+          description: The callback PUT /bulkTransfers/<id>/error is used to inform the client of an error associated with a requested bulk transfer creation or status retrieval. The <id> in the URI should contain the bulkTransferId that was used for the creation request of the bulk transfer (POST /bulkTransfers), or the <id> that was used in the GET /bulkTransfers/<id>.
+
 
 definitions:
   Amount:
@@ -403,7 +464,7 @@ definitions:
         maxItems: 1000
         items:
           $ref: '#/definitions/IndividualTransferResult'
-        description: List of IndividualTransferResult elements. 
+        description: List of IndividualTransferResult elements.
       bulkTransferState:
         type: string
         description: The state of the bulk transfer.
