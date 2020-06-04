@@ -1,7 +1,7 @@
 /*****
  License
  --------------
- Copyright © 2020 Bill & Melinda Gates Foundation
+ Copyright © 2017 Bill & Melinda Gates Foundation
  The Mojaloop files are made available by the Bill & Melinda Gates Foundation under the Apache License, Version 2.0 (the "License") and you may not use these files except in compliance with the License. You may obtain a copy of the License at
 
  http://www.apache.org/licenses/LICENSE-2.0
@@ -41,7 +41,7 @@ const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
  */
 module.exports = {
   /**
-     * summary: putBulkTransferErrorById
+     * summary: Handles bulk transfer error callback
      * description: The callback PUT /bulkTransfers/&lt;id&gt;/error is used to inform the client of an error associated with a requested bulk transfer creation or status retrieval. The &lt;id&gt; in the URI should contain the bulkTransferId that was used for the creation request of the bulk transfer (POST /bulkTransfers), or the &lt;id&gt; that was used in the GET /bulkTransfers/&lt;id&gt;.
      * parameters: id, body, Content-Length, Content-Type, Date, X-Forwarded-For, FSPIOP-Source, FSPIOP-Destination, FSPIOP-Encryption, FSPIOP-Signature, FSPIOP-URI, FSPIOP-HTTP-Method
      * produces: application/json
@@ -59,7 +59,7 @@ module.exports = {
 
       await TransferService.bulkTransferError(messageId, request.headers, message)
 
-      return h.response().code(HTTPENUM.ReturnCodes.ACCEPTED.CODE)
+      return h.response().code(HTTPENUM.ReturnCodes.OK.CODE)
     } catch (err) {
       Logger.error(err)
       throw ErrorHandler.Factory.reformatFSPIOPError(err)
