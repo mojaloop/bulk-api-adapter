@@ -42,7 +42,7 @@ const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
 module.exports = {
   /**
      * summary: Handles bulk transfer error callback
-     * description: The callback PUT /bulkTransfers/&lt;id&gt;/error is used to inform the client of an error associated with a requested bulk transfer creation or status retrieval. The &lt;id&gt; in the URI should contain the bulkTransferId that was used for the creation request of the bulk transfer (POST /bulkTransfers), or the &lt;id&gt; that was used in the GET /bulkTransfers/&lt;id&gt;.
+     * description: If the server is unable to find or create a bulk transfer, or another processing error occurs, the error callback PUT /bulkTransfers/<ID>/error is used. The <ID> in the URI should contain the bulkTransferId that was used for the creation request of the bulk transfer (POST /bulkTransfers), or the <ID> that was used in the GET /bulkTransfers/<ID>.
      * parameters: id, body, Content-Length, Content-Type, Date, X-Forwarded-For, FSPIOP-Source, FSPIOP-Destination, FSPIOP-Encryption, FSPIOP-Signature, FSPIOP-URI, FSPIOP-HTTP-Method
      * produces: application/json
      * responses: default
@@ -51,7 +51,7 @@ module.exports = {
     try {
       Logger.debug('error::payload(%s)', JSON.stringify(request.payload))
 
-      const bulkTransferId = request.params.id
+      const bulkTransferId = request.params.ID
       const { errorInformation, extensionList } = request.payload
       const hash = Hash.generateSha256(JSON.stringify(request.payload))
       const messageId = Uuid()

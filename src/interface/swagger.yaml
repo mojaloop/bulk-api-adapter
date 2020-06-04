@@ -231,7 +231,7 @@ paths:
           schema:
             type: string
           description: Successful
-  /bulkTransfers/{id}/error:
+  /bulkTransfers/{ID}/error:
     put:
       summary: BulkTransfersErrorByIDPut
       operationId: BulkTransfersErrorByIDPut
@@ -276,7 +276,7 @@ paths:
           required: false
         - type: string
           description: path
-          name: id
+          name: ID
           in: path
           required: true
         - in: body
@@ -290,7 +290,7 @@ paths:
         default:
           schema:
             type: string
-          description: The callback PUT /bulkTransfers/<id>/error is used to inform the client of an error associated with a requested bulk transfer creation or status retrieval. The <id> in the URI should contain the bulkTransferId that was used for the creation request of the bulk transfer (POST /bulkTransfers), or the <id> that was used in the GET /bulkTransfers/<id>.
+          description: If the server is unable to find or create a bulk transfer, or another processing error occurs, the error callback PUT /bulkTransfers/<ID>/error is used. The <id> in the URI should contain the bulkTransferId that was used for the creation request of the bulk transfer (POST /bulkTransfers), or the <ID> that was used in the GET /bulkTransfers/<ID>.
 
 
 definitions:
