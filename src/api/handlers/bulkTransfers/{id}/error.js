@@ -51,7 +51,7 @@ module.exports = {
     try {
       Logger.debug('error::payload(%s)', JSON.stringify(request.payload))
 
-      const bulkTransferId = request.params.ID
+      const bulkTransferId = request.params.id
       const { errorInformation, extensionList } = request.payload
       const hash = Hash.generateSha256(JSON.stringify(request.payload))
       const messageId = Uuid()

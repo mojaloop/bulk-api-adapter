@@ -231,7 +231,7 @@ paths:
           schema:
             type: string
           description: Successful
-  /bulkTransfers/{ID}/error:
+  /bulkTransfers/{id}/error:
     put:
       summary: BulkTransfersErrorByIDPut
       operationId: BulkTransfersErrorByIDPut
@@ -276,7 +276,7 @@ paths:
           required: false
         - type: string
           description: path
-          name: ID
+          name: id
           in: path
           required: true
         - in: body
@@ -285,7 +285,7 @@ paths:
           schema:
             $ref: '#/definitions/ErrorInformation'
       tags:
-        - bulkTransfers
+        - bulkTransfersError
       responses:
         default:
           schema:

@@ -81,7 +81,7 @@ Test('bulk transfer error handler', handlerTest => {
         }
       }
       const params = {
-        ID: '888ec534-ee48-4575-b6a9-ead2955b8930'
+        id: '888ec534-ee48-4575-b6a9-ead2955b8930'
       }
       TransferService.bulkTransferError.returns(Promise.resolve(true))
       const request = createPutRequest(params, payload)
