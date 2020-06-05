@@ -229,6 +229,16 @@ const processMessage = async (msg, span) => {
       return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
     }
 
+    if (actionLower === ENUM.Events.Event.Action.BULK_ABORT) {
+      const responsePayload = JSON.parse(payloadForCallback)
+      id = responsePayload.bulkTransferId || content.uriParams.id
+      delete responsePayload.bulkTransferId
+      const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
+      callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR })
+      Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
+    }
+
     Logger.warn(`Unknown action received from kafka: ${action}`)
   } catch (err) {
     Logger.error(`Error processing the message - ${err}`)
