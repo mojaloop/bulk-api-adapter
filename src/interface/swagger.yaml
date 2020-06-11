@@ -283,7 +283,7 @@ paths:
           name: body
           required: true
           schema:
-            $ref: '#/definitions/ErrorInformation'
+            $ref: '#/definitions/Error'
       tags:
         - bulkTransfersError
       responses:
