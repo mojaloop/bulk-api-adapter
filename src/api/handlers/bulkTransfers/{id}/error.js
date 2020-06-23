@@ -35,6 +35,7 @@ const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const Hash = require('@mojaloop/central-services-shared').Util.Hash
 const Uuid = require('uuid4')
 const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
+const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
 
 /**
  * Operations on /bulkTransfers/{id}/error
@@ -57,6 +58,8 @@ module.exports = {
       const messageId = Uuid()
       const message = { bulkTransferId, errorInformation, extensionList, hash }
 
+      const IndividualTransferFulfilModel = BulkTransferModels.getIndividualTransferFulfilModel()
+      await new IndividualTransferFulfilModel({ messageId, bulkTransferId, payload: request.payload }).save()
       await TransferService.bulkTransferError(messageId, request.headers, message)
 
       return h.response().code(HTTPENUM.ReturnCodes.OK.CODE)
