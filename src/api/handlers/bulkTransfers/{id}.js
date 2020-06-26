@@ -55,7 +55,7 @@ module.exports = {
     const individualTransfers = await IndividualTransferModel
       .find({ bulkTransferId: id }, '-dataUri -_id')
       .populate('_id_bulkTransfers', 'headers -_id') // TODO in bulk-handler first get only headers, then compose each individual transfer without population
-    return h.response(individualTransfers)
+    return h.response(individualTransfers).code(HTTPENUM.ReturnCodes.ACCEPTED.CODE)
   },
   /**
    * summary: Fulfil bulkTransfer
