@@ -300,7 +300,6 @@ definitions:
     properties:
       currency:
         $ref: '#/definitions/Currency'
-        description: Currency of the transfer
       amount:
         type: string
         description: Amount of the transfer
