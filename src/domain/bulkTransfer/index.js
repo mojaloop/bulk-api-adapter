@@ -62,8 +62,8 @@ const bulkPrepare = async (messageId, headers, message) => {
       metadata: {
         event: {
           id: Uuid(),
-          type: 'bulk-prepare',
-          action: 'bulk-prepare',
+          type: ENUM.Events.Event.Type.BULK_PREPARE,
+          action: ENUM.Events.Event.Action.BULK_PREPARE,
           createdAt: new Date(),
           state: {
             status: 'success',
@@ -102,8 +102,8 @@ const bulkFulfil = async (messageId, headers, message) => {
       metadata: {
         event: {
           id: Uuid(),
-          type: 'bulk-fulfil',
-          action: 'bulk-commit',
+          type: ENUM.Events.Event.Type.BULK_FULFIL,
+          action: ENUM.Events.Event.Action.BULK_COMMIT,
           createdAt: new Date(),
           state: {
             status: 'success',
@@ -141,8 +141,8 @@ const bulkTransferError = async (messageId, headers, message) => {
       metadata: {
         event: {
           id: Uuid(),
-          type: 'bulk-fulfil',
-          action: 'bulk-abort',
+          type: ENUM.Events.Event.Type.BULK_FULFIL,
+          action: ENUM.Events.Event.Action.BULK_ABORT,
           createdAt: new Date(),
           state: {
             status: 'success',
@@ -189,8 +189,8 @@ const getBulkTransferById = async (messageId, headers, params) => {
       metadata: {
         event: {
           id: Uuid(),
-          type: 'bulk-get',
-          action: 'get',
+          type: ENUM.Events.Event.Type.BULK,
+          action: ENUM.Events.Event.Action.GET,
           createdAt: new Date(),
           state: {
             status: 'success',
