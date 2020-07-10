@@ -189,7 +189,7 @@ const getBulkTransferById = async (messageId, headers, params) => {
       metadata: {
         event: {
           id: Uuid(),
-          type: 'bulk',
+          type: 'bulk-get',
           action: 'get',
           createdAt: new Date(),
           state: {
