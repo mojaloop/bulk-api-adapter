@@ -43,19 +43,22 @@ const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
  */
 module.exports = {
   /**
-   * summary: Get a transfer by Id
+   * summary: Get a bulk transfer by Id
    * description:
    * parameters: accept, content-type, date, x-forwarded-for, fspiop-source, fspiop-destination, fspiop-encryption, fspiop-signature, fspiop-uri, fspiop-http-method, id
    * produces:
    * responses: default
    */
   get: async function getBulkTransfersId (request, h) {
-    const { id } = request.params
-    const IndividualTransferModel = BulkTransferModels.getIndividualTransferModel()
-    const individualTransfers = await IndividualTransferModel
-      .find({ bulkTransferId: id }, '-dataUri -_id')
-      .populate('_id_bulkTransfers', 'headers -_id') // TODO in bulk-handler first get only headers, then compose each individual transfer without population
-    return h.response(individualTransfers).code(HTTPENUM.ReturnCodes.ACCEPTED.CODE)
+    try {
+      Logger.isInfoEnabled && Logger.info(`getBulkTransfersId::id(${request.params.id})`)
+      const messageId = Uuid()
+      await TransferService.getBulkTransferById(messageId, request.headers, request.params)
+      return h.response().code(HTTPENUM.ReturnCodes.ACCEPTED.CODE)
+    } catch (err) {
+      Logger.error(err)
+      throw ErrorHandler.Factory.reformatFSPIOPError(err)
+    }
   },
   /**
    * summary: Fulfil bulkTransfer

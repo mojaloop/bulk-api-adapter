@@ -19,6 +19,7 @@
  - Name Surname <name.surname@gatesfoundation.com>
 
  * Georgi Georgiev <georgi.georgiev@modusbox.com>
+ * Steven Oderayi <steven.oderayi@modusbox.com>
  --------------
  ******/
 'use strict'
@@ -163,8 +164,57 @@ const bulkTransferError = async (messageId, headers, message) => {
   }
 }
 
+/**
+* @function getBulkTransferById
+* @async
+* @description This will produce a bulk transfer GET message to bulk transfer GET kafka topic. It gets the kafka configuration from config. It constructs the message and publish to kafka
+*
+* @param {object} headers - the http header from the request
+* @param {object} params - the http request uri parameters
+*
+* @returns {boolean} Returns true on successful publishing of message to kafka, throws error on failures
+*/
+const getBulkTransferById = async (messageId, headers, params) => {
+  Logger.debug('domain::bulk-transfer::get::start(%s, %s)', params.id, headers)
+  try {
+    const messageProtocol = {
+      id: messageId,
+      from: headers[ENUM.Http.Headers.FSPIOP.SOURCE],
+      to: headers[ENUM.Http.Headers.FSPIOP.DESTINATION],
+      type: ENUM.Http.Headers.DEFAULT.APPLICATION_JSON,
+      content: {
+        uriParams: params,
+        headers
+      },
+      metadata: {
+        event: {
+          id: Uuid(),
+          type: 'bulk',
+          action: 'get',
+          createdAt: new Date(),
+          state: {
+            status: 'success',
+            code: 0
+          }
+        }
+      }
+    }
+    const topicConfig = KafkaUtil.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.BULK, ENUM.Events.Event.Action.GET)
+    const kafkaConfig = KafkaUtil.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.PRODUCER, ENUM.Events.Event.Type.BULK.toUpperCase(), ENUM.Events.Event.Type.GET.toUpperCase())
+    Logger.debug(`domain::bulkTransfer::get::messageProtocol - ${messageProtocol}`)
+    Logger.debug(`domain::bulkTransfer::get::topicConfig - ${topicConfig}`)
+    Logger.debug(`domain::bulkTransfer::get::kafkaConfig - ${kafkaConfig}`)
+    await Producer.produceMessage(messageProtocol, topicConfig, kafkaConfig)
+    return true
+  } catch (err) {
+    Logger.error(`domain::bulkTransfer::get::Kafka error:: ERROR:'${err}'`)
+    throw ErrorHandler.Factory.reformatFSPIOPError(err)
+  }
+}
+
 module.exports = {
   bulkPrepare,
   bulkFulfil,
-  bulkTransferError
+  bulkTransferError,
+  getBulkTransferById
 }
