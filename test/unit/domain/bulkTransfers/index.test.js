@@ -126,5 +126,56 @@ Test('Transfer domain tests', bulkTransferTest => {
     bulkTransferErrorTest.end()
   })
 
+  bulkTransferTest.test('getBulkTransferById should', async getBulkByIdTest => {
+    const params = { id: '888ec534-ee48-4575-b6a9-ead2955b8930' }
+    const headers = { 'fspiop-source': 'payerfsp', 'fspiop-destination': 'payeefsp' }
+    const messageId = 'fake-message-id'
+    const messageProtocol = {
+      id: messageId,
+      to: headers['fspiop-destination'],
+      from: headers['fspiop-source'],
+      type: 'application/vnd.interoperability.bulkTransfers+json;version=1.0',
+      content: {
+        uriParams: params,
+        headers: headers
+      },
+      metadata: {
+        event: {
+          id: Uuid(),
+          type: ENUM.Events.Event.Type.BULK,
+          action: ENUM.Events.Event.Action.GET,
+          createdAt: new Date(),
+          state: {
+            status: 'success',
+            code: 0
+          }
+        }
+      }
+    }
+
+    await getBulkByIdTest.test('execute function', async test => {
+      const topicConfig = KafkaUtil.createGeneralTopicConf(Config.KAFKA_CONFIG.TOPIC_TEMPLATES.GENERAL_TOPIC_TEMPLATE.TEMPLATE, ENUM.Events.Event.Type.BULK, ENUM.Events.Event.Type.GET)
+      const kafkaConfig = KafkaUtil.getKafkaConfig(Config.KAFKA_CONFIG, ENUM.Kafka.Config.PRODUCER, ENUM.Events.Event.Type.BULK.toUpperCase(), ENUM.Events.Event.Action.GET.toUpperCase())
+      Kafka.Producer.produceMessage.withArgs(messageProtocol, topicConfig, kafkaConfig).returns(Promise.resolve(true))
+      const result = await Domain.getBulkTransferById(messageId, headers, params)
+      test.equals(result, true)
+      test.end()
+    })
+
+    await getBulkByIdTest.test('throw error', async test => {
+      const error = new Error()
+      try {
+        Kafka.Producer.produceMessage.returns(Promise.reject(error))
+        await Domain.getBulkTransferById(messageId, headers, params)
+        test.fail('error not thrown')
+      } catch (e) {
+        test.ok(e instanceof Error)
+        test.end()
+      }
+    })
+
+    getBulkByIdTest.end()
+  })
+
   bulkTransferTest.end()
 })
