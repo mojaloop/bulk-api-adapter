@@ -25,18 +25,19 @@
  * ModusBox
  - Georgi Georgiev <georgi.georgiev@modusbox.com>
  - Valentin Genev <valentin.genev@modusbox.com>
+ - Steven Oderayi <steven.oderayi@modusbox.com>
  --------------
  ******/
 'use strict'
 
-const TransferService = require('../../../domain/bulkTransfer')
+const Uuid = require('uuid4')
 const Logger = require('@mojaloop/central-services-logger')
 const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
 const Hash = require('@mojaloop/central-services-shared').Util.Hash
-const Uuid = require('uuid4')
-const Validator = require('../../../lib/validator')
 const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
+const TransferService = require('../../../domain/bulkTransfer')
+const Validator = require('../../../lib/validator')
 
 /**
  * Operations on /bulkTransfers/{id}
