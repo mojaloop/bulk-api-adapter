@@ -23,7 +23,7 @@
     "@hapi/hapi": "18.4.1",
     "@hapi/inert": "5.2.2",
     "@hapi/vision": "5.5.4",
-    "@mojaloop/central-object-store": "8.5.0-snapshot",
+    "@mojaloop/central-object-store": "10.6.0-snapshot",
     "@mojaloop/central-services-error-handling": "10.6.0",
     "@mojaloop/central-services-health": "10.6.0",
     "@mojaloop/central-services-logger": "10.6.0",
