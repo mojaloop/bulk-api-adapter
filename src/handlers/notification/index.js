@@ -231,12 +231,10 @@ const processMessage = async (msg, span) => {
 
     if (actionLower === ENUM.Events.Event.Action.BULK_GET && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
       const responsePayload = JSON.parse(payloadForCallback)
-      id = responsePayload.bulkTransferId
+      id = responsePayload.bulkTransferId || content.uriParams.id
       delete responsePayload.bulkTransferId
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT, id)
-      const bulkResponseMessage = await BulkTransfer.getBulkTransferResultByMessageIdDestination(messageId, to)
-      responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
-      callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT })
+      callbackHeaders = createCallbackHeaders({ dfspId: to, bulkTransferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT })
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
       return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
     }
