@@ -38,7 +38,7 @@
     "catbox-memory": "4.0.1",
     "commander": "6.1.0",
     "hapi-auth-bearer-token": "8.0.0",
-    "hapi-openapi": "^2.0.2",
+    "hapi-openapi": "2.0.2",
     "hapi-swagger": "14.0.0",
     "immutable": "4.0.0-rc.12",
     "joi": "17.2.1",
