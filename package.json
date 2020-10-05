@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/bulk-api-adapter",
-  "version": "11.0.1",
+  "version": "11.0.2",
   "description": "Mojaloop Bulk API Adapter",
   "license": "Apache-2.0",
   "author": "ModusBox",
@@ -28,10 +28,11 @@
     "@mojaloop/central-services-health": "10.6.0",
     "@mojaloop/central-services-logger": "10.6.0",
     "@mojaloop/central-services-metrics": "9.5.0",
-    "@mojaloop/central-services-shared": "11.3.6",
+    "@mojaloop/central-services-shared": "11.4.0",
     "@mojaloop/central-services-stream": "10.6.0",
     "@mojaloop/event-sdk": "10.6.0",
     "@now-ims/hapi-now-auth": "2.0.2",
+    "axios": "0.20.0",
     "blipp": "4.0.1",
     "boom": "7.3.0",
     "catbox": "10.0.6",
@@ -50,7 +51,6 @@
     "uuid4": "2.0.2"
   },
   "devDependencies": {
-    "axios": "0.20.0",
     "faucet": "0.0.1",
     "istanbul": "1.1.0-alpha.1",
     "nodemon": "2.0.4",
