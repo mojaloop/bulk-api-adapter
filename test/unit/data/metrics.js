@@ -1,5 +1,5 @@
 'use strict'
-var Mockgen = require('./mockgen')
+const Mockgen = require('./mockgen')
 /**
  * Operations on /metrics
  */

@@ -90,6 +90,7 @@ module.exports = {
       const IndividualTransferFulfilModel = BulkTransferModels.getIndividualTransferFulfilModel()
       await Promise.all(request.payload.individualTransferResults.map(payload => {
         new IndividualTransferFulfilModel({ messageId, bulkTransferId, payload }).save()
+        return null
       }))
       const count = request.payload.individualTransferResults.length
       const message = { bulkTransferId, bulkTransferState, completedTimestamp, extensionList, count, hash }
