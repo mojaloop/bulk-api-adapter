@@ -32,7 +32,7 @@
     "@mojaloop/central-services-stream": "10.6.0",
     "@mojaloop/event-sdk": "10.6.0",
     "@now-ims/hapi-now-auth": "2.0.2",
-    "axios": "0.21.0",
+    "axios": "0.21.1",
     "blipp": "4.0.2",
     "boom": "7.3.0",
     "catbox": "10.0.6",
