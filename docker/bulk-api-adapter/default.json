@@ -63,6 +63,7 @@
               "client.id": "bulk-con-notification-event",
               "group.id": "bulk-group-notification-event",
               "metadata.broker.list": "kafka:9092",
+              "allow.auto.create.topics": true,
               "socket.keepalive.enable": true
             },
             "topicConf": {
