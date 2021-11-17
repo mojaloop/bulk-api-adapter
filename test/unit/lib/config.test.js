@@ -25,7 +25,7 @@
 ******/
 'use strict'
 
-const src = '../../../src/'
+const src = '../../../src'
 const Test = require('tapes')(require('tape'))
 const Util = require('@mojaloop/central-services-shared').Util
 const Default = require('../../../config/default.json')
@@ -45,40 +45,36 @@ Test('Config tests', configTest => {
     t.end()
   })
 
-  configTest.test('getFileContent should', async getFileContentTest => {
-    getFileContentTest.test('should not throw', test => {
-      try {
-        const DefaultStub = Util.clone(Default)
-        const Config = Proxyquire(`${src}/lib/config`, {
-          '../../config/default.json': DefaultStub
-        })
-        test.ok(Config)
-        test.ok('pass')
-      } catch (e) {
-        test.fail('should throw')
-      }
-      test.end()
-    })
+  configTest.test('should not throw errors', test => {
+    try {
+      const DefaultStub = Util.clone(Default)
+      const Config = Proxyquire(`${src}/lib/config`, {
+        '../../config/default.json': DefaultStub
+      })
+      test.ok(Config)
+      test.ok('pass')
+    } catch (e) {
+      test.fail('should throw')
+    }
+    test.end()
+  })
 
-    getFileContentTest.test('should pass ENV var BKAPI_PROTOCOL_VERSIONS__ACCEPT__VALIDATELIST as a string', test => {
-      try {
-        const DefaultStub = Util.clone(Default)
-        // set env var
-        const validateList = ['1']
-        process.env.BKAPI_PROTOCOL_VERSIONS__ACCEPT__VALIDATELIST = JSON.stringify(validateList)
-        const Config = Proxyquire(`${src}/lib/config`, {
-          '../../config/default.json': DefaultStub
-        })
-        test.ok(Config)
-        test.ok('pass')
-        test.deepEqual(Config.PROTOCOL_VERSIONS.ACCEPT.VALIDATELIST, validateList)
-      } catch (e) {
-        test.fail('should throw')
-      }
-      test.end()
-    })
-
-    getFileContentTest.end()
+  configTest.test('should pass ENV var BKAPI_PROTOCOL_VERSIONS__ACCEPT__VALIDATELIST as a string', test => {
+    try {
+      const DefaultStub = Util.clone(Default)
+      // set env var
+      const validateList = ['1']
+      process.env.BKAPI_PROTOCOL_VERSIONS__ACCEPT__VALIDATELIST = JSON.stringify(validateList)
+      const Config = Proxyquire(`${src}/lib/config`, {
+        '../../config/default.json': DefaultStub
+      })
+      test.ok(Config)
+      test.ok('pass')
+      test.deepEqual(Config.PROTOCOL_VERSIONS.ACCEPT.VALIDATELIST, validateList)
+    } catch (e) {
+      test.fail('should throw')
+    }
+    test.end()
   })
 
   configTest.end()
