@@ -1,6 +1,16 @@
 {
   "PORT": 3003,
   "HOSTNAME": "http://bulk-api-adapter",
+  "PROTOCOL_VERSIONS": {
+    "CONTENT": "1.1",
+    "ACCEPT": {
+      "DEFAULT": "1",
+      "VALIDATELIST": [
+        "1",
+        "1.1"
+      ]
+    }
+  },
   "ENDPOINT_SOURCE_URL": "http://localhost:3001/participants/{{fsp}}/endpoints",
   "ENDPOINT_HEALTH_URL": "http://localhost:3001/health",
   "ENDPOINT_CACHE_CONFIG": {
