@@ -40,7 +40,7 @@ const Metrics = require('@mojaloop/central-services-metrics')
 const ENUM = require('@mojaloop/central-services-shared').Enum
 const Util = require('@mojaloop/central-services-shared').Util
 const decodePayload = require('@mojaloop/central-services-shared').Util.StreamingProtocol.decodePayload
-const BulkTransfer = require('@mojaloop/central-object-store').Models.BulkTransfer
+const BulkTransfer = require('@mojaloop/object-store-lib').Models.BulkTransfer
 
 let notificationConsumer = {}
 let autoCommitEnabled = true

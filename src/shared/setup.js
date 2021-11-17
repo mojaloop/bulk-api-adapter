@@ -36,7 +36,7 @@ const RegisterHandlers = require('../handlers/register')
 const Config = require('../lib/config')
 const ParticipantEndpointCache = require('../domain/participant/lib/cache/participantEndpoint')
 const Metrics = require('@mojaloop/central-services-metrics')
-const ObjStoreDb = require('@mojaloop/central-object-store').Db
+const ObjStoreDb = require('@mojaloop/object-store-lib').Db
 
 /**
  * @module src/shared/setup
