@@ -35,7 +35,7 @@ const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const Hash = require('@mojaloop/central-services-shared').Util.Hash
 const Uuid = require('uuid4')
 const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
-const BulkTransferModels = require('@mojaloop/central-object-store').Models.BulkTransfer
+const BulkTransferModels = require('@mojaloop/object-store-lib').Models.BulkTransfer
 
 /**
  * Operations on /bulkTransfers/{id}/error
