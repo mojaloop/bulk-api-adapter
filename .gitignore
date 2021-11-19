@@ -52,3 +52,7 @@ jspm_packages
 **/*.iml
 
 #package-lock.json
+
+# https://devspace.sh/
+devspace*
+.devspace/**.*
