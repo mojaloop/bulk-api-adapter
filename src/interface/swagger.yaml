@@ -533,7 +533,32 @@ definitions:
         x-convert:
           trim: true
       extensionList:
-        $ref: '#/definitions/ExtensionList'
+        type: object
+        description: Extension list
+        properties:
+          extension:
+            type: array
+            description: extension
+            minItems: 1
+            maxItems: 16
+            items:
+              type: object
+              properties:
+                key:
+                  type: string
+                  description: Key
+                  minLength: 1
+                  maxLength: 32
+                value:
+                  type: string
+                  description: Value
+                  minLength: 1
+                  maxLength: 128
+              required:
+                - key
+                - value
+        required:
+          - extension
     required:
       - transferId
       - transferAmount
