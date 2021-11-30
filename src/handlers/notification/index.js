@@ -187,6 +187,12 @@ const processMessage = async (msg, span) => {
     const payloadForCallback = decodedPayload.body.toString()
     let callbackHeaders
 
+    // Injected Configuration for outbound Content-Type & Accept headers.
+    const protocolVersions = {
+      content: Config.PROTOCOL_VERSIONS.CONTENT.toString(),
+      accept: Config.PROTOCOL_VERSIONS.ACCEPT.DEFAULT.toString()
+    }
+
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
       const responsePayload = JSON.parse(payloadForCallback)
       id = responsePayload.bulkTransferId
@@ -195,7 +201,7 @@ const processMessage = async (msg, span) => {
       responsePayload.individualTransfers = bulkResponseMessage.individualTransferResults
       callbackHeaders = createCallbackHeaders({ headers: content.headers, httpMethod: ENUM.Http.RestMethods.POST, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_POST })
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.POST}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.POST, JSON.stringify(responsePayload))
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.POST, JSON.stringify(responsePayload), null, null, null, protocolVersions)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
@@ -204,7 +210,7 @@ const processMessage = async (msg, span) => {
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
       callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR })
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload, null, null, null, protocolVersions)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_COMMIT && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
@@ -216,7 +222,7 @@ const processMessage = async (msg, span) => {
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
       callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT })
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload, null, null, null, protocolVersions)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_COMMIT && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
@@ -226,7 +232,7 @@ const processMessage = async (msg, span) => {
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
       callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR })
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload, null, null, null, protocolVersions)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_GET && statusLower === ENUM.Events.EventStatus.SUCCESS.status) {
@@ -236,7 +242,7 @@ const processMessage = async (msg, span) => {
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_PUT, id)
       callbackHeaders = createCallbackHeaders({ dfspId: to, bulkTransferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT })
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload, null, null, null, protocolVersions)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_GET && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
@@ -246,7 +252,7 @@ const processMessage = async (msg, span) => {
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
       callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR })
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload, null, null, null, protocolVersions)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_ABORT) {
@@ -256,7 +262,7 @@ const processMessage = async (msg, span) => {
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
       callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR })
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, from, to, ENUM.Http.RestMethods.PUT, responsePayload, null, null, null, protocolVersions)
     }
 
     Logger.warn(`Unknown action received from kafka: ${action}`)
