@@ -32,6 +32,7 @@ const FSPIOPError = require('@mojaloop/central-services-error-handling').Factory
 const Logger = require('@mojaloop/central-services-logger')
 const Handler = require('../../../../../../src/api/handlers/bulkTransfers/{id}/error')
 const TransferService = require('../../../../../../src/domain/bulkTransfer')
+const BulkTransferModels = require('@mojaloop/object-store-lib').Models.BulkTransfer
 
 const createPutRequest = (params, payload) => {
   const requestPayload = payload || {}
@@ -57,7 +58,15 @@ Test('bulk transfer error handler', handlerTest => {
     sandbox.stub(Logger, 'isErrorEnabled').value(true)
     sandbox.stub(Logger, 'isInfoEnabled').value(true)
     sandbox.stub(Logger, 'isDebugEnabled').value(true)
+    // Stub TransferService
     sandbox.stub(TransferService, 'bulkTransferError')
+    // Stub MongoDB Scheme Object
+    sandbox.stub(BulkTransferModels, 'getIndividualTransferFulfilModel').returns(class IndividualTransferFulfilModel {
+      save () {
+        return Promise.resolve(true)
+      }
+    })
+    sandbox.stub()
     t.end()
   })
 
