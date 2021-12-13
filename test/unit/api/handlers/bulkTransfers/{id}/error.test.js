@@ -60,7 +60,7 @@ Test('bulk transfer error handler', handlerTest => {
     sandbox.stub(Logger, 'isDebugEnabled').value(true)
     // Stub TransferService
     sandbox.stub(TransferService, 'bulkTransferError')
-    // Stub MongoDB Scheme Object
+    // Stub MongoDB Schema Object
     sandbox.stub(BulkTransferModels, 'getIndividualTransferFulfilModel').returns(class IndividualTransferFulfilModel {
       save () {
         return Promise.resolve(true)
