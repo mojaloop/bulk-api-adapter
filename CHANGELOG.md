@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [12.1.0](https://github.com/mojaloop/bulk-api-adapter/compare/v12.0.2...v12.1.0) (2021-12-14)
+
+
+### Features
+
+* **mojaloop/#2608:** injected resource versions config for outbound requests ([#70](https://github.com/mojaloop/bulk-api-adapter/issues/70)) ([a2c6a91](https://github.com/mojaloop/bulk-api-adapter/commit/a2c6a918799bb833ede26924b3598ffa954023ff)), closes [mojaloop/#2608](https://github.com/mojaloop/bulk-api-adapter/issues/2608)
+
 ### [12.0.2](https://github.com/mojaloop/bulk-api-adapter/compare/v12.0.1...v12.0.2) (2021-11-22)
 
 
