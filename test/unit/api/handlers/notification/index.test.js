@@ -28,6 +28,7 @@
 const Test = require('tapes')(require('tape'))
 const Sinon = require('sinon')
 const Uuid = require('uuid4')
+const Proxyquire = require('proxyquire')
 
 const Consumer = require('@mojaloop/central-services-stream').Kafka.Consumer
 const Logger = require('@mojaloop/central-services-logger')
@@ -38,6 +39,7 @@ const src = '../../../../../src'
 const Notification = require(`${src}/handlers/notification`)
 const createCallbackHeaders = require(`${src}/lib/headers`).createCallbackHeaders
 const Participant = require(`${src}/domain/participant`)
+const Config = require(`${src}/lib/config.js`)
 
 Test('Notification handler tests', async notificationTest => {
   let sandbox
@@ -111,7 +113,25 @@ Test('Notification handler tests', async notificationTest => {
       test.end()
     })
 
-    await processMessageTest.test.skip('process the bulk-abort message received from kafka and send out a bulk transfer put callback', async test => {
+    await processMessageTest.test('process the bulk-abort message received from kafka and send out a bulk transfer put callback with injected PROTOCOL_VERSIONS config', async test => {
+      // setup config
+      const ConfigStub = Util.clone(Config)
+      // override the PROTOCOL_VERSIONS config
+      ConfigStub.PROTOCOL_VERSIONS = {
+        CONTENT: '2.1',
+        ACCEPT: {
+          DEFAULT: '2',
+          VALIDATELIST: [
+            '2',
+            '2.1'
+          ]
+        }
+      }
+
+      const NotificationProxy = Proxyquire(`${src}/handlers/notification`, {
+        '../../lib/config': ConfigStub
+      })
+
       const uuid = Uuid()
       const payerFsp = 'dfsp2'
       const payeeFsp = 'dfsp1'
@@ -119,7 +139,7 @@ Test('Notification handler tests', async notificationTest => {
         value: {
           metadata: {
             event: {
-              type: 'bulk-fulfil',
+              type: 'bulk-prepare',
               action: 'bulk-abort',
               state: {
                 status: 'success',
@@ -146,16 +166,64 @@ Test('Notification handler tests', async notificationTest => {
       const message = {}
 
       const expected = 200
-      const logger = Logger
-      logger.log = logger.info
 
       Util.Request.sendRequest.withArgs(toUrl, toHeaders, msg.value.from, msg.value.to, method, message).returns(Promise.resolve(200))
 
-      const result = await Notification.processMessage(msg)
-      test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, msg.value.from, msg.value.to, method, message))
+      const result = await NotificationProxy.processMessage(msg)
+      test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, msg.value.from, msg.value.to, method, message, null, null, null, {
+        accept: ConfigStub.PROTOCOL_VERSIONS.ACCEPT.DEFAULT,
+        content: ConfigStub.PROTOCOL_VERSIONS.CONTENT
+      }))
       test.equal(result, expected)
       test.end()
     })
+
+    // Commented out as its being skipped, which forces the remainder of the tests to be skipped.
+    // await processMessageTest.test.skip('process the bulk-abort message received from kafka and send out a bulk transfer put callback', async test => {
+    //   const uuid = Uuid()
+    //   const payerFsp = 'dfsp2'
+    //   const payeeFsp = 'dfsp1'
+    //   const msg = {
+    //     value: {
+    //       metadata: {
+    //         event: {
+    //           type: 'bulk-fulfil',
+    //           action: 'bulk-abort',
+    //           state: {
+    //             status: 'success',
+    //             code: 0
+    //           }
+    //         }
+    //       },
+    //       content: {
+    //         uriParams: { id: uuid },
+    //         headers: {
+    //           'FSPIOP-Destination': payeeFsp,
+    //           'FSPIOP-Source': payerFsp
+    //         },
+    //         payload: { bulkTransferId: uuid }
+    //       },
+    //       to: payeeFsp,
+    //       from: payerFsp,
+    //       id: 'b51ec534-ee48-4575-b6a9-ead2955b8098'
+    //     }
+    //   }
+    //   const toUrl = await Participant.getEndpoint(msg.value.to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, msg.value.content.payload.bulkTransferId)
+    //   const method = ENUM.Http.RestMethods.PUT
+    //   const toHeaders = createCallbackHeaders({ dfspId: msg.value.to, bulkTransferId: msg.value.content.payload.bulkTransferId, headers: msg.value.content.headers, httpMethod: method, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR })
+    //   const message = {}
+
+    //   const expected = 200
+    //   const logger = Logger
+    //   logger.log = logger.info
+
+    //   Util.Request.sendRequest.withArgs(toUrl, toHeaders, msg.value.from, msg.value.to, method, message).returns(Promise.resolve(200))
+
+    //   const result = await Notification.processMessage(msg)
+    //   test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, msg.value.from, msg.value.to, method, message))
+    //   test.equal(result, expected)
+    //   test.end()
+    // })
 
     await processMessageTest.end()
   })
