@@ -118,7 +118,12 @@ Test('Notification handler tests', async notificationTest => {
       const ConfigStub = Util.clone(Config)
       // override the PROTOCOL_VERSIONS config
       ConfigStub.PROTOCOL_VERSIONS = {
-        CONTENT: '2.1',
+        CONTENT: {
+          DEFAULT: '2.1',
+          VALIDATELIST: [
+            '2.1'
+          ]
+        },
         ACCEPT: {
           DEFAULT: '2',
           VALIDATELIST: [
@@ -172,7 +177,7 @@ Test('Notification handler tests', async notificationTest => {
       const result = await NotificationProxy.processMessage(msg)
       test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, msg.value.from, msg.value.to, method, message, null, null, null, {
         accept: ConfigStub.PROTOCOL_VERSIONS.ACCEPT.DEFAULT,
-        content: ConfigStub.PROTOCOL_VERSIONS.CONTENT
+        content: ConfigStub.PROTOCOL_VERSIONS.CONTENT.DEFAULT
       }))
       test.equal(result, expected)
       test.end()
