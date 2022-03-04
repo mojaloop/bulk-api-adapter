@@ -64,12 +64,14 @@ Test('Config tests', configTest => {
       const DefaultStub = Util.clone(Default)
       // set env var
       const validateList = ['1']
+      process.env.BKAPI_PROTOCOL_VERSIONS__CONTENT__VALIDATELIST = JSON.stringify(validateList)
       process.env.BKAPI_PROTOCOL_VERSIONS__ACCEPT__VALIDATELIST = JSON.stringify(validateList)
       const Config = Proxyquire(`${src}/lib/config`, {
         '../../config/default.json': DefaultStub
       })
       test.ok(Config)
       test.ok('pass')
+      test.deepEqual(Config.PROTOCOL_VERSIONS.CONTENT.VALIDATELIST, validateList)
       test.deepEqual(Config.PROTOCOL_VERSIONS.ACCEPT.VALIDATELIST, validateList)
     } catch (e) {
       test.fail('should throw')
