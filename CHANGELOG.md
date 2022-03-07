@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [13.0.1](https://github.com/mojaloop/bulk-api-adapter/compare/v13.0.0...v13.0.1) (2022-03-07)
+
+
+### Bug Fixes
+
+* core-services support for non-breaking backward api compatibility ([#77](https://github.com/mojaloop/bulk-api-adapter/issues/77)) ([d3275b0](https://github.com/mojaloop/bulk-api-adapter/commit/d3275b0c82b18fb48de3e32e8d2e2c0a2a551aa1)), closes [#2704](https://github.com/mojaloop/bulk-api-adapter/issues/2704)
+
 ## [13.0.0](https://github.com/mojaloop/bulk-api-adapter/compare/v12.1.0...v13.0.0) (2022-03-04)
 
 
