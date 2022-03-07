@@ -2,6 +2,53 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [13.0.0](https://github.com/mojaloop/bulk-api-adapter/compare/v12.1.0...v13.0.0) (2022-03-04)
+
+
+### ⚠ BREAKING CHANGES
+
+* **mojaloop/#2704:** - Config PROTOCOL_VERSIONS.CONTENT has now been modified to support backward compatibility for minor versions (i.e. v1.0 & 1.1) as follows:
+
+> ```
+>   "PROTOCOL_VERSIONS": {
+>     "CONTENT": "1.1", <-- used when generating messages from the "SWITCH", and validate incoming FSPIOP API requests/callbacks CONTENT-TYPE headers
+>     "ACCEPT": {
+>       "DEFAULT": "1", <-- used when generating messages from the "SWITCH"
+>       "VALIDATELIST": [ <-- used to validate incoming FSPIOP API requests/callbacks ACCEPT headers
+>         "1",
+>         "1.0",
+>         "1.1"
+>       ]
+>     }
+>   },
+> ```
+> 
+> to be consistent with the ACCEPT structure as follows:
+> 
+> ```
+>   "PROTOCOL_VERSIONS": {
+>     "CONTENT": {
+>       "DEFAULT": "1.1", <-- used when generating messages from the "SWITCH"
+>       "VALIDATELIST": [ <-- used to validate incoming FSPIOP API requests/callbacks CONTENT-TYPE headers
+>         "1.1",
+>         "1.0"
+>       ]
+>     },
+>     "ACCEPT": {
+>       "DEFAULT": "1", <-- used when generating messages from the "SWITCH"
+>       "VALIDATELIST": [ <-- used to validate incoming FSPIOP API requests/callbacks ACCEPT headers
+>         "1",
+>         "1.0",
+>         "1.1"
+>       ]
+>     }
+>   },
+> ```
+
+### Features
+
+* **mojaloop/#2704:** core-services support for non-breaking backward api compatibility ([#74](https://github.com/mojaloop/bulk-api-adapter/issues/74)) ([62afc4e](https://github.com/mojaloop/bulk-api-adapter/commit/62afc4e9637599474f8761617b084a3da9ca4398)), closes [mojaloop/#2704](https://github.com/mojaloop/bulk-api-adapter/issues/2704) [mojaloop/#2704](https://github.com/mojaloop/bulk-api-adapter/issues/2704)
+
 ## [12.1.0](https://github.com/mojaloop/bulk-api-adapter/compare/v12.0.2...v12.1.0) (2021-12-14)
 
 
