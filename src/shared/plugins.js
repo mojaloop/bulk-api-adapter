@@ -81,7 +81,7 @@ const registerPlugins = async (server) => {
 
     // configure FSPIOP resources
     const resources = [
-      'transfers'
+      'bulkTransfers'
     ]
 
     // return FSPIOPHeaderValidation plugin options

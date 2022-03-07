@@ -161,6 +161,56 @@
       "decision": "ignore",
       "madeAt": 1646395152671,
       "expiresAt": 1648987138007
+    },
+    "1028044|@mojaloop/central-services-shared>shins>markdown-it": {
+      "decision": "ignore",
+      "madeAt": 1646649528834,
+      "expiresAt": 1649241522406
+    },
+    "1028144|@mojaloop/central-services-shared>widdershins>swagger2openapi>better-ajv-errors>jsonpointer": {
+      "decision": "ignore",
+      "madeAt": 1646649530880,
+      "expiresAt": 1649241522406
+    },
+    "1028144|@mojaloop/central-services-shared>widdershins>swagger2openapi>oas-validator>better-ajv-errors>jsonpointer": {
+      "decision": "ignore",
+      "madeAt": 1646649530880,
+      "expiresAt": 1649241522406
+    },
+    "1028151|hapi-swagger>swagger-parser>z-schema>validator": {
+      "decision": "ignore",
+      "madeAt": 1646649532391,
+      "expiresAt": 1649241522406
+    },
+    "1028226|@mojaloop/central-services-shared>widdershins>yargs>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1646649533490,
+      "expiresAt": 1649241522406
+    },
+    "1028226|@mojaloop/central-services-shared>widdershins>yargs>cliui>string-width>strip-ansi>ansi-regex": {
+      "decision": "ignore",
+      "madeAt": 1646649533490,
+      "expiresAt": 1649241522406
+    },
+    "1028544|@mojaloop/central-services-shared>widdershins>swagger2openapi>oas-validator>ajv": {
+      "decision": "ignore",
+      "madeAt": 1646649534511,
+      "expiresAt": 1649241522406
+    },
+    "1028752|@mojaloop/central-services-shared>shins>sanitize-html": {
+      "decision": "ignore",
+      "madeAt": 1646649535512,
+      "expiresAt": 1649241522406
+    },
+    "1028753|@mojaloop/central-services-shared>shins>sanitize-html": {
+      "decision": "ignore",
+      "madeAt": 1646649535512,
+      "expiresAt": 1649241522406
+    },
+    "1028908|@mojaloop/central-services-shared>widdershins>yargs>yargs-parser": {
+      "decision": "ignore",
+      "madeAt": 1646649536510,
+      "expiresAt": 1649241522406
     }
   },
   "rules": {},
