@@ -54,7 +54,7 @@
     "istanbul": "1.1.0-alpha.1",
     "nodemon": "2.0.15",
     "npm-audit-resolver": "2.3.1",
-    "npm-check-updates": "12.5.0",
+    "npm-check-updates": "12.5.2",
     "npm-run-all": "4.1.5",
     "pre-commit": "1.2.2",
     "proxyquire": "2.1.3",
