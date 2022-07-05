@@ -85,7 +85,7 @@ Test('Transfer domain tests', bulkTransferTest => {
       type: 'application/vnd.interoperability.bulkTransfers+json;version=1.0',
       content: {
         uriParams: { id: message.bulkTransferId },
-        headers: headers,
+        headers,
         payload: message
       },
       metadata: {
@@ -137,7 +137,7 @@ Test('Transfer domain tests', bulkTransferTest => {
       type: 'application/vnd.interoperability.bulkTransfers+json;version=1.0',
       content: {
         uriParams: params,
-        headers: headers
+        headers
       },
       metadata: {
         event: {
