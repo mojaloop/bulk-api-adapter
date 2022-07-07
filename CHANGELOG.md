@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.0.0](https://github.com/mojaloop/bulk-api-adapter/compare/v13.0.1...v14.0.0) (2022-07-07)
+
+
+### ⚠ BREAKING CHANGES
+
+* upgrade ci, image, packages, audit (#82)
+
+### Features
+
+* upgrade ci, image, packages, audit ([#82](https://github.com/mojaloop/bulk-api-adapter/issues/82)) ([a7c67bd](https://github.com/mojaloop/bulk-api-adapter/commit/a7c67bdae473f85ff4523a4a450b1634fc3fb784))
+
 ### [13.0.1](https://github.com/mojaloop/bulk-api-adapter/compare/v13.0.0...v13.0.1) (2022-03-07)
 
 
