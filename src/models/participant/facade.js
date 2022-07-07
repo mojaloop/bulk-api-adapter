@@ -48,7 +48,7 @@ const Mustache = require('mustache')
 const getEndpoint = async (fsp, enpointType, id = null) => {
   try {
     let url = await Cache.getEndpoint(fsp, enpointType)
-    url = Mustache.render(url, { id: id })
+    url = Mustache.render(url, { id })
     return url
   } catch (err) {
     Logger.error(err)

@@ -96,7 +96,7 @@ const bulkFulfil = async (messageId, headers, message) => {
       type: ENUM.Http.Headers.DEFAULT.APPLICATION_JSON,
       content: {
         uriParams: { id: message.bulkTransferId },
-        headers: headers,
+        headers,
         payload: message
       },
       metadata: {
@@ -135,7 +135,7 @@ const bulkTransferError = async (messageId, headers, message) => {
       type: ENUM.Http.Headers.DEFAULT.APPLICATION_JSON,
       content: {
         uriParams: { id: message.bulkTransferId },
-        headers: headers,
+        headers,
         payload: message
       },
       metadata: {

@@ -49,6 +49,6 @@ const registerAllHandlers = async (request, h) => {
 }
 
 module.exports = {
-  registerAllHandlers: registerAllHandlers,
+  registerAllHandlers,
   registerNotificationHandler: NotificationHandler.startConsumer
 }
