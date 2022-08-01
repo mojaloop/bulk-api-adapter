@@ -49,12 +49,11 @@ const Producer = require('@mojaloop/central-services-stream').Util.Producer
 const bulkPrepare = async (messageId, headers, message) => {
   Logger.debug('domain::bulk-transfer::prepare::start(%s, %s)', headers, message)
   try {
-    const { payerFsp, payeeFsp } = message
     const messageProtocol = {
       id: messageId,
-      to: payeeFsp,
-      from: payerFsp,
-      type: 'application/json',
+      from: headers[ENUM.Http.Headers.FSPIOP.SOURCE],
+      to: headers[ENUM.Http.Headers.FSPIOP.DESTINATION],
+      type: ENUM.Http.Headers.DEFAULT.APPLICATION_JSON,
       content: {
         headers,
         payload: message
