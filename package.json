@@ -57,7 +57,7 @@
     "audit-ci": "^6.3.0",
     "istanbul": "1.1.0-alpha.1",
     "nodemon": "2.0.19",
-    "npm-check-updates": "16.0.2",
+    "npm-check-updates": "16.0.5",
     "npm-run-all": "4.1.5",
     "pre-commit": "1.2.2",
     "proxyquire": "2.1.3",
