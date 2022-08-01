@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [14.0.1](https://github.com/mojaloop/bulk-api-adapter/compare/v14.0.0...v14.0.1) (2022-08-01)
+
+
+### Bug Fixes
+
+* update bulkPrepare kafka message to use headers ([#83](https://github.com/mojaloop/bulk-api-adapter/issues/83)) ([4c39f3d](https://github.com/mojaloop/bulk-api-adapter/commit/4c39f3dfe9b84d6802e024eca77d35f0f1f2280d))
+
 ## [14.0.0](https://github.com/mojaloop/bulk-api-adapter/compare/v13.0.1...v14.0.0) (2022-07-07)
 
 
