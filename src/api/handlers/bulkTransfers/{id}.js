@@ -37,7 +37,6 @@ const BulkTransferModels = require('@mojaloop/object-store-lib').Models.BulkTran
 const Hash = require('@mojaloop/central-services-shared').Util.Hash
 const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
 const TransferService = require('../../../domain/bulkTransfer')
-const Validator = require('../../../lib/validator')
 
 /**
  * Operations on /bulkTransfers/{id}
@@ -70,11 +69,6 @@ module.exports = {
    */
   put: async function BulkTransfersByIDPut (request, h) {
     try {
-      const { validationPassed, reason } = Validator.fulfilTransfer(request)
-      if (!validationPassed) {
-        return h.response(reason).code(reason.errorCode)
-      }
-
       Logger.debug('create::payload(%s)', JSON.stringify(request.payload))
       const bulkTransferId = request.params.id
       const { bulkTransferState, completedTimestamp, extensionList } = request.payload
