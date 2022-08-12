@@ -71,7 +71,7 @@ const fspiopBulkPrepareTransferMsg = {
   }
 }
 
-// Sample Bulk Fulfil Transfer Message send by the Bulk API Adapter Notification Handler as a callback
+// Sample Bulk Fulfil Transfer Message sent by the Bulk API Adapter Notification Handler as a callback
 const fspiopBulkFulfilTransferMsg = {
   bulkTransferState: Enum.Transfers.BulkTransferState.COMPLETED,
   completedTimestamp: new Date().toISOString(),
@@ -144,7 +144,7 @@ Test('Bulk Transfer PREPARE handler', handlerTest => {
   let notificationHandler
   const postCallbackUrl = 'http://test.local/bulkTransfers'
   const putCallbackUrl = 'http://test.local/bulkTransfers/{{id}}'
-  // For ErroCallback Scenarios
+  // For ErrorCallback Scenarios
   // const putErrorCallbackUrl = 'http://test.local/bulkTransfers/{{id}}/error'
 
   handlerTest.beforeEach(test => {
