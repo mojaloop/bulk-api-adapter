@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.1.0](https://github.com/mojaloop/bulk-api-adapter/compare/v14.0.2...v14.1.0) (2022-08-12)
+
+
+### Features
+
+* **mojaloop/#2796:** duplicate transaction not getting callback for post /bulkTransfers ([#86](https://github.com/mojaloop/bulk-api-adapter/issues/86)) ([fcc7799](https://github.com/mojaloop/bulk-api-adapter/commit/fcc7799368c54adf54c729627ce1e424cbd2df16)), closes [mojaloop/#2796](https://github.com/mojaloop/project/issues/2796)
+
 ### [14.0.2](https://github.com/mojaloop/bulk-api-adapter/compare/v14.0.1...v14.0.2) (2022-08-11)
 
 
@@ -79,21 +86,21 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Features
 
-* **mojaloop/#2704:** core-services support for non-breaking backward api compatibility ([#74](https://github.com/mojaloop/bulk-api-adapter/issues/74)) ([62afc4e](https://github.com/mojaloop/bulk-api-adapter/commit/62afc4e9637599474f8761617b084a3da9ca4398)), closes [mojaloop/#2704](https://github.com/mojaloop/bulk-api-adapter/issues/2704) [mojaloop/#2704](https://github.com/mojaloop/bulk-api-adapter/issues/2704)
+* **mojaloop/#2704:** core-services support for non-breaking backward api compatibility ([#74](https://github.com/mojaloop/bulk-api-adapter/issues/74)) ([62afc4e](https://github.com/mojaloop/bulk-api-adapter/commit/62afc4e9637599474f8761617b084a3da9ca4398)), closes [mojaloop/#2704](https://github.com/mojaloop/project/issues/2704)
 
 ## [12.1.0](https://github.com/mojaloop/bulk-api-adapter/compare/v12.0.2...v12.1.0) (2021-12-14)
 
 
 ### Features
 
-* **mojaloop/#2608:** injected resource versions config for outbound requests ([#70](https://github.com/mojaloop/bulk-api-adapter/issues/70)) ([a2c6a91](https://github.com/mojaloop/bulk-api-adapter/commit/a2c6a918799bb833ede26924b3598ffa954023ff)), closes [mojaloop/#2608](https://github.com/mojaloop/bulk-api-adapter/issues/2608)
+* **mojaloop/#2608:** injected resource versions config for outbound requests ([#70](https://github.com/mojaloop/bulk-api-adapter/issues/70)) ([a2c6a91](https://github.com/mojaloop/bulk-api-adapter/commit/a2c6a918799bb833ede26924b3598ffa954023ff)), closes [mojaloop/#2608](https://github.com/mojaloop/project/issues/2608)
 
 ### [12.0.2](https://github.com/mojaloop/bulk-api-adapter/compare/v12.0.1...v12.0.2) (2021-11-22)
 
 
 ### Bug Fixes
 
-* release v13.1.0 ([#69](https://github.com/mojaloop/bulk-api-adapter/issues/69)) ([5464a62](https://github.com/mojaloop/bulk-api-adapter/commit/5464a62348782ae3b75997b1fa8dfd4bcdb10cef)), closes [mojaloop/#2584](https://github.com/mojaloop/bulk-api-adapter/issues/2584) [mojaloop/#2585](https://github.com/mojaloop/bulk-api-adapter/issues/2585)
+* release v13.1.0 ([#69](https://github.com/mojaloop/bulk-api-adapter/issues/69)) ([5464a62](https://github.com/mojaloop/bulk-api-adapter/commit/5464a62348782ae3b75997b1fa8dfd4bcdb10cef)), closes [mojaloop/#2584](https://github.com/mojaloop/project/issues/2584)
 
 ### [12.0.1](https://github.com/mojaloop/bulk-api-adapter/compare/v12.0.0...v12.0.1) (2021-11-18)
 
@@ -106,4 +113,4 @@ All notable changes to this project will be documented in this file. See [standa
 
 ### Bug Fixes
 
-* **mojaloop/#2538:** fspiop api version negotiation not handled ([#67](https://github.com/mojaloop/bulk-api-adapter/issues/67)) ([416293a](https://github.com/mojaloop/bulk-api-adapter/commit/416293af3bded50986437a5a91797c65ce2b9c38)), closes [mojaloop/#2538](https://github.com/mojaloop/bulk-api-adapter/issues/2538) [mojaloop/#2538](https://github.com/mojaloop/bulk-api-adapter/issues/2538)
+* **mojaloop/#2538:** fspiop api version negotiation not handled ([#67](https://github.com/mojaloop/bulk-api-adapter/issues/67)) ([416293a](https://github.com/mojaloop/bulk-api-adapter/commit/416293af3bded50986437a5a91797c65ce2b9c38)), closes [mojaloop/#2538](https://github.com/mojaloop/project/issues/2538)
