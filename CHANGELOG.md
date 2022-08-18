@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [14.1.1](https://github.com/mojaloop/bulk-api-adapter/compare/v14.1.0...v14.1.1) (2022-08-18)
+
+
+### Bug Fixes
+
+* **mojaloop/#2863:** fix put callback http code ([#89](https://github.com/mojaloop/bulk-api-adapter/issues/89)) ([c6699ad](https://github.com/mojaloop/bulk-api-adapter/commit/c6699ad695e0a4627fd76d4288b9ef6e64cd2130))
+
 ## [14.1.0](https://github.com/mojaloop/bulk-api-adapter/compare/v14.0.2...v14.1.0) (2022-08-12)
 
 
