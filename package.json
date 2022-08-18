@@ -1,12 +1,9 @@
 {
   "name": "@mojaloop/bulk-api-adapter",
-  "version": "14.0.2",
+  "version": "14.1.0",
   "description": "Mojaloop Bulk API Adapter",
   "license": "Apache-2.0",
   "author": "ModusBox",
-  "engines": {
-    "node": "=16.x"
-  },
   "contributors": [
     "Georgi Georgiev <georgi.georgiev@modusbox.com>",
     "Miguel de Barros <miguel.debarros@modusbox.com>",
@@ -19,6 +16,41 @@
   },
   "publishConfig": {
     "registry": "https://registry.npmjs.org"
+  },
+  "engines": {
+    "node": "=16.x"
+  },
+  "imports": {
+    "#src/*": "./src/*.js",
+    "#test/*": "./test/*.js"
+  },
+  "main": "./src/api/index.js",
+  "pre-commit": [
+    "lint",
+    "dep:check",
+    "test"
+  ],
+  "scripts": {
+    "start": "npm run start:api",
+    "start:api": "node src/api/index.js",
+    "watch:api": "npx nodemon src/api/index.js",
+    "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.yaml'",
+    "standard": "npx standard",
+    "standard:fix": "npx standard --fix",
+    "lint": "npm run standard",
+    "lint:fix": "npm run standard:fix",
+    "test": "npm run test:unit",
+    "test:all": "npm run test",
+    "test:unit": "tape 'test/unit/**/*.test.js' | tap-spec",
+    "test:xunit": "tape 'test/unit/**/*.test.js' | tap-xunit",
+    "test:coverage": "istanbul cover tape -- 'test/unit/**/*.test.js'",
+    "test:coverage-check": "npm run test:coverage && istanbul check-coverage",
+    "audit:fix": "npm audit fix",
+    "audit:check": "npx audit-ci --config ./audit-ci.jsonc",
+    "dep:check": "npx ncu -e 2",
+    "dep:update": "npx ncu -u",
+    "release": "npx standard-version --releaseCommitMessageFormat 'chore(release): {{currentTag}} [skip ci]'",
+    "snapshot": "npx standard-version --no-verify --skip.changelog --prerelease snapshot --releaseCommitMessageFormat 'chore(snapshot): {{currentTag}}'"
   },
   "dependencies": {
     "@hapi/basic": "7.0.0",
@@ -50,7 +82,6 @@
     "parse-strings-in-object": "2.0.0",
     "rc": "1.2.8",
     "request": "2.88.2",
-    "run-s": "0.0.0",
     "uuid4": "2.0.3"
   },
   "devDependencies": {
@@ -58,9 +89,9 @@
     "istanbul": "1.1.0-alpha.1",
     "nodemon": "2.0.19",
     "npm-check-updates": "16.0.5",
-    "npm-run-all": "4.1.5",
     "pre-commit": "1.2.2",
     "proxyquire": "2.1.3",
+    "replace": "^1.2.1",
     "rewire": "6.0.0",
     "sinon": "14.0.0",
     "standard": "17.0.0",
@@ -71,34 +102,12 @@
     "tape": "5.6.0",
     "tapes": "4.1.0"
   },
-  "pre-commit": [
-    "lint",
-    "dep:check",
-    "test"
-  ],
-  "scripts": {
-    "start": "run-p start:api",
-    "start:api": "node src/api/index.js",
-    "watch:api": "nodemon src/api/index.js",
-    "regenerate": "yo swaggerize:test --framework hapi --apiPath './src/interface/swagger.yaml'",
-    "standard": "standard",
-    "standard:fix": "standard --fix",
-    "lint": "npm run standard",
-    "lint:fix": "npm run standard:fix",
-    "test": "npm run test:unit",
-    "test:all": "run-s test",
-    "test:unit": "tape 'test/unit/**/*.test.js' | tap-spec",
-    "test:xunit": "tape 'test/unit/**/*.test.js' | tap-xunit",
-    "test:coverage": "istanbul cover tape -- 'test/unit/**/*.test.js'",
-    "test:coverage-check": "npm run test:coverage && istanbul check-coverage",
-    "audit:check": "npx audit-ci --config ./audit-ci.jsonc",
-    "dep:check": "npx ncu -e 2",
-    "dep:update": "npx ncu -u",
-    "release": "standard-version --releaseCommitMessageFormat 'chore(release): {{currentTag}} [skip ci]'",
-    "snapshot": "standard-version --no-verify --skip.changelog --prerelease snapshot --releaseCommitMessageFormat 'chore(snapshot): {{currentTag}}'"
-  },
   "generator-swaggerize": {
     "version": "4.1.0"
   },
-  "main": "./src/api/index.js"
+  "standard-version": {
+    "scripts": {
+      "postchangelog": "replace '\\[mojaloop/#(\\d+)\\]\\(https://github.com/mojaloop/(.*)/issues/(\\d+)\\)' '[mojaloop/#$1](https://github.com/mojaloop/project/issues/$1)' CHANGELOG.md"
+    }
+  }
 }
