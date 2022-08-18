@@ -32,6 +32,7 @@ const FSPIOPError = require('@mojaloop/central-services-error-handling').Factory
 const Logger = require('@mojaloop/central-services-logger')
 const Handler = require('../../../../../src/api/handlers/bulkTransfers/{id}')
 const TransferService = require('../../../../../src/domain/bulkTransfer')
+const BulkTransferModels = require('@mojaloop/object-store-lib').Models.BulkTransfer
 
 const createGetRequest = (params, sourceFsp) => {
   const requestParams = params || {}
@@ -47,6 +48,22 @@ const createGetRequest = (params, sourceFsp) => {
   }
 }
 
+const createPutRequest = (params, payload) => {
+  const requestPayload = payload || {}
+  const requestParams = params || {}
+  const headers = {}
+  headers[ENUM.Http.Headers.FSPIOP.SOURCE] = payload.payerFsp
+  headers[ENUM.Http.Headers.FSPIOP.DESTINATION] = payload.payeeFsp
+  return {
+    headers,
+    params: requestParams,
+    payload: requestPayload,
+    server: {
+      log: () => { }
+    }
+  }
+}
+
 Test('GET /bulkTransfer/{id} handler', handlerTest => {
   let sandbox
 
@@ -56,6 +73,12 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
     sandbox.stub(Logger, 'isInfoEnabled').value(true)
     sandbox.stub(Logger, 'isDebugEnabled').value(true)
     sandbox.stub(TransferService, 'getBulkTransferById')
+    sandbox.stub(TransferService, 'bulkFulfil')
+    sandbox.stub(BulkTransferModels, 'getIndividualTransferFulfilModel').returns(class IndividualTransferFulfilModel {
+      save () {
+        return Promise.resolve(true)
+      }
+    })
     t.end()
   })
 
@@ -109,6 +132,77 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
     })
 
     getByIdTest.end()
+  })
+
+  handlerTest.test('BulkTransfersByIDPut should', async bulkTransfersByIDPut => {
+    await bulkTransfersByIDPut.test('reply with status code 200 if message is sent successfully to kafka', async test => {
+      const params = {
+        id: '888ec534-ee48-4575-b6a9-ead2955b8930'
+      }
+      const payload = {
+        bulkTransferState: 'COMPLETED',
+        completedTimestamp: '{$requestVariables.completedTimestamp}',
+        individualTransferResults: [
+          {
+            transferId: 'b51ec534-ee48-4575b6a9-ead2955b8068',
+            fulfilment: 'UNlJ98hZTY_dsw0cAqw4i_UN3v4utt7CZFB4yfLbVFA'
+          },
+          {
+            transferId: 'b51ec534-ee48-4575b6a9-ead2955b8069',
+            fulfilment: 'UNlJ98hZTY_dsw0cAqw4i_UN3v4utt7CZFB4yfLbVFA'
+          }
+        ]
+      }
+      TransferService.bulkFulfil.returns(Promise.resolve(true))
+      const request = createPutRequest(params, payload)
+      const reply = {
+        response: (response) => {
+          return {
+            code: statusCode => {
+              test.equal(statusCode, 200)
+              test.end()
+            }
+          }
+        }
+      }
+      await Handler.put(request, reply)
+    })
+
+    await bulkTransfersByIDPut.test('returns error if BulkTransfersByIDPut throws', async test => {
+      const headers = {}
+      headers[ENUM.Http.Headers.FSPIOP.SOURCE] = 'source'
+      headers[ENUM.Http.Headers.FSPIOP.DESTINATION] = 'destination'
+      const params = {
+        id: '888ec534-ee48-4575-b6a9-ead2955b8930'
+      }
+      const payload = {
+        bulkTransferState: 'COMPLETED',
+        completedTimestamp: '{$requestVariables.completedTimestamp}',
+        individualTransferResults: [
+          {
+            transferId: 'b51ec534-ee48-4575b6a9-ead2955b8068',
+            fulfilment: 'UNlJ98hZTY_dsw0cAqw4i_UN3v4utt7CZFB4yfLbVFA'
+          },
+          {
+            transferId: 'b51ec534-ee48-4575b6a9-ead2955b8069',
+            fulfilment: 'UNlJ98hZTY_dsw0cAqw4i_UN3v4utt7CZFB4yfLbVFA'
+          }
+        ]
+      }
+      TransferService.bulkFulfil.rejects(new Error('An error has occurred'))
+      const request = createPutRequest(params, payload)
+
+      try {
+        await Handler.put(request)
+        test.fail('does not throw')
+      } catch (e) {
+        test.ok(e instanceof FSPIOPError)
+        test.equal(e.message, 'An error has occurred')
+        test.end()
+      }
+    })
+
+    bulkTransfersByIDPut.end()
   })
   handlerTest.end()
 })

@@ -89,7 +89,7 @@ module.exports = {
       const count = request.payload.individualTransferResults.length
       const message = { bulkTransferId, bulkTransferState, completedTimestamp, extensionList, count, hash }
       await TransferService.bulkFulfil(messageId, request.headers, message)
-      return h.response().code(HTTPENUM.ReturnCodes.ACCEPTED.CODE)
+      return h.response().code(HTTPENUM.ReturnCodes.OK.CODE)
     } catch (err) {
       Logger.error(err)
       throw ErrorHandler.Factory.reformatFSPIOPError(err)
