@@ -141,7 +141,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
       }
       const payload = {
         bulkTransferState: 'COMPLETED',
-        completedTimestamp: '{$requestVariables.completedTimestamp}',
+        completedTimestamp: '2022-08-18T01:00:24.407Z',
         individualTransferResults: [
           {
             transferId: 'b51ec534-ee48-4575b6a9-ead2955b8068',
@@ -177,7 +177,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
       }
       const payload = {
         bulkTransferState: 'COMPLETED',
-        completedTimestamp: '{$requestVariables.completedTimestamp}',
+        completedTimestamp: '2022-08-18T01:00:24.407Z',
         individualTransferResults: [
           {
             transferId: 'b51ec534-ee48-4575b6a9-ead2955b8068',
