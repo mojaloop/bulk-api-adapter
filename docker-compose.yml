@@ -12,6 +12,7 @@ services:
         - mojaloop/bulk-api-adapter
         - bulk-api-adapter
     container_name: ba_bulk-api-adapter
+    user: root
     command:
       - "sh"
       - "-c"
@@ -22,7 +23,7 @@ services:
       - LOG_LEVEL=info
       - CSL_LOG_TRANSPORT=file
     volumes:
-       - ./docker/bulk-api-adapter/default.json:/opt/bulk-api-adapter/config/default.json
+       - ./docker/bulk-api-adapter/default.json:/opt/app/config/default.json
        - ./docker/wait-for:/opt/wait-for
     networks:
       - ba-mojaloop-net
@@ -55,6 +56,7 @@ services:
   central-ledger:
     image: mojaloop/central-ledger:latest
     container_name: ba_central-ledger
+    user: root
     command:
       - "sh"
       - "-c"
@@ -65,7 +67,7 @@ services:
     ports:
       - "3001:3001"
     volumes:
-       - ./docker/central-ledger/default.json:/opt/central-ledger/config/default.json
+       - ./docker/central-ledger/default.json:/opt/app/config/default.json
        - ./docker/wait-for:/opt/wait-for
     depends_on:
       - mysql
