@@ -38,11 +38,40 @@ const Enums = require('@mojaloop/central-services-shared').Enum
  *
  * @returns {object} - FSPIOP callback headers merged with the headers passed in `params.headers`
  */
-exports.createCallbackHeaders = (params) => {
+const createCallbackHeaders = (params, fromSwitch = false) => {
   const callbackHeaders = { ...params.headers }
 
   callbackHeaders[Enums.Http.Headers.FSPIOP.HTTP_METHOD] = params.httpMethod
   callbackHeaders[Enums.Http.Headers.FSPIOP.URI] = Mustache.render(params.endpointTemplate, { ID: params.transferId || params.bulkTransferId || null, fsp: params.dfspId || null })
 
+  if (fromSwitch) {
+    const fspIOPSourceKey = getHeaderCaseInsensitiveKey(callbackHeaders, Enums.Http.Headers.FSPIOP.SOURCE)
+    if (fspIOPSourceKey) delete callbackHeaders[fspIOPSourceKey]
+    const fspIOPDestinationKey = getHeaderCaseInsensitiveKey(callbackHeaders, Enums.Http.Headers.FSPIOP.DESTINATION)
+    if (fspIOPDestinationKey) delete callbackHeaders[fspIOPDestinationKey]
+    const fspIOPSingatureKey = getHeaderCaseInsensitiveKey(callbackHeaders, Enums.Http.Headers.FSPIOP.SIGNATURE)
+    if (fspIOPSingatureKey) delete callbackHeaders[fspIOPSingatureKey]
+    callbackHeaders[Enums.Http.Headers.FSPIOP.SOURCE] = Enums.Http.Headers.FSPIOP.SWITCH.value
+    callbackHeaders[Enums.Http.Headers.FSPIOP.DESTINATION] = getHeaderCaseInsensitiveValue(params.headers, Enums.Http.Headers.FSPIOP.DESTINATION)
+  }
+
   return callbackHeaders
+}
+
+const getHeaderCaseInsensitiveKey = (object, searchKey) => {
+  if (object == null || searchKey == null) return null
+  return Object.keys(object).find(key => key.toLowerCase() === searchKey.toLowerCase())
+}
+
+const getHeaderCaseInsensitiveValue = (object, searchKey) => {
+  if (object == null || searchKey == null) return null
+  const key = Object.keys(object).find(key => key.toLowerCase() === searchKey.toLowerCase())
+  if (key) return object[key]
+  return null
+}
+
+module.exports = {
+  createCallbackHeaders,
+  getHeaderCaseInsensitiveKey,
+  getHeaderCaseInsensitiveValue
 }

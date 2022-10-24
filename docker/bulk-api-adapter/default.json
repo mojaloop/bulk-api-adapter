@@ -117,7 +117,7 @@
               "messageCharset": "utf8"
             },
             "rdkafkaConf": {
-              "metadata.broker.list": "localhost:9092",
+              "metadata.broker.list": "kafka:9092",
               "client.id": "bulk-prod-bulk-get",
               "event_cb": true,
               "dr_cb": true,
