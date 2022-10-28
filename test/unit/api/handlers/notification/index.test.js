@@ -100,7 +100,7 @@ Test('Notification handler tests', async notificationTest => {
       }
       const toUrl = await Participant.getEndpoint(msg.value.to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, msg.value.content.payload.bulkTransferId)
       const method = ENUM.Http.RestMethods.PUT
-      const toHeaders = createCallbackHeaders({ dfspId: msg.value.to, bulkTransferId: msg.value.content.payload.bulkTransferId, headers: msg.value.content.headers, httpMethod: method, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR })
+      const toHeaders = createCallbackHeaders({ dfspId: msg.value.to, bulkTransferId: msg.value.content.payload.bulkTransferId, headers: msg.value.content.headers, httpMethod: method, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR }, true)
       const message = {}
 
       const expected = 200
@@ -108,7 +108,7 @@ Test('Notification handler tests', async notificationTest => {
       Util.Request.sendRequest.withArgs(toUrl, toHeaders, msg.value.from, msg.value.to, method, message).returns(Promise.resolve(200))
 
       const result = await Notification.processMessage(msg)
-      test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, msg.value.from, msg.value.to, method, message))
+      test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, msg.value.to, method, message))
       test.equal(result, expected)
       test.end()
     })
@@ -167,18 +167,22 @@ Test('Notification handler tests', async notificationTest => {
       }
       const toUrl = await Participant.getEndpoint(msg.value.to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, msg.value.content.payload.bulkTransferId)
       const method = ENUM.Http.RestMethods.PUT
-      const toHeaders = createCallbackHeaders({ dfspId: msg.value.to, bulkTransferId: msg.value.content.payload.bulkTransferId, headers: msg.value.content.headers, httpMethod: method, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR })
+      const toHeaders = createCallbackHeaders({ dfspId: msg.value.to, bulkTransferId: msg.value.content.payload.bulkTransferId, headers: msg.value.content.headers, httpMethod: method, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR }, true)
       const message = {}
 
       const expected = 200
 
-      Util.Request.sendRequest.withArgs(toUrl, toHeaders, msg.value.from, msg.value.to, method, message).returns(Promise.resolve(200))
+      Util.Request.sendRequest.withArgs(toUrl, toHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, msg.value.to, method, message).returns(Promise.resolve(200))
 
       const result = await NotificationProxy.processMessage(msg)
-      test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, msg.value.from, msg.value.to, method, message, null, null, null, {
+      // test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, msg.value.to, method, message, null, null, null, {
+      //   accept: ConfigStub.PROTOCOL_VERSIONS.ACCEPT.DEFAULT,
+      //   content: ConfigStub.PROTOCOL_VERSIONS.CONTENT.DEFAULT
+      // }))
+      Sinon.assert.calledWith(Util.Request.sendRequest, toUrl, toHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, msg.value.to, method, message, null, null, undefined, {
         accept: ConfigStub.PROTOCOL_VERSIONS.ACCEPT.DEFAULT,
         content: ConfigStub.PROTOCOL_VERSIONS.CONTENT.DEFAULT
-      }))
+      })
       test.equal(result, expected)
       test.end()
     })
