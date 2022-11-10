@@ -188,7 +188,7 @@ const processMessage = async (msg, span) => {
     const payloadForCallback = decodedPayload.body.toString()
     let callbackHeaders
 
-    let jwsSigner = getJWSSigner(ENUM.Http.Headers.FSPIOP.SWITCH.value)
+    const jwsSigner = getJWSSigner(ENUM.Http.Headers.FSPIOP.SWITCH.value)
     const fromSwitch = true
 
     // Injected Configuration for outbound Content-Type & Accept headers.
