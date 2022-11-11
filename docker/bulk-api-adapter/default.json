@@ -13,6 +13,11 @@
   "ENDPOINT_SECURITY":{
     "TLS": {
       "rejectUnauthorized": true
+    },
+    "JWS": {
+      "JWS_SIGN": false,
+      "FSPIOP_SOURCE_TO_SIGN": "switch",
+      "JWS_SIGNING_KEY_PATH": "secrets/jwsSigningKey.key"
     }
   },
   "MAX_FULFIL_TIMEOUT_DURATION_SECONDS": 300,
@@ -117,7 +122,7 @@
               "messageCharset": "utf8"
             },
             "rdkafkaConf": {
-              "metadata.broker.list": "localhost:9092",
+              "metadata.broker.list": "kafka:9092",
               "client.id": "bulk-prod-bulk-get",
               "event_cb": true,
               "dr_cb": true,

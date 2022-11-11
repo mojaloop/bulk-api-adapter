@@ -1,4 +1,13 @@
 const RC = require('parse-strings-in-object')(require('rc')('BKAPI', require('../../config/default.json')))
+const fs = require('fs')
+
+const getFileContent = (path) => {
+  if (!fs.existsSync(path)) {
+    console.log(`File ${path} doesn't exist, can't enable JWS signing`)
+    throw new Error('File doesn\'t exist')
+  }
+  return fs.readFileSync(path)
+}
 
 const DEFAULT_PROTOCOL_VERSION = {
   CONTENT: {
@@ -72,7 +81,14 @@ const config = {
   ENDPOINT_SECURITY: RC.ENDPOINT_SECURITY,
   ENDPOINT_SECURITY_TLS: RC.ENDPOINT_SECURITY.TLS,
   MAX_FULFIL_TIMEOUT_DURATION_SECONDS: RC.MAX_FULFIL_TIMEOUT_DURATION_SECONDS,
+  JWS_SIGN: RC.ENDPOINT_SECURITY.JWS.JWS_SIGN,
+  FSPIOP_SOURCE_TO_SIGN: RC.ENDPOINT_SECURITY.JWS.FSPIOP_SOURCE_TO_SIGN,
+  JWS_SIGNING_KEY_PATH: RC.ENDPOINT_SECURITY.JWS.JWS_SIGNING_KEY_PATH,
   PROTOCOL_VERSIONS: getProtocolVersions(DEFAULT_PROTOCOL_VERSION, RC.PROTOCOL_VERSIONS)
+}
+
+if (config.JWS_SIGN) {
+  config.JWS_SIGNING_KEY = getFileContent(config.JWS_SIGNING_KEY_PATH)
 }
 
 module.exports = config
