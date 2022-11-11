@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [14.2.0](https://github.com/mojaloop/bulk-api-adapter/compare/v14.1.1...v14.2.0) (2022-11-11)
+
+
+### Features
+
+* **mojaloop/2867:** switch as fspiop source ([#90](https://github.com/mojaloop/bulk-api-adapter/issues/90)) ([af5680d](https://github.com/mojaloop/bulk-api-adapter/commit/af5680d9db79ffebc43842f100d1dc261501a9c8))
+
 ### [14.1.1](https://github.com/mojaloop/bulk-api-adapter/compare/v14.1.0...v14.1.1) (2022-08-18)
 
 
