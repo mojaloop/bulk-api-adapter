@@ -37,7 +37,7 @@ const Config = require('../lib/config')
 const ParticipantEndpointCache = require('../domain/participant/lib/cache/participantEndpoint')
 const Metrics = require('@mojaloop/central-services-metrics')
 const ObjStoreDb = require('@mojaloop/object-store-lib').Db
-const mongoUriBuilder = require('mongo-uri-builder')
+const MongoUriBuilder = require('mongo-uri-builder')
 
 /**
  * @module src/shared/setup
@@ -55,7 +55,7 @@ const mongoUriBuilder = require('mongo-uri-builder')
 
 const connectMongoose = async () => {
   try {
-    const connectionString = mongoUriBuilder({
+    const connectionString = MongoUriBuilder({
       username: Config.MONGODB_USER,
       password: Config.MONGODB_PASSWORD,
       host: Config.MONGODB_HOST,
