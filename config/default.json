@@ -25,7 +25,11 @@
     "generateTimeout": 30000
   },
   "MONGODB": {
-    "URI": "mongodb://localhost:27017/mlos"
+    "HOST": "localhost",
+    "PORT": "27017",
+    "USER": "",
+    "PASSWORD": "",
+    "DATABASE": "mlos"
   },
   "ENDPOINT_SECURITY":{
     "TLS": {
