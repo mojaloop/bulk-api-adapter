@@ -87,7 +87,6 @@ const createServer = async (port, modules) => {
     }
   })
   const db = await connectMongoose()
-  console.log(db.connections)
   server.app.db = db
 
   await Plugins.registerPlugins(server)
