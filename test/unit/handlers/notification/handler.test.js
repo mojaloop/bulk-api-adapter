@@ -259,7 +259,7 @@ Test('Bulk Transfer PREPARE handler', handlerTest => {
         // Assert
         test.equal(result, true)
         test.equal(MainUtil.Request.sendRequest.lastCall.args[0], postCallbackUrl)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[2], fspiopBulkPrepareTransferMsg.payerFsp)
+        test.equal(MainUtil.Request.sendRequest.lastCall.args[2], Enum.Http.Headers.FSPIOP.SWITCH.value)
         test.equal(MainUtil.Request.sendRequest.lastCall.args[3], fspiopBulkPrepareTransferMsg.payeeFsp)
         test.equal(MainUtil.Request.sendRequest.lastCall.args[4], Enum.Http.RestMethods.POST)
         test.equal(MainUtil.Request.sendRequest.lastCall.args[5], JSON.stringify(fspiopBulkPrepareTransferMsg))
