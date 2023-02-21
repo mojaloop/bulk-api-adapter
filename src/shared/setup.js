@@ -37,6 +37,7 @@ const Config = require('../lib/config')
 const ParticipantEndpointCache = require('../domain/participant/lib/cache/participantEndpoint')
 const Metrics = require('@mojaloop/central-services-metrics')
 const ObjStoreDb = require('@mojaloop/object-store-lib').Db
+const mongoUriBuilder = require('mongo-uri-builder')
 
 /**
  * @module src/shared/setup
@@ -54,13 +55,14 @@ const ObjStoreDb = require('@mojaloop/object-store-lib').Db
 
 const connectMongoose = async () => {
   try {
-    return ObjStoreDb.connect(
-      `mongodb://${Config.MONGODB_HOST}:${Config.MONGODB_PORT}`,
-      {
-        dbName: Config.MONGODB_DATABASE,
-        user: Config.MONGODB_USER,
-        pass: Config.MONGODB_PASSWORD
-      })
+    const connectionString = mongoUriBuilder({
+      username: Config.MONGODB_USER,
+      password: Config.MONGODB_PASSWORD,
+      host: Config.MONGODB_HOST,
+      port: Config.MONGODB_PORT,
+      database: Config.MONGODB_DATABASE
+    })
+    return ObjStoreDb.connect(connectionString)
   } catch (err) {
     throw ErrorHandler.Factory.reformatFSPIOPError(err)
     // TODO: review as code is being changed from returning null to returning a FSPIOPError
