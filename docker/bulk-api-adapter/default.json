@@ -8,7 +8,7 @@
     "generateTimeout": 30000
   },
   "MONGODB": {
-    "HOST": "localhost",
+    "HOST": "objstore",
     "PORT": "27017",
     "USER": "",
     "PASSWORD": "",
