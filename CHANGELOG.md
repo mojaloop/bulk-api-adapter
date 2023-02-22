@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [15.0.0](https://github.com/mojaloop/bulk-api-adapter/compare/v14.2.0...v15.0.0) (2023-02-22)
+
+
+### ⚠ BREAKING CHANGES
+
+* **mojaloop/#3131:** seperate mongo uri config (#95)
+
+### Features
+
+* **mojaloop/#3131:** seperate mongo uri config ([#95](https://github.com/mojaloop/bulk-api-adapter/issues/95)) ([5ae3f18](https://github.com/mojaloop/bulk-api-adapter/commit/5ae3f18a362950ac514613f08dfac6ec84e29a17)), closes [mojaloop/#3131](https://github.com/mojaloop/project/issues/3131)
+
 ## [14.2.0](https://github.com/mojaloop/bulk-api-adapter/compare/v14.1.1...v14.2.0) (2022-11-11)
 
 
