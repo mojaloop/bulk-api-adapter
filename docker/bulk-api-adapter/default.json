@@ -8,7 +8,11 @@
     "generateTimeout": 30000
   },
   "MONGODB": {
-    "URI": "mongodb://objstore:27017/mlos"
+    "HOST": "objstore",
+    "PORT": 27017,
+    "USER": "",
+    "PASSWORD": "",
+    "DATABASE": "mlos"
   },
   "ENDPOINT_SECURITY":{
     "TLS": {

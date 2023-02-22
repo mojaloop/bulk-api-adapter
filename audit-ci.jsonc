@@ -15,6 +15,9 @@
     "GHSA-rjqq-98f6-6j3r",
     "GHSA-w5p7-h5w8-2hfq",
     "GHSA-qgmg-gppg-76g5",
-    "GHSA-p9pc-299p-vxgp"
+    "GHSA-p9pc-299p-vxgp",
+    // jsonwebtoken vulnerabilities
+    "GHSA-qwph-4952-7xr6",
+    "GHSA-hjrf-2m68-5959"
   ]
 }
