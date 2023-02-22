@@ -9,7 +9,7 @@
   },
   "MONGODB": {
     "HOST": "objstore",
-    "PORT": "27017",
+    "PORT": 27017,
     "USER": "",
     "PASSWORD": "",
     "DATABASE": "mlos"
