@@ -56,8 +56,8 @@ const MongoUriBuilder = require('mongo-uri-builder')
 const connectMongoose = async () => {
   try {
     const connectionString = MongoUriBuilder({
-      username: Config.MONGODB_USER,
-      password: Config.MONGODB_PASSWORD,
+      username: encodeURIComponent(Config.MONGODB_USER),
+      password: encodeURIComponent(Config.MONGODB_PASSWORD),
       host: Config.MONGODB_HOST,
       port: Config.MONGODB_PORT,
       database: Config.MONGODB_DATABASE
