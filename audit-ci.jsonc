@@ -18,6 +18,8 @@
     "GHSA-p9pc-299p-vxgp",
     // jsonwebtoken vulnerabilities
     "GHSA-qwph-4952-7xr6",
-    "GHSA-hjrf-2m68-5959"
+    "GHSA-hjrf-2m68-5959",
+    // currently no patch for request lib
+    "GHSA-p8p7-x288-28g6"
   ]
 }
