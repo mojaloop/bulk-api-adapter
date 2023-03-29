@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.0.1](https://github.com/mojaloop/bulk-api-adapter/compare/v15.0.0...v15.0.1) (2023-03-29)
+
+
+### Bug Fixes
+
+* **mojaloop/#3255:** mongoDB connection uRI failing when auth details contain special chars ([#96](https://github.com/mojaloop/bulk-api-adapter/issues/96)) ([5ceb464](https://github.com/mojaloop/bulk-api-adapter/commit/5ceb464ce7f1f8e8625087097955d9ae3a3a2b1d)), closes [mojaloop/#3255](https://github.com/mojaloop/project/issues/3255)
+
 ## [15.0.0](https://github.com/mojaloop/bulk-api-adapter/compare/v14.2.0...v15.0.0) (2023-02-22)
 
 
