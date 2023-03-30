@@ -63,6 +63,8 @@ const connectMongoose = async () => {
       database: Config.MONGODB_DATABASE
     })
 
+    Logger.debug(`Connecting to MongoDB ${Config.MONGODB_HOST}:${Config.MONGODB_PORT}`)
+
     return ObjStoreDb.connect(connectionString)
   } catch (err) {
     throw ErrorHandler.Factory.reformatFSPIOPError(err)
