@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.0.3](https://github.com/mojaloop/bulk-api-adapter/compare/v15.0.2...v15.0.3) (2023-03-30)
+
+
+### Bug Fixes
+
+* **mojaloop/#3260:** incoming requests are failing with argument stream failure ([#98](https://github.com/mojaloop/bulk-api-adapter/issues/98) ([64960c5](https://github.com/mojaloop/bulk-api-adapter/commit/64960c52e1477b08becd01209048fccd491a9437)), closes [mojaloop/#3260](https://github.com/mojaloop/project/issues/3260)
+
 ### [15.0.2](https://github.com/mojaloop/bulk-api-adapter/compare/v15.0.1...v15.0.2) (2023-03-29)
 
 
