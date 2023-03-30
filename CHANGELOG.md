@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.0.2](https://github.com/mojaloop/bulk-api-adapter/compare/v15.0.1...v15.0.2) (2023-03-29)
+
+
+### Bug Fixes
+
+* removed connection string for mongodb being logged to log ([#97](https://github.com/mojaloop/bulk-api-adapter/issues/97)) ([839f515](https://github.com/mojaloop/bulk-api-adapter/commit/839f515648081d9e8cb99c94cc89300d3e6f8284))
+
 ### [15.0.1](https://github.com/mojaloop/bulk-api-adapter/compare/v15.0.0...v15.0.1) (2023-03-29)
 
 
