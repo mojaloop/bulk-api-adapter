@@ -5,21 +5,19 @@
   "moderate": true,
   "allowlist": [ // NOTE: Please add as much information as possible to any items added to the allowList
     // Currently no fixes available for the following
-    "GHSA-v88g-cgmw-v5xw",
-    "GHSA-phwq-j96m-2c2q",
-    "GHSA-282f-qqgm-c34q",
-    "GHSA-8cf7-32gw-wr33",
-    "GHSA-hjrf-2m68-5959",
-    "GHSA-qwph-4952-7xr6",
-    "GHSA-6vfc-qv3f-vr6c",
-    "GHSA-p8p7-x288-28g6",
-    "GHSA-mjxr-4v3x-q3m4",
-    "GHSA-rjqq-98f6-6j3r",
-    "GHSA-c2qf-rxjj-qqgw",
-    "GHSA-72xf-g2v4-qvf3",
-    "GHSA-w5p7-h5w8-2hfq",
-    "GHSA-qgmg-gppg-76g5",
-    "GHSA-f9xv-q969-pqx4",
-    "GHSA-p9pc-299p-vxgp"
+   "GHSA-v88g-cgmw-v5xw",
+   "GHSA-phwq-j96m-2c2q",
+   "GHSA-282f-qqgm-c34q",
+   "GHSA-8cf7-32gw-wr33",
+   "GHSA-hjrf-2m68-5959",
+   "GHSA-qwph-4952-7xr6",
+   "GHSA-6vfc-qv3f-vr6c",
+   "GHSA-p8p7-x288-28g6",
+   "GHSA-mjxr-4v3x-q3m4",
+   "GHSA-rjqq-98f6-6j3r",
+   "GHSA-72xf-g2v4-qvf3",
+   "GHSA-w5p7-h5w8-2hfq",
+   "GHSA-qgmg-gppg-76g5",
+   "GHSA-p9pc-299p-vxgp"
   ]
 }
