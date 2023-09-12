@@ -18,7 +18,7 @@
     "registry": "https://registry.npmjs.org"
   },
   "engines": {
-    "node": "=16.x"
+    "node": ">=18.x"
   },
   "imports": {
     "#src/*": "./src/*.js",
