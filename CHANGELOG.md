@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [15.0.4](https://github.com/mojaloop/bulk-api-adapter/compare/v15.0.3...v15.0.4) (2023-09-12)
+
+
+### Chore
+
+* **mojaloop/#3447:** nodejs upgrade ([#99](https://github.com/mojaloop/bulk-api-adapter/issues/99)) ([b8de756](https://github.com/mojaloop/bulk-api-adapter/commit/b8de756651eb9975f965e817481c29b3aac32915)), closes [mojaloop/#3447](https://github.com/mojaloop/project/issues/3447)
+
 ### [15.0.3](https://github.com/mojaloop/bulk-api-adapter/compare/v15.0.2...v15.0.3) (2023-03-30)
 
 
