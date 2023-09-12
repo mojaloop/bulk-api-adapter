@@ -1,5 +1,5 @@
 # bulk-api-adapter
-[![Git Commit](https://img.shields.io/github/last-commit/mojaloop/bulk-api-adapter.svg?style=flat)](https://github.com/mojaloop/bulk-api-adapter/commits/master)
+[![Git Commit](https://img.shields.io/github/last-commit/mojaloop/bulk-api-adapter.svg?style=flat)](https://github.com/mojaloop/bulk-api-adapter/commits/main)
 [![Git Releases](https://img.shields.io/github/release/mojaloop/bulk-api-adapter.svg?style=flat)](https://github.com/mojaloop/bulk-api-adapter/releases)
 [![Docker pulls](https://img.shields.io/docker/pulls/mojaloop/bulk-api-adapter.svg?style=flat)](https://hub.docker.com/r/mojaloop/bulk-api-adapter)
 [![CircleCI](https://circleci.com/gh/mojaloop/bulk-api-adapter.svg?style=svg)](https://app.circleci.com/pipelines/github/mojaloop/bulk-api-adapter)
@@ -12,19 +12,21 @@ Swagger API [location](./src/interface/swagger.yaml)
 
 ## Auditing Dependencies
 
-We use `npm-audit-resolver` along with `npm audit` to check dependencies for node vulnerabilities, and keep track of resolved dependencies with an `audit-resolve.json` file.
+We use `audit-ci` along with `npm audit` to check dependencies for node vulnerabilities, and keep track of resolved dependencies with an `audit-ci.jsonc` file.
 
 To start a new resolution process, run:
+
 ```bash
-npm run audit:resolve
+npm run audit:fix
 ```
 
 You can then check to see if the CI will pass based on the current dependencies with:
+
 ```bash
 npm run audit:check
 ```
 
-And commit the changed `audit-resolve.json` to ensure that CircleCI will build correctly.
+The [audit-ci.jsonc](./audit-ci.jsonc) contains any audit-exceptions that cannot be fixed to ensure that CircleCI will build correctly.
 
 ## Container Scans
 
