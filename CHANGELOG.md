@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [16.0.0](https://github.com/mojaloop/bulk-api-adapter/compare/v15.0.4...v16.0.0) (2023-09-14)
+
+
+### CI
+
+* fix nodejs version for image and license scans ([#100](https://github.com/mojaloop/bulk-api-adapter/issues/100)) ([0389050](https://github.com/mojaloop/bulk-api-adapter/commit/038905006163807f99525f6ca2d7c3e68b10eec5))
+
 ### [15.0.4](https://github.com/mojaloop/bulk-api-adapter/compare/v15.0.3...v15.0.4) (2023-09-12)
 
 
