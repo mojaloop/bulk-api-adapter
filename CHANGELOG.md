@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [16.0.1](https://github.com/mojaloop/bulk-api-adapter/compare/v16.0.0...v16.0.1) (2023-10-20)
+
+
+### Bug Fixes
+
+* **mojaloop/#3589:** fix mongoose 'promiseLibrary' option bug ([#102](https://github.com/mojaloop/bulk-api-adapter/issues/102)) ([b770c0a](https://github.com/mojaloop/bulk-api-adapter/commit/b770c0ab9a92effbb5017d56bce9ee76b4d1fd29)), closes [#3589](https://github.com/mojaloop/bulk-api-adapter/issues/3589)
+
 ## [16.0.0](https://github.com/mojaloop/bulk-api-adapter/compare/v15.0.4...v16.0.0) (2023-09-14)
 
 
