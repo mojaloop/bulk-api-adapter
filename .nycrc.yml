@@ -1,0 +1,20 @@
+temp-directory: "./.nyc_output"
+check-coverage: true
+per-file: true
+lines: 35
+statements: 35
+functions: 35
+branches: 35
+all: true
+include: [
+  "src/**/*.js"
+]
+reporter: [
+  "lcov",
+  "text-summary"
+]
+exclude: [
+  "**/node_modules/**",
+  '**/migrations/**',
+  '**/docs/**'
+]
