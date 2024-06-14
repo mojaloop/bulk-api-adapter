@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.0.2](https://github.com/mojaloop/bulk-api-adapter/compare/v17.0.1...v17.0.2) (2024-06-14)
+
+
+### Chore
+
+* updates to tough cookie dependency ([#108](https://github.com/mojaloop/bulk-api-adapter/issues/108)) ([2a5de21](https://github.com/mojaloop/bulk-api-adapter/commit/2a5de2179f41ad5703a7e9d94a31974189b472ee))
+
 ### [17.0.1](https://github.com/mojaloop/bulk-api-adapter/compare/v17.0.0...v17.0.1) (2024-06-12)
 
 
