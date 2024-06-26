@@ -38,6 +38,7 @@ const Consumer = require('@mojaloop/central-services-stream').Util.Consumer
 const Enum = require('@mojaloop/central-services-shared').Enum
 const BulkTransferModels = require('@mojaloop/object-store-lib').Models.BulkTransfer
 const Participant = require('#src/domain/participant/index')
+const Config = require('#src/lib/config')
 
 // Sample Bulk Prepare Transfer Message received by the Bulk API Adapter
 const fspiopBulkPrepareTransferMsg = {
@@ -259,7 +260,7 @@ Test('Bulk Transfer PREPARE handler', handlerTest => {
         // Assert
         test.equal(result, true)
         test.equal(MainUtil.Request.sendRequest.lastCall.args[0], postCallbackUrl)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[2], Enum.Http.Headers.FSPIOP.SWITCH.value)
+        test.equal(MainUtil.Request.sendRequest.lastCall.args[2], Config.HUB_NAME)
         test.equal(MainUtil.Request.sendRequest.lastCall.args[3], fspiopBulkPrepareTransferMsg.payeeFsp)
         test.equal(MainUtil.Request.sendRequest.lastCall.args[4], Enum.Http.RestMethods.POST)
         test.equal(MainUtil.Request.sendRequest.lastCall.args[5], JSON.stringify(fspiopBulkPrepareTransferMsg))

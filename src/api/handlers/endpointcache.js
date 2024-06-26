@@ -24,8 +24,10 @@
 
 'use strict'
 
-const ParticipantEndpointCache = require('@mojaloop/central-services-shared').Util.Endpoints
+const { Endpoints: ParticipantEndpointCache, HeaderValidation } = require('@mojaloop/central-services-shared').Util
 const Config = require('../../lib/config.js')
+
+const hubNameRegex = HeaderValidation.getHubNameRegex(Config.HUB_NAME)
 
 /**
  * Operations on /endpointcache
@@ -40,7 +42,7 @@ module.exports = {
    */
   delete: async (request, h) => {
     await ParticipantEndpointCache.stopCache()
-    await ParticipantEndpointCache.initializeCache(Config.ENDPOINT_CACHE_CONFIG)
+    await ParticipantEndpointCache.initializeCache(Config.ENDPOINT_CACHE_CONFIG, { hubName: Config.HUB_NAME, hubNameRegex })
     return h.response().code(202)
   }
 }

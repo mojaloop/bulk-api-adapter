@@ -188,7 +188,7 @@ const processMessage = async (msg, span) => {
     const payloadForCallback = decodedPayload.body.toString()
     let callbackHeaders
 
-    const jwsSigner = getJWSSigner(ENUM.Http.Headers.FSPIOP.SWITCH.value)
+    const jwsSigner = getJWSSigner(Config.HUB_NAME)
     const fromSwitch = true
 
     // Injected Configuration for outbound Content-Type & Accept headers.
@@ -205,7 +205,7 @@ const processMessage = async (msg, span) => {
       responsePayload.individualTransfers = bulkResponseMessage.individualTransferResults
       callbackHeaders = createCallbackHeaders({ headers: content.headers, httpMethod: ENUM.Http.RestMethods.POST, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_POST }, fromSwitch)
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.POST}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, to, ENUM.Http.RestMethods.POST, JSON.stringify(responsePayload), null, null, jwsSigner, protocolVersions)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, Config.HUB_NAME, to, ENUM.Http.RestMethods.POST, JSON.stringify(responsePayload), null, null, jwsSigner, protocolVersions)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_PREPARE && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
@@ -236,7 +236,7 @@ const processMessage = async (msg, span) => {
       responsePayload.individualTransferResults = bulkResponseMessage.individualTransferResults
       callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT }, fromSwitch)
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, to, ENUM.Http.RestMethods.PUT, responsePayload, null, null, jwsSigner, protocolVersions)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, Config.HUB_NAME, to, ENUM.Http.RestMethods.PUT, responsePayload, null, null, jwsSigner, protocolVersions)
     }
 
     if (actionLower === ENUM.Events.Event.Action.BULK_COMMIT && statusLower !== ENUM.Events.EventStatus.SUCCESS.status) {
@@ -276,7 +276,7 @@ const processMessage = async (msg, span) => {
       const callbackURLTo = await Participant.getEndpoint(to, ENUM.EndPoints.FspEndpointTypes.FSPIOP_CALLBACK_URL_BULK_TRANSFER_ERROR, id)
       callbackHeaders = createCallbackHeaders({ dfspId: to, transferId: id, headers: content.headers, httpMethod: ENUM.Http.RestMethods.PUT, endpointTemplate: ENUM.EndPoints.FspEndpointTemplates.BULK_TRANSFERS_PUT_ERROR }, fromSwitch)
       Logger.debug(`Notification::processMessage - Callback.sendRequest(${callbackURLTo}, ${ENUM.Http.RestMethods.PUT}, ${JSON.stringify(callbackHeaders)}, ${JSON.stringify(responsePayload)}, ${id}, ${from}, ${to})`)
-      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, to, ENUM.Http.RestMethods.PUT, responsePayload, null, null, jwsSigner, protocolVersions)
+      return Util.Request.sendRequest(callbackURLTo, callbackHeaders, Config.HUB_NAME, to, ENUM.Http.RestMethods.PUT, responsePayload, null, null, jwsSigner, protocolVersions)
     }
 
     Logger.warn(`Unknown action received from kafka: ${action}`)

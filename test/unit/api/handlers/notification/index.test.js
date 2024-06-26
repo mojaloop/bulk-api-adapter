@@ -108,7 +108,7 @@ Test('Notification handler tests', async notificationTest => {
       Util.Request.sendRequest.withArgs(toUrl, toHeaders, msg.value.from, msg.value.to, method, message).returns(Promise.resolve(200))
 
       const result = await Notification.processMessage(msg)
-      test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, msg.value.to, method, message))
+      test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, Config.HUB_NAME, msg.value.to, method, message))
       test.equal(result, expected)
       test.end()
     })
@@ -172,14 +172,14 @@ Test('Notification handler tests', async notificationTest => {
 
       const expected = 200
 
-      Util.Request.sendRequest.withArgs(toUrl, toHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, msg.value.to, method, message).returns(Promise.resolve(200))
+      Util.Request.sendRequest.withArgs(toUrl, toHeaders, Config.HUB_NAME, msg.value.to, method, message).returns(Promise.resolve(200))
 
       const result = await NotificationProxy.processMessage(msg)
-      // test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, msg.value.to, method, message, null, null, null, {
+      // test.ok(Util.Request.sendRequest.calledWith(toUrl, toHeaders, Config.HUB_NAME, msg.value.to, method, message, null, null, null, {
       //   accept: ConfigStub.PROTOCOL_VERSIONS.ACCEPT.DEFAULT,
       //   content: ConfigStub.PROTOCOL_VERSIONS.CONTENT.DEFAULT
       // }))
-      Sinon.assert.calledWith(Util.Request.sendRequest, toUrl, toHeaders, ENUM.Http.Headers.FSPIOP.SWITCH.value, msg.value.to, method, message, null, null, undefined, {
+      Sinon.assert.calledWith(Util.Request.sendRequest, toUrl, toHeaders, Config.HUB_NAME, msg.value.to, method, message, null, null, undefined, {
         accept: ConfigStub.PROTOCOL_VERSIONS.ACCEPT.DEFAULT,
         content: ConfigStub.PROTOCOL_VERSIONS.CONTENT.DEFAULT
       })
