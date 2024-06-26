@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.1.0](https://github.com/mojaloop/bulk-api-adapter/compare/v17.0.2...v17.1.0) (2024-06-26)
+
+
+### Features
+
+* **csi-164:** parameterize switch id ([#109](https://github.com/mojaloop/bulk-api-adapter/issues/109)) ([17a63f6](https://github.com/mojaloop/bulk-api-adapter/commit/17a63f6f98aef48bec72925ff48ed96d7c426a38))
+
 ### [17.0.2](https://github.com/mojaloop/bulk-api-adapter/compare/v17.0.1...v17.0.2) (2024-06-14)
 
 
