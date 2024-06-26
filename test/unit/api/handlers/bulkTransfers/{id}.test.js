@@ -33,12 +33,13 @@ const Logger = require('@mojaloop/central-services-logger')
 const Handler = require('../../../../../src/api/handlers/bulkTransfers/{id}')
 const TransferService = require('../../../../../src/domain/bulkTransfer')
 const BulkTransferModels = require('@mojaloop/object-store-lib').Models.BulkTransfer
+const Config = require('../../../../../src/lib/config')
 
 const createGetRequest = (params, sourceFsp) => {
   const requestParams = params || {}
   const headers = {}
   headers[ENUM.Http.Headers.FSPIOP.SOURCE] = sourceFsp
-  headers[ENUM.Http.Headers.FSPIOP.DESTINATION] = 'switch'
+  headers[ENUM.Http.Headers.FSPIOP.DESTINATION] = Config.HUB_NAME
   return {
     headers,
     params: requestParams,

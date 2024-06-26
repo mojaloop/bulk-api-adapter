@@ -38,6 +38,7 @@ const Consumer = require('@mojaloop/central-services-stream').Util.Consumer
 const Enum = require('@mojaloop/central-services-shared').Enum
 const BulkTransferModels = require('@mojaloop/object-store-lib').Models.BulkTransfer
 const Participant = require('#src/domain/participant/index')
+const Config = require('#src/lib/config')
 
 // Sample Bulk Prepare Transfer Message received by the Bulk API Adapter
 const fspiopBulkPrepareTransferMsg = {
@@ -258,11 +259,12 @@ Test('Bulk Transfer PREPARE handler', handlerTest => {
 
         // Assert
         test.equal(result, true)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[0], postCallbackUrl)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[2], Enum.Http.Headers.FSPIOP.SWITCH.value)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[3], fspiopBulkPrepareTransferMsg.payeeFsp)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[4], Enum.Http.RestMethods.POST)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[5], JSON.stringify(fspiopBulkPrepareTransferMsg))
+        const args = MainUtil.Request.sendRequest.lastCall.args[0]
+        test.equal(args.url, postCallbackUrl)
+        test.equal(args.source, Config.HUB_NAME)
+        test.equal(args.destination, fspiopBulkPrepareTransferMsg.payeeFsp)
+        test.equal(args.method, Enum.Http.RestMethods.POST)
+        test.equal(args.payload, JSON.stringify(fspiopBulkPrepareTransferMsg))
 
         test.end()
       } catch (err) {
@@ -296,11 +298,12 @@ Test('Bulk Transfer PREPARE handler', handlerTest => {
 
         // Assert
         test.equal(result, true)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[0], putCallbackUrl)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[2], fspiopBulkPrepareTransferMsg.payerFsp)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[3], fspiopBulkPrepareTransferMsg.payeeFsp)
-        test.equal(MainUtil.Request.sendRequest.lastCall.args[4], Enum.Http.RestMethods.PUT)
-        test.same(MainUtil.Request.sendRequest.lastCall.args[5], fspiopBulkFulfilTransferMsg)
+        const args = MainUtil.Request.sendRequest.lastCall.args[0]
+        test.equal(args.url, putCallbackUrl)
+        test.equal(args.source, fspiopBulkPrepareTransferMsg.payerFsp)
+        test.equal(args.destination, fspiopBulkPrepareTransferMsg.payeeFsp)
+        test.equal(args.method, Enum.Http.RestMethods.PUT)
+        test.same(args.payload, fspiopBulkFulfilTransferMsg)
 
         test.end()
       } catch (err) {

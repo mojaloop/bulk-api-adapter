@@ -7,6 +7,6 @@
     // Currently no fixes available for the following
    "GHSA-p8p7-x288-28g6", // https://github.com/advisories/GHSA-p8p7-x288-28g6
    "GHSA-w5p7-h5w8-2hfq", // https://github.com/advisories/GHSA-w5p7-h5w8-2hfq
-   "GHSA-qgmg-gppg-76g5", // https://github.com/advisories/GHSA-qgmg-gppg-76g5
+   "GHSA-qgmg-gppg-76g5" // https://github.com/advisories/GHSA-qgmg-gppg-76g5
   ]
 }
