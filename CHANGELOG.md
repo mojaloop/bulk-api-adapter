@@ -2,6 +2,29 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.0.2](https://github.com/mojaloop/bulk-api-adapter/compare/v17.0.1...v17.0.2) (2024-06-14)
+
+
+### Chore
+
+* updates to tough cookie dependency ([#108](https://github.com/mojaloop/bulk-api-adapter/issues/108)) ([2a5de21](https://github.com/mojaloop/bulk-api-adapter/commit/2a5de2179f41ad5703a7e9d94a31974189b472ee))
+
+### [17.0.1](https://github.com/mojaloop/bulk-api-adapter/compare/v17.0.0...v17.0.1) (2024-06-12)
+
+
+### Chore
+
+* dependency updates and minor maintenance ([#107](https://github.com/mojaloop/bulk-api-adapter/issues/107)) ([b9ed50a](https://github.com/mojaloop/bulk-api-adapter/commit/b9ed50a38b8ee344803c638457063512c528361c))
+* **deps:** bump express from 4.18.2 to 4.19.2 ([#104](https://github.com/mojaloop/bulk-api-adapter/issues/104)) ([115e80d](https://github.com/mojaloop/bulk-api-adapter/commit/115e80d95c7325683906a35c87ed65b07bb295be))
+* **deps:** bump follow-redirects from 1.15.2 to 1.15.6 ([#105](https://github.com/mojaloop/bulk-api-adapter/issues/105)) ([8b7a834](https://github.com/mojaloop/bulk-api-adapter/commit/8b7a834c8a9385d6b544a033ac022a27f815ff84))
+
+## [17.0.0](https://github.com/mojaloop/bulk-api-adapter/compare/v16.0.1...v17.0.0) (2023-11-06)
+
+
+### Bug Fixes
+
+* **mojaloop/#3615:** update dependencies ([#103](https://github.com/mojaloop/bulk-api-adapter/issues/103)) ([326dbd0](https://github.com/mojaloop/bulk-api-adapter/commit/326dbd07744e555d7fe1d06d3d899cd1e9c10abe)), closes [mojaloop/#3615](https://github.com/mojaloop/project/issues/3615)
+
 ### [16.0.1](https://github.com/mojaloop/bulk-api-adapter/compare/v16.0.0...v16.0.1) (2023-10-20)
 
 
