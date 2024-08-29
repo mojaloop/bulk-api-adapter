@@ -17,7 +17,7 @@ USER root
 
 WORKDIR /opt/app/
 
-RUN apk add --no-cache -t build-dependencies git make gcc g++ python3 libtool autoconf automake bash \
+RUN apk add --no-cache -t build-dependencies git make gcc g++ python3 py3-setuptools libtool autoconf automake bash \
     && cd $(npm root -g)/npm
 
 COPY package.json package-lock.json* /opt/app/
