@@ -29,6 +29,7 @@ const Logger = require('@mojaloop/central-services-logger')
 const ErrorHandler = require('@mojaloop/central-services-error-handling')
 const Config = require('../../../../lib/config')
 const Catbox = require('@hapi/catbox')
+const CatboxMemory = require('@hapi/catbox-memory')
 const Model = require('../../../../models/participant/participantEndpoint')
 const { Map } = require('immutable')
 
@@ -54,7 +55,7 @@ const initializeCache = async () => {
   Logger.info('participantEndpointCache::initializeCache::start')
   try {
     Logger.debug(`participantEndpointCache::initializeCache::start::clientOptions - ${clientOptions}`)
-    client = new Catbox.Client(require('@hapi/catbox-memory'), clientOptions)
+    client = new Catbox.Client(CatboxMemory.Engine, clientOptions)
     await client.start()
     policyOptions.generateFunc = fetchEndpoints
     Logger.debug(`participantEndpointCache::initializeCache::start::policyOptions - ${policyOptions}`)
