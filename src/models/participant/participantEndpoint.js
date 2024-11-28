@@ -49,7 +49,7 @@ const getEndpoint = async (fsp) => {
   const requestOptions = {
     url,
     method: 'get',
-    httpsAgent: new (require('https').Agent)({ rejectUnauthorized: false }), // Equivalent to `agentOptions` in `request`
+    httpsAgent: new (require('https').Agent)({ rejectUnauthorized: false }) // Equivalent to `agentOptions` in `request`
   }
   Logger.debug(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := fetching the endpoints from the resource with options: ${JSON.stringify(requestOptions)}`)
 
