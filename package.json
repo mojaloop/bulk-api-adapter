@@ -62,28 +62,29 @@
   "dependencies": {
     "@hapi/basic": "7.0.2",
     "@hapi/good": "9.0.1",
-    "@hapi/hapi": "21.3.10",
+    "@hapi/hapi": "21.3.12",
     "@hapi/inert": "7.1.0",
     "@hapi/vision": "7.0.3",
-    "@mojaloop/central-services-error-handling": "13.0.1",
+    "@mojaloop/central-services-error-handling": "13.0.3",
     "@mojaloop/central-services-health": "15.0.0",
-    "@mojaloop/central-services-logger": "11.5.1",
-    "@mojaloop/central-services-metrics": "12.0.8",
-    "@mojaloop/central-services-shared": "18.12.0",
-    "@mojaloop/central-services-stream": "11.3.1",
-    "@mojaloop/event-sdk": "14.1.1",
-    "@mojaloop/object-store-lib": "12.0.3",
+    "@mojaloop/central-services-logger": "11.5.2",
+    "@mojaloop/central-services-metrics": "12.4.3",
+    "@mojaloop/central-services-shared": "18.15.1",
+    "@mojaloop/central-services-stream": "11.4.2",
+    "@mojaloop/sdk-standard-components": "19.6.3",
+    "@mojaloop/event-sdk": "14.1.2",
+    "@mojaloop/object-store-lib": "12.0.4",
     "@now-ims/hapi-now-auth": "2.1.0",
-    "axios": "1.7.7",
+    "axios": "1.7.9",
     "blipp": "4.0.2",
     "@hapi/boom": "10.0.1",
     "@hapi/catbox": "12.1.1",
     "@hapi/catbox-memory": "6.0.2",
-    "commander": "12.1.0",
+    "commander": "13.0.0",
     "hapi-auth-bearer-token": "8.0.0",
     "hapi-openapi": "3.0.0",
-    "hapi-swagger": "17.3.0",
-    "immutable": "4.3.7",
+    "hapi-swagger": "17.3.2",
+    "immutable": "5.0.3",
     "joi": "^17.13.3",
     "mongo-uri-builder": "^4.0.0",
     "mustache": "4.2.0",
@@ -93,9 +94,16 @@
     "uuid4": "2.0.3"
   },
   "overrides": {
+    "postcss": {
+      "nanoid": "^3.3.8"
+    },
+    "swagmock": {
+      "validator": "13.12.0"
+    },
     "shins": {
       "ajv": "6.12.3",
       "ejs": "3.1.10",
+      "path-to-regexp": "0.1.12",
       "sanitize-html": "2.12.1",
       "yargs-parser": "18.1.1",
       "markdown-it": "12.3.2"
@@ -109,13 +117,15 @@
       "tough-cookie": "4.1.3"
     },
     "jsonwebtoken": "9.0.0",
-    "jsonpointer": "5.0.0"
+    "jsonpointer": "5.0.0",
+    "cross-spawn": "7.0.6",
+    "trim": "0.0.3"
   },
   "devDependencies": {
     "audit-ci": "^7.1.0",
-    "nyc": "17.0.0",
-    "nodemon": "3.1.5",
-    "npm-check-updates": "17.1.2",
+    "nyc": "17.1.0",
+    "nodemon": "3.1.9",
+    "npm-check-updates": "17.1.13",
     "pre-commit": "1.2.2",
     "proxyquire": "2.1.3",
     "replace": "^1.2.2",
