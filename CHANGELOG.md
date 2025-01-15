@@ -2,6 +2,15 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.1.2](https://github.com/mojaloop/bulk-api-adapter/compare/v17.1.1...v17.1.2) (2025-01-15)
+
+
+### Chore
+
+* **deps:** bump axios and @mojaloop/central-services-shared ([#113](https://github.com/mojaloop/bulk-api-adapter/issues/113)) ([d7456ad](https://github.com/mojaloop/bulk-api-adapter/commit/d7456ad9b360a710d3539bcad71cd3529d4a2446))
+* **deps:** bump cookie and express ([#114](https://github.com/mojaloop/bulk-api-adapter/issues/114)) ([252b6a6](https://github.com/mojaloop/bulk-api-adapter/commit/252b6a60bbfa6d4337c1d69bf30abd49418c3cb6))
+* fix vulnerabilities, update deps ([#117](https://github.com/mojaloop/bulk-api-adapter/issues/117)) ([f6ebe09](https://github.com/mojaloop/bulk-api-adapter/commit/f6ebe0972bbe6fde1f83a12e9d0446d8fc7efef5))
+
 ### [17.1.1](https://github.com/mojaloop/bulk-api-adapter/compare/v17.1.0...v17.1.1) (2024-09-18)
 
 
