@@ -8,6 +8,8 @@
    "GHSA-p8p7-x288-28g6", // https://github.com/advisories/GHSA-p8p7-x288-28g6
    "GHSA-w5p7-h5w8-2hfq", // https://github.com/advisories/GHSA-w5p7-h5w8-2hfq
    "GHSA-qgmg-gppg-76g5", // https://github.com/advisories/GHSA-qgmg-gppg-76g5
-   "GHSA-8hc4-vh64-cxmj"  // https://github.com/advisories/GHSA-8hc4-vh64-cxmj
+   "GHSA-8hc4-vh64-cxmj",  // https://github.com/advisories/GHSA-8hc4-vh64-cxmj
+   "GHSA-3xgq-45jj-v275",  // GHSA-3xgq-45jj-v275|pre-commit>cross-spawn
+   "GHSA-rhx6-c78j-4q9w"  // GHSA-rhx6-c78j-4q9w|express>path-to-regexp
   ]
 }
