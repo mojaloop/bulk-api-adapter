@@ -36,7 +36,7 @@ services:
       interval: 30s
 
   objstore:
-    image: mongo:6.0.5
+    image: mongo:8.0
     container_name: ba_objstore
     logging:
       driver: none
@@ -52,7 +52,7 @@ services:
       start_period: 40s
 
   central-ledger:
-    image: mojaloop/central-ledger:v17.2.1
+    image: mojaloop/central-ledger:v18.0.1
     container_name: ba_central-ledger
     user: root
     command:
@@ -106,7 +106,7 @@ services:
       interval: 30s
 
   kafka:
-    image: docker.io/bitnami/kafka:3.5
+    image: docker.io/bitnami/kafka:3.9
     container_name: cs_kafka
     networks:
       - ba-mojaloop-net
@@ -139,7 +139,7 @@ services:
     container_name: cs_kafka-provisioning
     networks:
       - ba-mojaloop-net
-    image: docker.io/bitnami/kafka:3.5
+    image: docker.io/bitnami/kafka:3.9
     depends_on:
       - kafka
     volumes:
@@ -147,7 +147,7 @@ services:
     command: bash /tmp/kafka/scripts/provision.sh
 
   simulator:
-    image: mojaloop/simulator:v11.1.3
+    image: mojaloop/simulator:v12.2.1
     container_name: ba_simulator
     ports:
       - "8444:8444"
