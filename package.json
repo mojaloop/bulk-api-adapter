@@ -61,6 +61,9 @@
   },
   "dependencies": {
     "@hapi/basic": "7.0.2",
+    "@hapi/boom": "10.0.1",
+    "@hapi/catbox": "12.1.1",
+    "@hapi/catbox-memory": "6.0.2",
     "@hapi/good": "9.0.1",
     "@hapi/hapi": "21.3.12",
     "@hapi/inert": "7.1.0",
@@ -77,9 +80,6 @@
     "@now-ims/hapi-now-auth": "2.1.0",
     "axios": "1.7.9",
     "blipp": "4.0.2",
-    "@hapi/boom": "10.0.1",
-    "@hapi/catbox": "12.1.1",
-    "@hapi/catbox-memory": "6.0.2",
     "commander": "13.0.0",
     "hapi-auth-bearer-token": "8.0.0",
     "hapi-openapi": "3.0.0",
@@ -90,7 +90,6 @@
     "mustache": "4.2.0",
     "parse-strings-in-object": "2.0.0",
     "rc": "1.2.8",
-    "request": "2.88.2",
     "uuid4": "2.0.3"
   },
   "overrides": {

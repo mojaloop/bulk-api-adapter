@@ -28,7 +28,8 @@
 const Logger = require('@mojaloop/central-services-logger')
 const Config = require('../../lib/config')
 const Mustache = require('mustache')
-const request = require('request')
+// const request = require('request')
+const axios = require('axios')
 
 /**
  * @module src/models/participant
@@ -48,33 +49,30 @@ const getEndpoint = async (fsp) => {
   const requestOptions = {
     url,
     method: 'get',
-    agentOptions: {
-      rejectUnauthorized: false
-    }
+    httpsAgent: new (require('https').Agent)({ rejectUnauthorized: false }) // Equivalent to `agentOptions` in `request`
   }
   Logger.debug(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := fetching the endpoints from the resource with options: ${JSON.stringify(requestOptions)}`)
 
-  return new Promise((resolve, reject) => {
-    return request(requestOptions, (error, response, body) => {
-      if (error) {
-        Logger.error(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := failed with error: ${error}, response: ${JSON.stringify(response)}`)
-        return reject(error)
-      }
-      Logger.info(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := successful with body: ${JSON.stringify(response.body)}`)
-      Logger.debug(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := successful with response: ${JSON.stringify(response)}`)
-      const endpoints = JSON.parse(body)
-      const endpointMap = {}
+  try {
+    const response = await axios(requestOptions)
+    const endpoints = response.data // Axios automatically parses JSON responses
+    const endpointMap = {}
 
-      if (Array.isArray(endpoints)) {
-        endpoints.forEach(item => {
-          endpointMap[item.type] = item.value
-        })
-      }
+    if (Array.isArray(endpoints)) {
+      endpoints.forEach(item => {
+        endpointMap[item.type] = item.value
+      })
+    }
 
-      Logger.debug(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoints := Returning the endpoints: ${JSON.stringify(response)}`)
-      return resolve(endpointMap)
-    })
-  })
+    Logger.info(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := successful with body: ${JSON.stringify(endpoints)}`)
+    Logger.debug(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := successful with response: ${JSON.stringify(response)}`)
+    Logger.debug(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoints := Returning the endpoints: ${JSON.stringify(endpointMap)}`)
+
+    return endpointMap
+  } catch (error) {
+    Logger.error(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := failed with error: ${error.message}`)
+    throw error
+  }
 }
 module.exports = {
   getEndpoint
