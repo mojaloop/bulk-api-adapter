@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.1.3](https://github.com/mojaloop/bulk-api-adapter/compare/v17.1.2...v17.1.3) (2025-01-17)
+
+
+### Chore
+
+* replace request with axios ([#112](https://github.com/mojaloop/bulk-api-adapter/issues/112)) ([bb2b689](https://github.com/mojaloop/bulk-api-adapter/commit/bb2b689ee90849008ab1ea1de445d5f4c555a2d6))
+
 ### [17.1.2](https://github.com/mojaloop/bulk-api-adapter/compare/v17.1.1...v17.1.2) (2025-01-15)
 
 
