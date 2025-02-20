@@ -95,6 +95,7 @@
     "uuid4": "2.0.3"
   },
   "overrides": {
+    "ansi-regex": "5.0.1",
     "postcss": {
       "nanoid": "^3.3.8"
     },
