@@ -1,7 +1,7 @@
 /*****
  License
  --------------
- Copyright © 2017 Bill & Melinda Gates Foundation
+ Copyright © 2020-2025 Mojaloop Foundation
  The Mojaloop files are made available by the Bill & Melinda Gates Foundation under the Apache License, Version 2.0 (the "License") and you may not use these files except in compliance with the License. You may obtain a copy of the License at
 
  http://www.apache.org/licenses/LICENSE-2.0
@@ -20,7 +20,7 @@
  optionally within square brackets <email>.
 
  * Gates Foundation
- - Name Surname <name.surname@gatesfoundation.com>
+ - Name Surname <name.surname@mojaloop.io>
 
  * ModusBox
  - Miguel de Barros <miguel.debarros@modusbox.com>
