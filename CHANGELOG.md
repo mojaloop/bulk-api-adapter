@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.1.5](https://github.com/mojaloop/bulk-api-adapter/compare/v17.1.4...v17.1.5) (2025-02-20)
+
+
+### Bug Fixes
+
+* added xxx and xts test currency ([#120](https://github.com/mojaloop/bulk-api-adapter/issues/120)) ([da71844](https://github.com/mojaloop/bulk-api-adapter/commit/da718442c7c2b6d3325ccdfc0833c8df7a242d31))
+
 ### [17.1.4](https://github.com/mojaloop/bulk-api-adapter/compare/v17.1.3...v17.1.4) (2025-01-28)
 
 
