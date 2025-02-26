@@ -65,7 +65,7 @@ const getEndpoint = async (fsp) => {
     }
 
     Logger.info(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := successful with body: ${JSON.stringify(endpoints)}`)
-    Logger.debug(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := successful with response: ${JSON.stringify(response)}`)
+    // Logger.debug(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoint := successful with response: ${JSON.stringify(response)}`)
     Logger.debug(`[fsp=${fsp}] ~ Model::participantEndpoint::getEndpoints := Returning the endpoints: ${JSON.stringify(endpointMap)}`)
 
     return endpointMap
