@@ -22,10 +22,24 @@ paths:
           in: header
           required: true
       responses:
-        default:
-          schema:
-            type: string
-          description: Successful
+        202:
+          $ref: '#/responses/Response202'
+        400:
+          $ref: '#/responses/ErrorResponse400'
+        401:
+          $ref: '#/responses/ErrorResponse401'
+        403:
+          $ref: '#/responses/ErrorResponse403'
+        404:
+          $ref: '#/responses/ErrorResponse404'
+        405:
+          $ref: '#/responses/ErrorResponse405'
+        406:
+          $ref: '#/responses/ErrorResponse406'
+        501:
+          $ref: '#/responses/ErrorResponse501'
+        503:
+          $ref: '#/responses/ErrorResponse503'
   /health:
     get:
       summary: Status of adapter
@@ -33,10 +47,24 @@ paths:
       tags:
         - health
       responses:
-        default:
-          schema:
-            type: string
-          description: Successful
+        200:
+          $ref: '#/responses/ResponseHealth200'
+        400:
+          $ref: '#/responses/ErrorResponse400'
+        401:
+          $ref: '#/responses/ErrorResponse401'
+        403:
+          $ref: '#/responses/ErrorResponse403'
+        404:
+          $ref: '#/responses/ErrorResponse404'
+        405:
+          $ref: '#/responses/ErrorResponse405'
+        406:
+          $ref: '#/responses/ErrorResponse406'
+        501:
+          $ref: '#/responses/ErrorResponse501'
+        503:
+          $ref: '#/responses/ErrorResponse503'
   /metrics:
     get:
       summary: Prometheus metrics endpoint
@@ -44,10 +72,24 @@ paths:
       tags:
         - metrics
       responses:
-        default:
-          schema:
-            type: string
-          description: Successful
+        200:
+          $ref: '#/responses/Response200'
+        400:
+          $ref: '#/responses/ErrorResponse400'
+        401:
+          $ref: '#/responses/ErrorResponse401'
+        403:
+          $ref: '#/responses/ErrorResponse403'
+        404:
+          $ref: '#/responses/ErrorResponse404'
+        405:
+          $ref: '#/responses/ErrorResponse405'
+        406:
+          $ref: '#/responses/ErrorResponse406'
+        501:
+          $ref: '#/responses/ErrorResponse501'
+        503:
+          $ref: '#/responses/ErrorResponse503'
   /bulkTransfers/{id}:
     get:
       summary: Get a bulk transfer by Id
@@ -107,10 +149,24 @@ paths:
         - bulk-transfers
         - sampled
       responses:
-        default:
-          schema:
-            type: string
-          description: Successful
+        202:
+          $ref: "#/responses/202"
+        400:
+          $ref: "#/responses/400"
+        401:
+          $ref: "#/responses/401"
+        403:
+          $ref: "#/responses/403"
+        404:
+          $ref: "#/responses/404"
+        405:
+          $ref: "#/responses/405"
+        406:
+          $ref: "#/responses/406"
+        501:
+          $ref: "#/responses/501"
+        503:
+          $ref: "#/responses/503"
     put:
       summary: BulkTransfersByIDPut
       operationId: BulkTransfersByIDPut
@@ -165,10 +221,24 @@ paths:
       tags:
         - bulkTransfers
       responses:
-        default:
-          schema:
-            type: string
-          description: The callback PUT /bulkTransfers/<ID> is used to inform the client of a requested or created bulk transfer. The <ID> in the URI should contain the bulkTransferId that was used for the creation of the bulk transfer (POST /bulkTransfers), or the <ID> that was used in the GET /bulkTransfers/<ID>.
+        200:
+          $ref: "#/responses/200"
+        400:
+          $ref: "#/responses/400"
+        401:
+          $ref: "#/responses/401"
+        403:
+          $ref: "#/responses/403"
+        404:
+          $ref: "#/responses/404"
+        405:
+          $ref: "#/responses/405"
+        406:
+          $ref: "#/responses/406"
+        501:
+          $ref: "#/responses/501"
+        503:
+          $ref: "#/responses/503"
   /bulkTransfers:
     post:
       summary: Transfer API.
@@ -228,10 +298,24 @@ paths:
       tags:
         - bulk-transfers
       responses:
-        default:
-          schema:
-            type: string
-          description: Successful
+        202:
+          $ref: "#/responses/202"
+        400:
+          $ref: "#/responses/400"
+        401:
+          $ref: "#/responses/401"
+        403:
+          $ref: "#/responses/403"
+        404:
+          $ref: "#/responses/404"
+        405:
+          $ref: "#/responses/405"
+        406:
+          $ref: "#/responses/406"
+        501:
+          $ref: "#/responses/501"
+        503:
+          $ref: "#/responses/503"
   /bulkTransfers/{id}/error:
     put:
       summary: BulkTransfersErrorByIDPut
@@ -288,11 +372,24 @@ paths:
       tags:
         - bulkTransfersError
       responses:
-        default:
-          schema:
-            type: string
-          description: If the server is unable to find or create a bulk transfer, or another processing error occurs, the error callback PUT /bulkTransfers/<ID>/error is used. The <id> in the URI should contain the bulkTransferId that was used for the creation request of the bulk transfer (POST /bulkTransfers), or the <ID> that was used in the GET /bulkTransfers/<ID>.
-
+        200:
+          $ref: "#/responses/200"
+        400:
+          $ref: "#/responses/400"
+        401:
+          $ref: "#/responses/401"
+        403:
+          $ref: "#/responses/403"
+        404:
+          $ref: "#/responses/404"
+        405:
+          $ref: "#/responses/405"
+        406:
+          $ref: "#/responses/406"
+        501:
+          $ref: "#/responses/501"
+        503:
+          $ref: "#/responses/503"
 
 definitions:
   Amount:
@@ -308,7 +405,6 @@ definitions:
     required:
       - currency
       - amount
-
   Currency:
     title: Currency
     description: The currency codes defined in ISO 4217 as three-letter alphabetic codes are used as the standard naming representation for currencies.
@@ -497,43 +593,56 @@ definitions:
       - key
       - value
   Extension:
-    type: array
-    description: extension
-    minItems: 1
-    maxItems: 16
-    items:
-      $ref: '#/definitions/ExtensionModel'
-  ExtensionList:
+    title: Extension
     type: object
-    description: Extension list
+    description: Data model for the complex type Extension.
+    properties:
+      key:
+        $ref: "#/definitions/ExtensionKey"
+      value:
+        $ref: "#/definitions/ExtensionValue"
+    required:
+      - key
+      - value
+  ExtensionKey:
+    title: ExtensionKey
+    type: string
+    minLength: 1
+    maxLength: 32
+    description: Extension key.
+  ExtensionList:
+    title: ExtensionList
+    type: object
+    description: >-
+      Data model for the complex type ExtensionList. An optional list of
+      extensions, specific to deployment.
     properties:
       extension:
-        $ref: '#/definitions/Extension'
+        type: array
+        items:
+          $ref: "#/definitions/Extension"
+        minItems: 1
+        maxItems: 16
+        description: Number of Extension elements.
     required:
       - extension
+  ExtensionValue:
+    title: ExtensionValue
+    type: string
+    minLength: 1
+    maxLength: 128
+    description: Extension value.
   IndividualTransfer:
     type: object
     properties:
       transferId:
-        type: string
-        description: Id of transfer
-        x-format:
-          guid: true
+        $ref: '#/definitions/CorrelationId'
       transferAmount:
         $ref: '#/definitions/Amount'
       ilpPacket:
-        type: string
-        description: ilp packet
-        minLength: 1
-        maxLength: 32768
-        pattern: '^[A-Za-z0-9-_]+[=]{0,2}$'
+        $ref: '#/definitions/IlpPacket' 
       condition:
-        type: string
-        description: Condition of transfer
-        maxLength: 48
-        pattern: '^[A-Za-z0-9-_]{43}$'
-        x-convert:
-          trim: true
+        $ref: '#/definitions/IlpCondition'
       extensionList:
         type: object
         description: Extension list
@@ -572,11 +681,9 @@ definitions:
     description: Data model for the complex type IndividualTransferResult.
     properties:
       transferId:
-        type: string
-        description: Identifies messages related to the same /transfers sequence.
+        $ref: '#/definitions/CorrelationId'
       fulfilment:
-        type: string
-        description: Fulfilment of the condition specified with the transaction. Note - Either fulfilment or errorInformation should be set, not both.
+        $ref: '#/definitions/IlpFulfilment'
       errorInformation:
         $ref: '#/definitions/ErrorInformation'
         description: If transfer is REJECTED, error information may be provided. Note - Either fulfilment or errorInformation should be set, not both.
@@ -585,20 +692,6 @@ definitions:
         description: Optional extension, specific to deployment.
     required:
     - transferId
-  ErrorInformation:
-    type: object
-    description: Error information
-    properties:
-      errorDescription:
-        type: string
-      errorCode:
-        type: string
-        pattern: '^[0-9]{4}'
-      extensionList:
-        $ref: '#/definitions/ExtensionList'
-    required:
-      - errorDescription
-      - errorCode
   Error:
     type: object
     properties:
@@ -610,15 +703,9 @@ definitions:
     type: object
     properties:
       bulkTransferId:
-        type: string
-        description: Id of bulk transfers
-        x-format:
-          guid: true
+        $ref: '#/definitions/CorrelationId'
       bulkQuoteId:
-        type: string
-        description: Id of bulk quote
-        x-format:
-          guid: true
+        $ref: '#/definitions/CorrelationId'
       payeeFsp:
         type: string
         description: Financial Service Provider of Payee
@@ -670,3 +757,348 @@ definitions:
         description: Optional extension, specific to deployment.
     required:
     - bulkTransferState
+  CorrelationId:
+    title: CorrelationId
+    type: string
+    pattern: >-
+      ^[0-9a-f]{8}-[0-9a-f]{4}-[1-7][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}$|^[0-9A-HJKMNP-TV-Z]{26}$
+    description: >-
+      Identifier that correlates all messages of the same sequence. The
+      supported identifiers formats are for lowercase
+      [UUID](https://datatracker.ietf.org/doc/html/rfc9562) and uppercase
+      [ULID](https://github.com/ulid/spec)
+    example: b51ec534-ee48-4575-b6a9-ead2955b8069
+  IlpPacket:
+    title: IlpPacket
+    type: string
+    pattern: ^[A-Za-z0-9-_]+[=]{0,2}$
+    minLength: 1
+    maxLength: 32768
+    description: Information for recipient (transport layer information).
+    example: >-
+      AYIBgQAAAAAAAASwNGxldmVsb25lLmRmc3AxLm1lci45T2RTOF81MDdqUUZERmZlakgyOVc4bXFmNEpLMHlGTFGCAUBQU0svMS4wCk5vbmNlOiB1SXlweUYzY3pYSXBFdzVVc05TYWh3CkVuY3J5cHRpb246IG5vbmUKUGF5bWVudC1JZDogMTMyMzZhM2ItOGZhOC00MTYzLTg0NDctNGMzZWQzZGE5OGE3CgpDb250ZW50LUxlbmd0aDogMTM1CkNvbnRlbnQtVHlwZTogYXBwbGljYXRpb24vanNvbgpTZW5kZXItSWRlbnRpZmllcjogOTI4MDYzOTEKCiJ7XCJmZWVcIjowLFwidHJhbnNmZXJDb2RlXCI6XCJpbnZvaWNlXCIsXCJkZWJpdE5hbWVcIjpcImFsaWNlIGNvb3BlclwiLFwiY3JlZGl0TmFtZVwiOlwibWVyIGNoYW50XCIsXCJkZWJpdElkZW50aWZpZXJcIjpcIjkyODA2MzkxXCJ9IgA
+  IlpCondition:
+    title: IlpCondition
+    type: string
+    pattern: ^[A-Za-z0-9-_]{43}$
+    maxLength: 48
+    description: Condition that must be attached to the transfer by the Payer.
+  IlpFulfilment:
+    title: IlpFulfilment
+    type: string
+    pattern: ^[A-Za-z0-9-_]{43}$
+    maxLength: 48
+    description: Fulfilment that must be attached to the transfer by the Payee.
+    example: WLctttbu2HvTsa1XWvUoGRcQozHsqeu9Ahl2JW9Bsu8
+  Status:
+    title: Status
+    type: object
+    properties:
+      status:
+        type: string
+        description: The return status, usually "OK"
+      uptime:
+        type: number
+        description: The amount of time in seconds that the server has been up for.
+      startTime:
+        type: string
+        description: The UTC time that the server started up
+      versionNumber:
+        type: string
+        description: Current version of the API
+      services:
+        type: array
+        description: An list of the statuses of services that the API requires
+        items:
+          $ref: '#/definitions/HealthServicesType'
+    description: Data model for the api status.
+  HealthServicesType:
+    title: HealthServicesType
+    type: object
+    properties:
+      name:
+        type: string
+      status:
+        $ref: '#/definitions/HealthStatusType'
+    description: Data model for the complex type HealthServicesType. Contains health
+      services information.
+  HealthStatusType:
+    title: HealthStatusType
+    type: string
+    description: Below are the allowed values for the enumeration HealthStatusType
+      - OK - DOWN
+    enum:
+      - OK
+      - DOWN
+  ErrorInformationResponse:
+    title: ErrorInformationResponse
+    type: object
+    description: >-
+      Data model for the complex type object that contains an optional element
+      ErrorInformation used along with 4xx and 5xx responses.
+    properties:
+      errorInformation:
+        $ref: "#/definitions/ErrorInformation"      
+  ErrorInformation:
+    title: ErrorInformation
+    type: object
+    description: Data model for the complex type ErrorInformation.
+    properties:
+      errorCode:
+        $ref: "#/definitions/ErrorCode"
+      errorDescription:
+        $ref: "#/definitions/ErrorDescription"
+      extensionList:
+        $ref: "#/definitions/ExtensionList"
+    required:
+      - errorCode
+      - errorDescription
+  ErrorCode:
+    title: ErrorCode
+    type: string
+    pattern: ^[1-9]\d{3}$
+    description: >-
+      The API data type ErrorCode is a JSON String of four characters,
+      consisting of digits only. Negative numbers are not allowed. A leading
+      zero is not allowed. Each error code in the API is a four-digit number,
+      for example, 1234, where the first number (1 in the example) represents
+      the high-level error category, the second number (2 in the example)
+      represents the low-level error category, and the last two numbers (34 in
+      the example) represent the specific error.
+    example: "5100"
+  ErrorDescription:
+    title: ErrorDescription
+    type: string
+    minLength: 1
+    maxLength: 128
+    description: Error description string.
+
+responses:
+  200:
+    description: OK
+  202:
+    description: Accepted
+  400:
+    description: Bad Request
+    schema:
+      $ref: "#/definitions/ErrorInformationResponse"
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size 
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the 
+          API used to send the payload body.
+        type: string
+  401:
+    description: Unauthorized
+    schema:
+      $ref: "#/definitions/ErrorInformationResponse"
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size 
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the 
+          API used to send the payload body.
+        type: string
+  403:
+    description: Forbidden
+    schema:
+      $ref: "#/definitions/ErrorInformationResponse"
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size 
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the 
+          API used to send the payload body.
+        type: string
+  404:
+    description: Not Found
+    schema:
+      $ref: "#/definitions/ErrorInformationResponse"
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size 
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the 
+          API used to send the payload body.
+        type: string
+  405:
+    description: Method Not Allowed
+    schema:
+      $ref: "#/definitions/ErrorInformationResponse"
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size 
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the 
+          API used to send the payload body.
+        type: string
+  406:
+    description: Not Acceptable
+    schema:
+      $ref: "#/definitions/ErrorInformationResponse"
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size 
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the 
+          API used to send the payload body.
+        type: string
+  501:
+    description: Not Implemented
+    schema:
+      $ref: "#/definitions/ErrorInformationResponse"
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size 
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the 
+          API used to send the payload body.
+        type: string
+  503:
+    description: Service Unavailable
+    schema:
+      $ref: "#/definitions/ErrorInformationResponse"
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size 
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the 
+          API used to send the payload body.
+        type: string
+  Response200:
+    description: OK
+  Response202:
+    description: Accepted
+  ResponseHealth200:
+    description: OK
+    schema:
+      $ref: '#/definitions/Status'
+  ErrorResponse400:
+    description: Bad Request - The application cannot process the request; for example, 
+      due to malformed syntax or the payload exceeding size restrictions.
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size 
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the 
+          API used to send the payload body.
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorInformationResponse'
+  ErrorResponse401:
+    description: Unauthorized - The request requires authentication in order to
+      be processed.
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the
+          API used to send the payload body.
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorInformationResponse'
+  ErrorResponse403:
+    description: Forbidden - The request was denied and will be denied in the future.
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the
+          API used to send the payload body.
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorInformationResponse'
+  ErrorResponse404:
+    description: Not Found - The resource specified in the URI was not found.
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the
+          API used to send the payload body.
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorInformationResponse'
+  ErrorResponse405:
+    description: Method Not Allowed - An unsupported HTTP method for the request
+      was used.
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the
+          API used to send the payload body.
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorInformationResponse'
+  ErrorResponse406:
+    description: Not acceptable - The server is not capable of generating content
+      according to the Accept headers sent in the request. Used in the API to indicate
+      that the server does not support the version that the client is requesting.
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the
+          API used to send the payload body.
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorInformationResponse'
+  ErrorResponse501:
+    description: Not Implemented - The server does not support the requested service.
+      The client should not retry.
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the
+          API used to send the payload body.
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorInformationResponse'
+  ErrorResponse503:
+    description: Service Unavailable - The server is currently unavailable to accept
+      any new service requests. This should be a temporary state, and the client
+      should retry within a reasonable time frame.
+    headers:
+      Content-Length:
+        description: The Content-Length header field indicates the anticipated size
+          of the payload body. Only sent if there is a body.
+        type: integer
+      Content-Type:
+        description: The Content-Type header indicates the specific version of the
+          API used to send the payload body.
+        type: string
+    schema:
+      $ref: '#/definitions/ErrorInformationResponse'
