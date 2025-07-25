@@ -2,6 +2,13 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.2.1](https://github.com/mojaloop/bulk-api-adapter/compare/v17.2.0...v17.2.1) (2025-07-25)
+
+
+### Chore
+
+* fix vuls and update deps ([#132](https://github.com/mojaloop/bulk-api-adapter/issues/132)) ([6087f03](https://github.com/mojaloop/bulk-api-adapter/commit/6087f0318572fd5ddf7b1b8546860c31ec817ea4))
+
 ## [17.2.0](https://github.com/mojaloop/bulk-api-adapter/compare/v17.1.9...v17.2.0) (2025-05-27)
 
 
