@@ -103,7 +103,7 @@
       "nanoid": "^3.3.8"
     },
     "swagmock": {
-      "validator": "13.12.0"
+      "validator": "13.15.22"
     },
     "shins": {
       "ajv": "6.12.3",
@@ -126,7 +126,8 @@
     "trim": "0.0.3",
     "yargs-parser": "21.1.1",
     "validator": "13.15.22",
-    "js-yaml": "3.14.2"
+    "js-yaml": "3.14.2",
+    "jws": "4.0.1"
   },
   "devDependencies": {
     "audit-ci": "^7.1.0",
