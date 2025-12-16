@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.2.3](https://github.com/mojaloop/bulk-api-adapter/compare/v17.2.2...v17.2.3) (2025-12-16)
+
+
+### Chore
+
+* **ci:** update CircleCI orb to 1.1.9 ([#138](https://github.com/mojaloop/bulk-api-adapter/issues/138)) ([322cf69](https://github.com/mojaloop/bulk-api-adapter/commit/322cf69b2cbfb7e3a60dbd4d37c155cc205df0d3))
+* **sbom:** update sbom [skip ci] ([2e69ccc](https://github.com/mojaloop/bulk-api-adapter/commit/2e69ccc13704b55dac171d5717eb28800a8fa72a))
+
 ### [17.2.2](https://github.com/mojaloop/bulk-api-adapter/compare/v17.2.1...v17.2.2) (2025-07-27)
 
 
