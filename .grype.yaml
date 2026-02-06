@@ -1,17 +1,17 @@
 disabled: false
-
 ignore:
   - vulnerability: GHSA-5j98-mcp5-4vw2
     include-aliases: true
-    reason: "glob 10.4.5 is bundled in base image npm (/usr/local/lib/node_modules/npm/), not in application code. App uses glob 10.5.0."
-
-# Set output format defaults
+    reason: >-
+      glob 10.4.5 is bundled in base image npm (/usr/local/lib/node_modules/npm/), not in application code. App uses
+      glob 10.5.0.
+  - vulnerability: CVE-2025-60876
+    include-aliases: true
+    reason: "Alpine base image package (apk): busybox - no npm fix available as of 2026-02-06 (moderate severity)"
 output:
-  - "table"
-  - "json"
-
-# Modify your CircleCI job to check critical count
+  - table
+  - json
 search:
-  scope: "squashed"
+  scope: squashed
 quiet: false
 check-for-app-update: false
