@@ -336,6 +336,32 @@ const isConnected = async () => {
 }
 
 /**
+ * @function isHealthy
+ *
+ * @description
+ *   Gets the health for the broker using the consumer's isHealthy() method
+ *   from central-services-stream which performs comprehensive checks:
+ *   - isConnected() - basic connection status
+ *   - isAssigned() - consumer has partition assignments
+ *   - isPollHealthy() - last poll was within healthCheckPollInterval
+ *   - getMetadataSync() - all subscribed topics exist in broker metadata
+ *
+ * @returns {Promise<boolean>} - true if healthy, false otherwise
+ */
+const isHealthy = async () => {
+  try {
+    const healthy = await notificationConsumer.isHealthy()
+    if (!healthy) {
+      Logger.isWarnEnabled && Logger.warn('Notification consumer is not healthy')
+    }
+    return healthy
+  } catch (err) {
+    Logger.isWarnEnabled && Logger.warn(`isHealthy check failed: ${err.message}`)
+    return false
+  }
+}
+
+/**
  * @function getJWSSigner
  *
  *
@@ -358,5 +384,6 @@ module.exports = {
   startConsumer,
   processMessage,
   consumeMessage,
-  isConnected
+  isConnected,
+  isHealthy
 }

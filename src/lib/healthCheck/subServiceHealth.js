@@ -32,15 +32,26 @@ const axios = require('axios')
 /**
  * @function getSubServiceHealthBroker
  *
- * @description Gets the health for the Notification broker
+ * @description
+ *   Gets the health for the broker using the consumer's isHealthy() method
+ *   from central-services-stream which performs comprehensive checks:
+ *   - isConnected() - basic connection status
+ *   - isAssigned() - consumer has partition assignments
+ *   - isPollHealthy() - last poll was within healthCheckPollInterval
+ *   - getMetadataSync() - all subscribed topics exist in broker metadata
+ *
  * @returns Promise<SubServiceHealth> The SubService health object for the broker
  */
 const getSubServiceHealthBroker = async () => {
   let status = statusEnum.OK
   try {
-    await Notification.isConnected()
+    const isHealthy = await Notification.isHealthy()
+    if (!isHealthy) {
+      Logger.isDebugEnabled && Logger.debug('getSubServiceHealthBroker: consumer is not healthy')
+      status = statusEnum.DOWN
+    }
   } catch (err) {
-    Logger.debug(`getSubServiceHealthBroker failed with error: ${err.message}.`)
+    Logger.isDebugEnabled && Logger.debug(`getSubServiceHealthBroker failed with error: ${err.message}.`)
     status = statusEnum.DOWN
   }
 
