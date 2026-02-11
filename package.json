@@ -80,7 +80,7 @@
     "@mojaloop/object-store-lib": "12.2.2",
     "@mojaloop/sdk-standard-components": "19.18.1",
     "@now-ims/hapi-now-auth": "2.1.0",
-    "axios": "1.13.2",
+    "axios": "1.13.5",
     "blipp": "4.0.2",
     "commander": "14.0.2",
     "hapi-auth-bearer-token": "8.0.0",
