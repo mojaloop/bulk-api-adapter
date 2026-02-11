@@ -80,7 +80,7 @@
     "@mojaloop/object-store-lib": "12.2.2",
     "@mojaloop/sdk-standard-components": "19.18.7",
     "@now-ims/hapi-now-auth": "2.1.0",
-    "axios": "1.13.4",
+    "axios": "1.13.5",
     "blipp": "4.0.2",
     "commander": "14.0.3",
     "hapi-auth-bearer-token": "8.0.0",
@@ -111,7 +111,7 @@
       "path-to-regexp": "0.1.12",
       "sanitize-html": "2.12.1",
       "markdown-it": "12.3.2",
-      "undici": "6.21.2"
+      "undici": "6.23.0"
     },
     "widdershins": {
       "swagger2openapi": "7.0.8",
@@ -131,7 +131,9 @@
     "fast-xml-parser": "5.3.4",
     "qs": "6.14.1",
     "undici": "6.23.0",
+    "axios": "1.13.5",
     "lodash": "4.17.23",
+    "lodash-es": "4.17.23",
     "diff": "8.0.3"
   },
   "devDependencies": {
