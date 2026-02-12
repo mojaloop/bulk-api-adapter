@@ -15,7 +15,7 @@ Test('health handler', (handlerTest) => {
 
   handlerTest.beforeEach(t => {
     sandbox = Sinon.createSandbox()
-    sandbox.stub(Notification, 'isConnected')
+    sandbox.stub(Notification, 'isHealthy')
     sandbox.stub(axios, 'get')
     healthHandler = proxyquire('../../src/api/handlers/health', {})
     t.end()
@@ -29,7 +29,7 @@ Test('health handler', (handlerTest) => {
 
   handlerTest.test('/health should', healthTest => {
     healthTest.test('return the correct response when the health check is up', async test => {
-      Notification.isConnected.resolves(true)
+      Notification.isHealthy.resolves(true)
       axios.get.resolves({ data: { status: 'OK' } })
       const expectedResponseCode = 200
       const {
@@ -41,7 +41,7 @@ Test('health handler', (handlerTest) => {
     })
 
     healthTest.test('return the correct response when the health check is up in API mode only (Config.HANDLERS_DISABLED=true)', async test => {
-      Notification.isConnected.resolves(true)
+      Notification.isHealthy.resolves(true)
 
       Config.HANDLERS_DISABLED = true
       healthHandler = proxyquire('../../src/api/handlers/health', {})
@@ -57,7 +57,7 @@ Test('health handler', (handlerTest) => {
 
     healthTest.test('return the correct response when the health check is down', async test => {
       healthHandler = proxyquire('../../src/api/handlers/health', {})
-      Notification.isConnected.throws(new Error('Error connecting to consumer'))
+      Notification.isHealthy.resolves(false)
       axios.get.resolves({ data: { status: 'OK' } })
       const expectedResponseCode = 502
       const {
