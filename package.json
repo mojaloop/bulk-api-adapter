@@ -1,6 +1,6 @@
 {
   "name": "@mojaloop/bulk-api-adapter",
-  "version": "17.2.4",
+  "version": "17.2.5",
   "description": "Mojaloop Bulk API Adapter",
   "license": "Apache-2.0",
   "author": "ModusBox",
@@ -94,14 +94,14 @@
   },
   "overrides": {
     "ajv": "8.18.0",
-    "eslint": { 
-      "ajv": "6.12.6" 
+    "eslint": {
+      "ajv": "6.12.6"
     },
-    "eslint@9.39.2": { 
-      "ajv": "6.12.6" 
+    "eslint@9.39.2": {
+      "ajv": "6.12.6"
     },
-    "@eslint/eslintrc": { 
-      "ajv": "6.12.6" 
+    "@eslint/eslintrc": {
+      "ajv": "6.12.6"
     },
     "form-data": "4.0.4",
     "on-headers": "1.1.0",

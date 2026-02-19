@@ -2,6 +2,18 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.2.5](https://github.com/mojaloop/bulk-api-adapter/compare/v17.2.4...v17.2.5) (2026-02-19)
+
+
+### Bug Fixes
+
+* remove deprecared mongodb option ([#144](https://github.com/mojaloop/bulk-api-adapter/issues/144)) ([5d336d5](https://github.com/mojaloop/bulk-api-adapter/commit/5d336d5259f4ead8719db9884fdfaafdbda826a0))
+
+
+### Chore
+
+* **sbom:** update sbom [skip ci] ([f0a0d19](https://github.com/mojaloop/bulk-api-adapter/commit/f0a0d192490feecb99bb4e27a7c6836073545ad4))
+
 ### [17.2.4](https://github.com/mojaloop/bulk-api-adapter/compare/v17.2.3...v17.2.4) (2026-02-12)
 
 
