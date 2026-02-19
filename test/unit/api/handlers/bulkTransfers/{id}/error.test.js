@@ -95,6 +95,7 @@ Test('bulk transfer error handler', handlerTest => {
       TransferService.bulkTransferError.returns(Promise.resolve(true))
       const request = createPutRequest(params, payload)
       const reply = {
+        // eslint-disable-next-line no-unused-vars
         response: (response) => {
           return {
             code: statusCode => {

@@ -53,7 +53,7 @@ Test('Config tests', configTest => {
       })
       test.ok(Config)
       test.ok('pass')
-    } catch (e) {
+    } catch {
       test.fail('should throw')
     }
     test.end()
@@ -73,7 +73,7 @@ Test('Config tests', configTest => {
       test.ok('pass')
       test.deepEqual(Config.PROTOCOL_VERSIONS.CONTENT.VALIDATELIST, validateList)
       test.deepEqual(Config.PROTOCOL_VERSIONS.ACCEPT.VALIDATELIST, validateList)
-    } catch (e) {
+    } catch {
       test.fail('should throw')
     }
     test.end()

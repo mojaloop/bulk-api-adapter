@@ -69,6 +69,7 @@ const getSubServiceHealthBroker = async () => {
  */
 const getSubServiceHealthCentralLedger = async () => {
   const url = Config.ENDPOINT_HEALTH_URL
+  // eslint-disable-next-line no-useless-assignment
   let status = statusEnum.DOWN
 
   try {

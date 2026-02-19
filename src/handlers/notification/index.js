@@ -122,7 +122,7 @@ const consumeMessage = async (error, message) => {
       const span = EventSdk.Tracer.createChildSpanFromContext('ml_notification_event', contextFromMessage)
       try {
         await span.audit(msg, EventSdk.AuditEventAction.start)
-        const res = await processMessage(msg, span).catch(err => {
+        const res = await processMessage(msg).catch(err => {
           const fspiopError = ErrorHandler.Factory.createInternalServerFSPIOPError('Error processing notification message', err)
           Logger.error(fspiopError)
           if (!autoCommitEnabled) {
@@ -167,7 +167,7 @@ const consumeMessage = async (error, message) => {
 * @returns {boolean} Returns true on success and throws error on failure
 */
 
-const processMessage = async (msg, span) => {
+const processMessage = async (msg) => {
   try {
     Logger.info('Notification::processMessage')
 

@@ -255,7 +255,7 @@ Test('Bulk Transfer PREPARE handler', handlerTest => {
         BulkTransferModels.getBulkTransferResultByMessageIdDestination.resolves(getBulkTransferResultByMessageIdDestinationResponse)
 
         // Act
-        const result = await notificationHandler.processMessage(localMessage, null)
+        const result = await notificationHandler.processMessage(localMessage)
 
         // Assert
         test.equal(result, true)
@@ -294,7 +294,7 @@ Test('Bulk Transfer PREPARE handler', handlerTest => {
         localMessage.value.metadata.event.action = Enum.Events.Event.Action.BULK_PREPARE_DUPLICATE
 
         // Act
-        const result = await notificationHandler.processMessage(localMessage, null)
+        const result = await notificationHandler.processMessage(localMessage)
 
         // Assert
         test.equal(result, true)
