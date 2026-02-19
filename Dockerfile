@@ -34,10 +34,16 @@ RUN ln -sf /dev/stdout ./logs/combined.log
 
 # Create a non-root user: app-user
 RUN adduser -D app-user
-USER app-user
 
 COPY --chown=app-user --from=builder /opt/app/ .
 RUN npm prune --production
+
+# Remove npm/npx from runtime image to eliminate npm's vulnerable tar - failing grype scan
+USER root
+RUN rm -rf /usr/local/lib/node_modules/npm \
+    /usr/local/bin/npm /usr/local/bin/npx
+
+USER app-user
 
 EXPOSE 3000
 CMD ["node src/api/index.js"]
