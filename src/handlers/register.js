@@ -44,6 +44,7 @@ const NotificationHandler = require('./notification')
  * in each of them. Every handler in the sub-folders must have a registerAllHandlers() function
  * @returns {boolean} - Returns a boolean: true if successful, or throws and error if failed
  */
+// eslint-disable-next-line no-unused-vars
 const registerAllHandlers = async (request, h) => {
   return NotificationHandler.startConsumer()
 }

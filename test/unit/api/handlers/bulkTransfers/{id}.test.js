@@ -96,6 +96,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
       TransferService.getBulkTransferById.returns(Promise.resolve(true))
       const request = createGetRequest(params, 'source')
       const reply = {
+        // eslint-disable-next-line no-unused-vars
         response: (response) => {
           return {
             code: statusCode => {
@@ -157,6 +158,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
       TransferService.bulkFulfil.returns(Promise.resolve(true))
       const request = createPutRequest(params, payload)
       const reply = {
+        // eslint-disable-next-line no-unused-vars
         response: (response) => {
           return {
             code: statusCode => {
