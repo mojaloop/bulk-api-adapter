@@ -1,4 +1,5 @@
 disabled: false
+scan-type: source
 ignore:
   - vulnerability: GHSA-5j98-mcp5-4vw2
     include-aliases: true
