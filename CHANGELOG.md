@@ -2,6 +2,14 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+### [17.2.7](https://github.com/mojaloop/bulk-api-adapter/compare/v17.2.6...v17.2.7) (2026-03-25)
+
+
+### Chore
+
+* add private:true to prevent npm publish ([#4384](https://github.com/mojaloop/bulk-api-adapter/issues/4384)) ([#146](https://github.com/mojaloop/bulk-api-adapter/issues/146)) ([6388a85](https://github.com/mojaloop/bulk-api-adapter/commit/6388a85dd3342b0618d070518a45c1aafbf9c383))
+* **sbom:** update sbom [skip ci] ([95fc405](https://github.com/mojaloop/bulk-api-adapter/commit/95fc405245f6d339d3d6a297b12d80e58a24d7f0))
+
 ### [17.2.6](https://github.com/mojaloop/bulk-api-adapter/compare/v17.2.5...v17.2.6) (2026-02-26)
 
 
