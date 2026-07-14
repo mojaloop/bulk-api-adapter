@@ -106,7 +106,7 @@ services:
       interval: 30s
 
   kafka:
-    image: docker.io/bitnami/kafka:3.9
+    image: docker.io/soldevelo/kafka:3.9
     container_name: cs_kafka
     networks:
       - ba-mojaloop-net
@@ -139,7 +139,7 @@ services:
     container_name: cs_kafka-provisioning
     networks:
       - ba-mojaloop-net
-    image: docker.io/bitnami/kafka:3.9
+    image: docker.io/soldevelo/kafka:3.9
     depends_on:
       - kafka
     volumes:
