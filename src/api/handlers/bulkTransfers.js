@@ -49,7 +49,7 @@ module.exports = {
    * produces:
    * responses: default
    */
-  post: async function postBulkTransfers (request, h) {
+  post: async function postBulkTransfers (context, request, h) {
     try {
       Logger.debug('create::payload(%s)', JSON.stringify(request.payload))
       const { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList } = request.payload

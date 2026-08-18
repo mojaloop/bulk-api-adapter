@@ -39,7 +39,7 @@ Test('endpointcache handler', (handlerTest) => {
       await Endpoints.initializeCache(Config.ENDPOINT_CACHE_CONFIG, { hubName: Config.HUB_NAME, hubNameRegex })
       const {
         responseCode
-      } = await unwrapResponse((reply) => endpointcacheHandler.delete(createRequest({}), reply))
+      } = await unwrapResponse((reply) => endpointcacheHandler.delete(null, createRequest({}), reply))
 
       test.deepEqual(responseCode, expectedResponseCode, 'The response code matches')
       test.end()

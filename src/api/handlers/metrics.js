@@ -44,7 +44,7 @@ module.exports = {
      * produces:
      * responses: default
      */
-  get: async function getMetrics (request, h) {
+  get: async function getMetrics (context, request, h) {
     return h.response(await Metrics.getMetricsForPrometheus()).code(HTTPENUM.ReturnCodes.OK.CODE)
   }
 }

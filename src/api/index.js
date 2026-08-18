@@ -32,11 +32,9 @@
 
 const Setup = require('../shared/setup')
 const Config = require('../../src/lib/config')
-const Routes = require('./routes')
 
 module.exports = Setup.initialize({
   service: 'api',
   port: Config.PORT,
-  runHandlers: !Config.HANDLERS_DISABLED,
-  modules: [Routes]
+  runHandlers: !Config.HANDLERS_DISABLED
 })

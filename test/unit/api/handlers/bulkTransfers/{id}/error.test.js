@@ -105,7 +105,7 @@ Test('bulk transfer error handler', handlerTest => {
           }
         }
       }
-      await Handler.put(request, reply)
+      await Handler.put(null, request, reply)
     })
 
     await putBulkTransferErrorByIdTest.test('returns error if bulkFulfil throws', async test => {
@@ -126,7 +126,7 @@ Test('bulk transfer error handler', handlerTest => {
       }
       TransferService.bulkTransferError.rejects(new Error('An error has occurred'))
       try {
-        await Handler.put(request)
+        await Handler.put(null, request)
         test.fail('does not throw')
       } catch (e) {
         test.ok(e instanceof FSPIOPError)

@@ -49,7 +49,7 @@ module.exports = {
    * produces:
    * responses: default
    */
-  get: async function getBulkTransfersId (request, h) {
+  get: async function getBulkTransfersId (context, request, h) {
     try {
       Logger.isInfoEnabled && Logger.info(`getBulkTransfersId::id(${request.params.id})`)
       const messageId = Uuid()
@@ -67,7 +67,7 @@ module.exports = {
    * produces:
    * responses: default
    */
-  put: async function BulkTransfersByIDPut (request, h) {
+  put: async function BulkTransfersByIDPut (context, request, h) {
     try {
       Logger.debug('create::payload(%s)', JSON.stringify(request.payload))
       const bulkTransferId = request.params.id

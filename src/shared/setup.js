@@ -28,10 +28,14 @@
 
 'use strict'
 
+const Path = require('path')
 const Plugins = require('./plugins')
 const Hapi = require('@hapi/hapi')
 const Logger = require('@mojaloop/central-services-logger')
 const ErrorHandler = require('@mojaloop/central-services-error-handling')
+const OpenapiBackend = require('@mojaloop/central-services-shared').Util.OpenapiBackend
+const APIHandlers = require('../api/handlers')
+const Routes = require('../api/routes')
 const RegisterHandlers = require('../handlers/register')
 const Config = require('../lib/config')
 const ParticipantEndpointCache = require('../domain/participant/lib/cache/participantEndpoint')
@@ -74,7 +78,7 @@ const connectMongoose = async () => {
   }
 }
 
-const createServer = async (port, modules) => {
+const createServer = async (port, modules, api) => {
   const server = new Hapi.Server({
     port,
     routes: {
@@ -92,8 +96,11 @@ const createServer = async (port, modules) => {
   const db = await connectMongoose()
   server.app.db = db
 
-  await Plugins.registerPlugins(server)
+  await Plugins.registerPlugins(server, api)
   await server.register(modules)
+  if (api) {
+    server.route(Routes.APIRoutes(api))
+  }
   await server.start()
   Logger.debug(`Server running at: ${server.info.uri}`)
   return server
@@ -174,9 +181,11 @@ const initialize = async function ({ service, port, modules = [], runHandlers = 
   let server
   initializeInstrumentation()
   switch (service) {
-    case 'api':
-      server = await createServer(port, modules)
+    case 'api': {
+      const api = await OpenapiBackend.initialise(Path.resolve(__dirname, '../interface/swagger.yaml'), APIHandlers)
+      server = await createServer(port, modules, api)
       break
+    }
     case 'handler':
       if (!Config.HANDLERS_API_DISABLED) {
         server = await createServer(port, modules)

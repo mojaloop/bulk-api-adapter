@@ -106,7 +106,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
           }
         }
       }
-      await Handler.get(request, reply)
+      await Handler.get(null, request, reply)
     })
 
     await getByIdTest.test('returns error if getBulkTransferById throws', async test => {
@@ -124,7 +124,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
       }
       TransferService.getBulkTransferById.rejects(new Error('An error has occurred'))
       try {
-        await Handler.get(request)
+        await Handler.get(null, request)
         test.fail('does not throw')
       } catch (e) {
         test.ok(e instanceof FSPIOPError)
@@ -168,7 +168,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
           }
         }
       }
-      await Handler.put(request, reply)
+      await Handler.put(null, request, reply)
     })
 
     await bulkTransfersByIDPut.test('returns error if BulkTransfersByIDPut throws', async test => {
@@ -196,7 +196,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
       const request = createPutRequest(params, payload)
 
       try {
-        await Handler.put(request)
+        await Handler.put(null, request)
         test.fail('does not throw')
       } catch (e) {
         test.ok(e instanceof FSPIOPError)

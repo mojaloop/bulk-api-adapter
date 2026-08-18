@@ -3,8 +3,11 @@
  --------------
  Copyright © 2020-2025 Mojaloop Foundation
  The Mojaloop files are made available by the Mojaloop Foundation under the Apache License, Version 2.0 (the "License") and you may not use these files except in compliance with the License. You may obtain a copy of the License at
+
  http://www.apache.org/licenses/LICENSE-2.0
+
  Unless required by applicable law or agreed to in writing, the Mojaloop files are distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
+
  Contributors
  --------------
  This is the official list of the Mojaloop project contributors for this file.
@@ -15,34 +18,35 @@
  Mojaloop Foundation organization for an example). Those individuals should have
  their names indented and be marked with a '-'. Email address can be added
  optionally within square brackets <email>.
+
  * Mojaloop Foundation
-
- * Juan Correa <juan.correa@modusbox.com>
-
+ - Name Surname <name.surname@mojaloop.io>
  --------------
  ******/
 
 'use strict'
 
-const { Endpoints: ParticipantEndpointCache, HeaderValidation } = require('@mojaloop/central-services-shared').Util
-const Config = require('../../lib/config.js')
-
-const hubNameRegex = HeaderValidation.getHubNameRegex(Config.HUB_NAME)
+const OpenapiBackend = require('@mojaloop/central-services-shared').Util.OpenapiBackend
+const BulkTransfers = require('./bulkTransfers')
+const BulkTransfersById = require('./bulkTransfers/{id}')
+const BulkTransfersErrorById = require('./bulkTransfers/{id}/error')
+const EndpointCache = require('./endpointcache')
+const Health = require('./health')
+const Metrics = require('./metrics')
 
 /**
- * Operations on /endpointcache
+ * Map of OpenAPI operationIds to handler functions, used by OpenapiBackend to
+ * route validated requests. Handler signature is (context, request, h).
  */
 module.exports = {
-  /**
-   * summary: DELETE Endpoint Cache
-   * description: The HTTP request DELETE /endpointcache is used to reset the endpoint cache by performing an stopCache and initializeCache the Admin API.
-   * parameters:
-   * produces: application/json
-   * responses: 202, 400, 401, 403, 404, 405, 406, 501, 503
-   */
-  delete: async (context, request, h) => {
-    await ParticipantEndpointCache.stopCache()
-    await ParticipantEndpointCache.initializeCache(Config.ENDPOINT_CACHE_CONFIG, { hubName: Config.HUB_NAME, hubNameRegex })
-    return h.response().code(202)
-  }
+  EndpointCache: EndpointCache.delete,
+  getHealth: (context, request, h) => Health.get(request, h),
+  getMetrics: Metrics.get,
+  getBulkTransfersId: BulkTransfersById.get,
+  BulkTransfersByIDPut: BulkTransfersById.put,
+  postBulkTransfers: BulkTransfers.post,
+  BulkTransfersErrorByIDPut: BulkTransfersErrorById.put,
+  validationFail: OpenapiBackend.validationFail,
+  notFound: OpenapiBackend.notFound,
+  methodNotAllowed: OpenapiBackend.methodNotAllowed
 }

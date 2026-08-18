@@ -48,7 +48,7 @@ module.exports = {
      * produces: application/json
      * responses: default
      */
-  put: async function putBulkTransferErrorById (request, h) {
+  put: async function putBulkTransferErrorById (context, request, h) {
     try {
       Logger.debug('error::payload(%s)', JSON.stringify(request.payload))
 

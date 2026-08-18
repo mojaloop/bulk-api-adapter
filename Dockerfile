@@ -50,4 +50,4 @@ RUN node -e "require('./src/api/index.js'); console.log('startup ok')"
 USER app-user
 
 EXPOSE 3000
-CMD ["node src/api/index.js"]
+CMD ["node", "src/api/index.js"]

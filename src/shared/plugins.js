@@ -33,7 +33,25 @@ const CentralServices = require('@mojaloop/central-services-shared')
  * @module src/shared/plugin
  */
 
-const registerPlugins = async (server) => {
+const registerPlugins = async (server, openAPIBackend) => {
+  if (openAPIBackend) {
+    await server.register(CentralServices.Util.Hapi.OpenapiBackendValidator)
+
+    await server.register({
+      plugin: {
+        name: 'openapi',
+        version: '1.0.0',
+        multiple: true,
+        register: function (server, options) {
+          server.expose('openapi', options.openapi)
+        }
+      },
+      options: {
+        openapi: openAPIBackend
+      }
+    })
+  }
+
   await server.register({
     plugin: require('hapi-swagger'),
     options: {
