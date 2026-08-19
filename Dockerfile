@@ -20,7 +20,10 @@ RUN apk add --no-cache -t build-dependencies git make gcc g++ python3 py3-setupt
     && cd $(npm root -g)/npm
 
 COPY package.json package-lock.json* /opt/app/
-RUN npm ci
+# Lifecycle scripts are skipped for supply-chain safety (docker:S6505); node-rdkafka
+# is the only production dependency that needs its native build, so run it explicitly.
+RUN npm ci --ignore-scripts
+RUN npm rebuild node-rdkafka
 
 COPY src /opt/app/src
 COPY config /opt/app/config

@@ -51,70 +51,21 @@ const handleRequest = (api, req, h) => api.handleRequest(
  *
  * @param {object} api OpenAPIBackend instance
  */
-const APIRoutes = (api) => [
-  {
-    method: 'GET',
-    path: '/health',
-    handler: (req, h) => handleRequest(api, req, h),
-    config: {
-      tags: ['api', 'health'],
-      description: 'GET health'
-    }
-  },
-  {
-    method: 'GET',
-    path: '/metrics',
-    handler: (req, h) => handleRequest(api, req, h),
-    config: {
-      tags: ['api', 'metrics'],
-      description: 'Prometheus metrics endpoint'
-    }
-  },
-  {
-    method: 'DELETE',
-    path: '/endpointcache',
-    handler: (req, h) => handleRequest(api, req, h),
-    config: {
-      tags: ['api', 'cache'],
-      description: 'DELETE Endpoint Cache'
-    }
-  },
-  {
-    method: 'POST',
-    path: '/bulkTransfers',
-    handler: (req, h) => handleRequest(api, req, h),
-    config: {
-      tags: ['api', 'bulk-transfers'],
-      description: 'POST Bulk Transfers'
-    }
-  },
-  {
-    method: 'GET',
-    path: '/bulkTransfers/{id}',
-    handler: (req, h) => handleRequest(api, req, h),
-    config: {
-      tags: ['api', 'bulk-transfers', 'sampled'],
-      description: 'GET Bulk Transfers by ID'
-    }
-  },
-  {
-    method: 'PUT',
-    path: '/bulkTransfers/{id}',
-    handler: (req, h) => handleRequest(api, req, h),
-    config: {
-      tags: ['api', 'bulkTransfers'],
-      description: 'PUT Bulk Transfers by ID'
-    }
-  },
-  {
-    method: 'PUT',
-    path: '/bulkTransfers/{id}/error',
-    handler: (req, h) => handleRequest(api, req, h),
-    config: {
-      tags: ['api', 'bulkTransfersError'],
-      description: 'PUT Bulk Transfers error by ID'
-    }
-  }
+const ROUTE_DEFINITIONS = [
+  { method: 'GET', path: '/health', tags: ['api', 'health'], description: 'GET health' },
+  { method: 'GET', path: '/metrics', tags: ['api', 'metrics'], description: 'Prometheus metrics endpoint' },
+  { method: 'DELETE', path: '/endpointcache', tags: ['api', 'cache'], description: 'DELETE Endpoint Cache' },
+  { method: 'POST', path: '/bulkTransfers', tags: ['api', 'bulk-transfers'], description: 'POST Bulk Transfers' },
+  { method: 'GET', path: '/bulkTransfers/{id}', tags: ['api', 'bulk-transfers', 'sampled'], description: 'GET Bulk Transfers by ID' },
+  { method: 'PUT', path: '/bulkTransfers/{id}', tags: ['api', 'bulkTransfers'], description: 'PUT Bulk Transfers by ID' },
+  { method: 'PUT', path: '/bulkTransfers/{id}/error', tags: ['api', 'bulkTransfersError'], description: 'PUT Bulk Transfers error by ID' }
 ]
+
+const APIRoutes = (api) => ROUTE_DEFINITIONS.map(({ method, path, tags, description }) => ({
+  method,
+  path,
+  handler: (req, h) => handleRequest(api, req, h),
+  config: { tags, description }
+}))
 
 module.exports = { APIRoutes }
