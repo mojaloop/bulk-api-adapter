@@ -22,7 +22,9 @@ RUN apk add --no-cache -t build-dependencies git make gcc g++ python3 py3-setupt
 COPY package.json package-lock.json* /opt/app/
 # Lifecycle scripts are skipped for supply-chain safety (docker:S6505); node-rdkafka
 # is the only production dependency that needs its native build, so run it explicitly.
-RUN npm ci --ignore-scripts
+# Dev dependencies are omitted here rather than pruned from the runtime image: `npm prune`
+# re-extracts node-rdkafka and would throw away the native build made just above.
+RUN npm ci --omit=dev --ignore-scripts
 RUN npm rebuild node-rdkafka
 
 COPY src /opt/app/src
@@ -39,7 +41,6 @@ RUN ln -sf /dev/stdout ./logs/combined.log
 RUN adduser -D app-user
 
 COPY --chown=app-user --from=builder /opt/app/ .
-RUN npm prune --production
 
 # Remove npm/npx from runtime image to eliminate npm's vulnerable tar - failing grype scan
 USER root
