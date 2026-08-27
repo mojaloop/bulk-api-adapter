@@ -68,7 +68,7 @@
     "@hapi/hapi": "21.4.10",
     "@hapi/inert": "7.1.2",
     "@hapi/vision": "7.0.3",
-    "@mojaloop/central-services-error-handling": "13.1.8",
+    "@mojaloop/central-services-error-handling": "13.2.0",
     "@mojaloop/central-services-health": "15.2.3",
     "@mojaloop/central-services-logger": "11.10.6",
     "@mojaloop/central-services-metrics": "12.8.8",
@@ -78,7 +78,7 @@
     "@mojaloop/object-store-lib": "12.2.4",
     "@mojaloop/sdk-standard-components": "19.19.1",
     "@now-ims/hapi-now-auth": "2.1.0",
-    "axios": "1.19.0",
+    "axios": "1.20.0",
     "blipp": "4.0.2",
     "commander": "15.0.0",
     "hapi-auth-bearer-token": "8.0.0",
@@ -141,7 +141,7 @@
       "ajv": "6.14.0"
     },
     "immutable": "5.1.9",
-    "axios": "1.19.0",
+    "axios": "1.20.0",
     "replace": {
       "minimatch": "3.1.5"
     },
@@ -169,10 +169,10 @@
   "devDependencies": {
     "@eslint/js": "10.0.1",
     "audit-ci": "7.1.0",
-    "eslint": "10.9.0",
+    "eslint": "10.9.1",
     "globals": "17.11.0",
     "nodemon": "3.1.14",
-    "npm-check-updates": "23.0.2",
+    "npm-check-updates": "23.1.0",
     "nyc": "18.0.0",
     "pre-commit": "2.0.0",
     "proxyquire": "2.1.3",
