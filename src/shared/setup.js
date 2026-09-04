@@ -1,7 +1,7 @@
 /*****
  License
  --------------
- Copyright © 2020-2025 Mojaloop Foundation
+ Copyright © 2020-2026 Mojaloop Foundation
  The Mojaloop files are made available by the Mojaloop Foundation under the Apache License, Version 2.0 (the "License") and you may not use these files except in compliance with the License. You may obtain a copy of the License at
  http://www.apache.org/licenses/LICENSE-2.0
  Unless required by applicable law or agreed to in writing, the Mojaloop files are distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
@@ -28,10 +28,14 @@
 
 'use strict'
 
+const Path = require('path')
 const Plugins = require('./plugins')
 const Hapi = require('@hapi/hapi')
 const Logger = require('@mojaloop/central-services-logger')
 const ErrorHandler = require('@mojaloop/central-services-error-handling')
+const OpenapiBackend = require('@mojaloop/central-services-shared').Util.OpenapiBackend
+const APIHandlers = require('../api/handlers')
+const Routes = require('../api/routes')
 const RegisterHandlers = require('../handlers/register')
 const Config = require('../lib/config')
 const ParticipantEndpointCache = require('../domain/participant/lib/cache/participantEndpoint')
@@ -74,7 +78,7 @@ const connectMongoose = async () => {
   }
 }
 
-const createServer = async (port, modules) => {
+const createServer = async (port, modules, api) => {
   const server = new Hapi.Server({
     port,
     routes: {
@@ -92,8 +96,11 @@ const createServer = async (port, modules) => {
   const db = await connectMongoose()
   server.app.db = db
 
-  await Plugins.registerPlugins(server)
+  await Plugins.registerPlugins(server, api)
   await server.register(modules)
+  if (api) {
+    server.route(Routes.APIRoutes(api))
+  }
   await server.start()
   Logger.debug(`Server running at: ${server.info.uri}`)
   return server
@@ -174,9 +181,12 @@ const initialize = async function ({ service, port, modules = [], runHandlers = 
   let server
   initializeInstrumentation()
   switch (service) {
-    case 'api':
-      server = await createServer(port, modules)
+    case 'api': {
+      const api = await OpenapiBackend.initialise(Path.resolve(__dirname, '../interface/swagger.yaml'), APIHandlers)
+      Routes.assertHandlersRegistered(api)
+      server = await createServer(port, modules, api)
       break
+    }
     case 'handler':
       if (!Config.HANDLERS_API_DISABLED) {
         server = await createServer(port, modules)

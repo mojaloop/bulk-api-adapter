@@ -1,5 +1,5 @@
 # Arguments
-ARG NODE_VERSION="22.22.0-alpine3.23"
+ARG NODE_VERSION="24.18.0-alpine3.24"
 # NOTE: Ensure you set NODE_VERSION Build Argument as follows...
 #
 #  export NODE_VERSION="$(cat .nvmrc)-alpine" \
@@ -20,7 +20,12 @@ RUN apk add --no-cache -t build-dependencies git make gcc g++ python3 py3-setupt
     && cd $(npm root -g)/npm
 
 COPY package.json package-lock.json* /opt/app/
-RUN npm ci
+# Lifecycle scripts are skipped for supply-chain safety (docker:S6505); node-rdkafka
+# is the only production dependency that needs its native build, so run it explicitly.
+# Dev dependencies are omitted here rather than pruned from the runtime image: `npm prune`
+# re-extracts node-rdkafka and would throw away the native build made just above.
+RUN npm ci --omit=dev --ignore-scripts
+RUN npm rebuild node-rdkafka
 
 COPY src /opt/app/src
 COPY config /opt/app/config
@@ -36,7 +41,6 @@ RUN ln -sf /dev/stdout ./logs/combined.log
 RUN adduser -D app-user
 
 COPY --chown=app-user --from=builder /opt/app/ .
-RUN npm prune --production
 
 # Remove npm/npx from runtime image to eliminate npm's vulnerable tar - failing grype scan
 USER root
@@ -50,4 +54,4 @@ RUN node -e "require('./src/api/index.js'); console.log('startup ok')"
 USER app-user
 
 EXPOSE 3000
-CMD ["node src/api/index.js"]
+CMD ["node", "src/api/index.js"]

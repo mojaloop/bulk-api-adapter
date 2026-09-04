@@ -1,7 +1,7 @@
 /*****
  License
  --------------
- Copyright © 2020-2025 Mojaloop Foundation
+ Copyright © 2020-2026 Mojaloop Foundation
  The Mojaloop files are made available by the Mojaloop Foundation under the Apache License, Version 2.0 (the "License") and you may not use these files except in compliance with the License. You may obtain a copy of the License at
 
  http://www.apache.org/licenses/LICENSE-2.0
@@ -49,7 +49,7 @@ module.exports = {
    * produces:
    * responses: default
    */
-  post: async function postBulkTransfers (request, h) {
+  post: async function postBulkTransfers (context, request, h) {
     try {
       Logger.debug('create::payload(%s)', JSON.stringify(request.payload))
       const { bulkTransferId, bulkQuoteId, payerFsp, payeeFsp, expiration, extensionList } = request.payload

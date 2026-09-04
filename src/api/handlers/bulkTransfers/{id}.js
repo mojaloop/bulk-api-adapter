@@ -1,7 +1,7 @@
 /*****
  License
  --------------
- Copyright © 2020-2025 Mojaloop Foundation
+ Copyright © 2020-2026 Mojaloop Foundation
  The Mojaloop files are made available by the Mojaloop Foundation under the Apache License, Version 2.0 (the "License") and you may not use these files except in compliance with the License. You may obtain a copy of the License at
 
  http://www.apache.org/licenses/LICENSE-2.0
@@ -49,7 +49,7 @@ module.exports = {
    * produces:
    * responses: default
    */
-  get: async function getBulkTransfersId (request, h) {
+  get: async function getBulkTransfersId (context, request, h) {
     try {
       Logger.isInfoEnabled && Logger.info(`getBulkTransfersId::id(${request.params.id})`)
       const messageId = Uuid()
@@ -67,7 +67,7 @@ module.exports = {
    * produces:
    * responses: default
    */
-  put: async function BulkTransfersByIDPut (request, h) {
+  put: async function BulkTransfersByIDPut (context, request, h) {
     try {
       Logger.debug('create::payload(%s)', JSON.stringify(request.payload))
       const bulkTransferId = request.params.id
