@@ -21,30 +21,32 @@
 
  * Mojaloop Foundation
  - Name Surname <name.surname@mojaloop.io>
-
- # ModusBox
- - Valentin Genev <valentin.genev@modusbox.com>
- - Miguel de Barros <miguel.debarros@modusbox.com>
  --------------
  ******/
 
 'use strict'
 
-const Metrics = require('@mojaloop/central-services-metrics')
-const HTTPENUM = require('@mojaloop/central-services-shared').Enum.Http
+const OpenapiBackend = require('@mojaloop/central-services-shared').Util.OpenapiBackend
+const BulkTransfers = require('./bulkTransfers')
+const BulkTransfersById = require('./bulkTransfers/{id}')
+const BulkTransfersErrorById = require('./bulkTransfers/{id}/error')
+const EndpointCache = require('./endpointcache')
+const Health = require('./health')
+const Metrics = require('./metrics')
 
 /**
- * Operations on /metrics
+ * Map of OpenAPI operationIds to handler functions, used by OpenapiBackend to
+ * route validated requests. Handler signature is (context, request, h).
  */
 module.exports = {
-  /**
-     * summary: Prometheus metrics endpoint
-     * description:
-     * parameters:
-     * produces:
-     * responses: default
-     */
-  get: async function getMetrics (context, request, h) {
-    return h.response(await Metrics.getMetricsForPrometheus()).code(HTTPENUM.ReturnCodes.OK.CODE)
-  }
+  EndpointCache: EndpointCache.delete,
+  getHealth: (context, request, h) => Health.get(request, h),
+  getMetrics: Metrics.get,
+  getBulkTransfersId: BulkTransfersById.get,
+  BulkTransfersByIDPut: BulkTransfersById.put,
+  postBulkTransfers: BulkTransfers.post,
+  BulkTransfersErrorByIDPut: BulkTransfersErrorById.put,
+  validationFail: OpenapiBackend.validationFail,
+  notFound: OpenapiBackend.notFound,
+  methodNotAllowed: OpenapiBackend.methodNotAllowed
 }

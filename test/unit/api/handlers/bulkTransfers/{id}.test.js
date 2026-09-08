@@ -1,7 +1,7 @@
 /*****
  License
  --------------
- Copyright © 2020-2025 Mojaloop Foundation
+ Copyright © 2020-2026 Mojaloop Foundation
  The Mojaloop files are made available by the Mojaloop Foundation under the Apache License, Version 2.0 (the "License") and you may not use these files except in compliance with the License. You may obtain a copy of the License at
  http://www.apache.org/licenses/LICENSE-2.0
  Unless required by applicable law or agreed to in writing, the Mojaloop files are distributed on an "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the License for the specific language governing permissions and limitations under the License.
@@ -106,7 +106,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
           }
         }
       }
-      await Handler.get(request, reply)
+      await Handler.get(null, request, reply)
     })
 
     await getByIdTest.test('returns error if getBulkTransferById throws', async test => {
@@ -124,7 +124,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
       }
       TransferService.getBulkTransferById.rejects(new Error('An error has occurred'))
       try {
-        await Handler.get(request)
+        await Handler.get(null, request)
         test.fail('does not throw')
       } catch (e) {
         test.ok(e instanceof FSPIOPError)
@@ -168,7 +168,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
           }
         }
       }
-      await Handler.put(request, reply)
+      await Handler.put(null, request, reply)
     })
 
     await bulkTransfersByIDPut.test('returns error if BulkTransfersByIDPut throws', async test => {
@@ -196,7 +196,7 @@ Test('GET /bulkTransfer/{id} handler', handlerTest => {
       const request = createPutRequest(params, payload)
 
       try {
-        await Handler.put(request)
+        await Handler.put(null, request)
         test.fail('does not throw')
       } catch (e) {
         test.ok(e instanceof FSPIOPError)

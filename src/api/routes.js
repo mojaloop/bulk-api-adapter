@@ -1,7 +1,7 @@
 /*****
  License
  --------------
- Copyright © 2020-2025 Mojaloop Foundation
+ Copyright © 2020-2026 Mojaloop Foundation
  The Mojaloop files are made available by the Mojaloop Foundation under the Apache License, Version 2.0 (the "License") and you may not use these files except in compliance with the License. You may obtain a copy of the License at
 
  http://www.apache.org/licenses/LICENSE-2.0
@@ -30,13 +30,64 @@
 
 'use strict'
 
-const HapiOpenAPI = require('hapi-openapi')
-const Path = require('path')
+/**
+ * Request handler
+ *
+ * @param {object} api OpenAPIBackend instance
+ * @param {object} req Request
+ * @param {object} h   Response handle
+ */
+const handleRequest = (api, req, h) => api.handleRequest(
+  {
+    method: req.method,
+    path: req.path,
+    body: req.payload,
+    query: req.query,
+    headers: req.headers
+  }, req, h)
 
-module.exports = {
-  plugin: HapiOpenAPI,
-  options: {
-    api: Path.resolve(__dirname, '../interface/swagger.yaml'),
-    handlers: Path.resolve(__dirname, './handlers')
+/**
+ * Core API Routes
+ *
+ * @param {object} api OpenAPIBackend instance
+ */
+const ROUTE_DEFINITIONS = [
+  { method: 'GET', path: '/health', tags: ['api', 'health'], description: 'GET health' },
+  { method: 'GET', path: '/metrics', tags: ['api', 'metrics'], description: 'Prometheus metrics endpoint' },
+  { method: 'DELETE', path: '/endpointcache', tags: ['api', 'cache'], description: 'DELETE Endpoint Cache' },
+  { method: 'POST', path: '/bulkTransfers', tags: ['api', 'bulk-transfers'], description: 'POST Bulk Transfers' },
+  { method: 'GET', path: '/bulkTransfers/{id}', tags: ['api', 'bulk-transfers', 'sampled'], description: 'GET Bulk Transfers by ID' },
+  { method: 'PUT', path: '/bulkTransfers/{id}', tags: ['api', 'bulkTransfers'], description: 'PUT Bulk Transfers by ID' },
+  { method: 'PUT', path: '/bulkTransfers/{id}/error', tags: ['api', 'bulkTransfersError'], description: 'PUT Bulk Transfers error by ID' }
+]
+
+const APIRoutes = (api) => ROUTE_DEFINITIONS.map(({ method, path, tags, description }) => ({
+  method,
+  path,
+  handler: (req, h) => handleRequest(api, req, h),
+  config: { tags, description }
+}))
+
+
+/**
+ * Fail fast when the API definition declares an operation with no handler.
+ *
+ * `OpenapiBackend.initialise` runs openapi-backend non-strict, so an operation it has no
+ * handler for is dispatched to `notFound`. An operationId added to the definition but never
+ * wired into the handlers map would therefore answer 404 at runtime rather than failing at
+ * startup - the filesystem-based routing this replaced could not drift that way.
+ *
+ * @param {object} api Initialised OpenAPIBackend instance
+ * @throws {Error} If the definition declares an operation with no registered handler
+ */
+const assertHandlersRegistered = (api) => {
+  const unhandled = api.getOperations()
+    .filter(({ operationId }) => typeof api.handlers[operationId] !== 'function')
+    .map(({ method, path, operationId }) => `${method.toUpperCase()} ${path} (operationId: ${operationId})`)
+
+  if (unhandled.length > 0) {
+    throw new Error(`OpenAPI definition declares operations with no registered handler: ${unhandled.join(', ')}`)
   }
 }
+
+module.exports = { APIRoutes, assertHandlersRegistered }

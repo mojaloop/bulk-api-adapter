@@ -1,0 +1,8 @@
+{
+  "exceptions": {
+    "oer-utils@5.1.2": {
+      "reason": "Apache-2.0 per the LICENSE file bundled in the package ('Licensed under the Apache License, Version 2.0'; github.com/interledgerjs/interledgerjs). The upstream package.json omits the license field, so the scanner reads it as empty. Transitive via ilp-packet / ilp-packet-v1. Added 2026-08-18.",
+      "expires": "2026-12-31"
+    }
+  }
+}
