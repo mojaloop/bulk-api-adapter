@@ -128,7 +128,7 @@ paths:
                 type: string
     put:
       summary: BulkTransfersByIDPut
-      operationId: BulkTransfersByIDPut
+      operationId: bulkTransfersByIDPut
       parameters:
         - name: content-type
           in: header
