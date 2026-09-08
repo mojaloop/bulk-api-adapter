@@ -16,8 +16,8 @@ USER root
 
 WORKDIR /opt/app/
 
-RUN apk add --no-cache -t build-dependencies git make gcc g++ python3 py3-setuptools libtool autoconf automake bash \
-    && cd $(npm root -g)/npm
+RUN apk add --no-cache -t build-dependencies \
+    autoconf automake bash g++ gcc git libtool make py3-setuptools python3
 
 COPY package.json package-lock.json* /opt/app/
 # Lifecycle scripts are skipped for supply-chain safety (docker:S6505); node-rdkafka

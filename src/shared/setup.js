@@ -28,7 +28,7 @@
 
 'use strict'
 
-const Path = require('path')
+const Path = require('node:path')
 const Plugins = require('./plugins')
 const Hapi = require('@hapi/hapi')
 const Logger = require('@mojaloop/central-services-logger')
