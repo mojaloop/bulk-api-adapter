@@ -279,7 +279,7 @@ paths:
   /bulkTransfers/{id}/error:
     put:
       summary: BulkTransfersErrorByIDPut
-      operationId: BulkTransfersErrorByIDPut
+      operationId: bulkTransfersErrorByIDPut
       parameters:
         - name: content-type
           in: header
