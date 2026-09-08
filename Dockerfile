@@ -16,7 +16,7 @@ USER root
 
 WORKDIR /opt/app/
 
-RUN apk add --no-cache -t build-dependencies \
+RUN apk add --no-cache --virtual .build-deps \
     autoconf automake bash g++ gcc git libtool make py3-setuptools python3
 
 COPY package.json package-lock.json* /opt/app/
