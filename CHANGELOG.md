@@ -2,6 +2,23 @@
 
 All notable changes to this project will be documented in this file. See [standard-version](https://github.com/conventional-changelog/standard-version) for commit guidelines.
 
+## [17.3.0](https://github.com/mojaloop/bulk-api-adapter/compare/v17.2.7...v17.3.0) (2026-09-12)
+
+
+### Features
+
+* 4479-openapi3-openapi-backend ([#148](https://github.com/mojaloop/bulk-api-adapter/issues/148)) ([a94974f](https://github.com/mojaloop/bulk-api-adapter/commit/a94974f1d26fc8b5b8ebb4b422a89721b30498e6)), closes [mojaloop/#4479](https://github.com/mojaloop/project/issues/4479)
+
+
+### Bug Fixes
+
+* replace the bad lodash 4.18.0 release so the release job can run ([#149](https://github.com/mojaloop/bulk-api-adapter/issues/149)) ([bac2b3c](https://github.com/mojaloop/bulk-api-adapter/commit/bac2b3c250826a86402a8b30ee920d3313d0c8ea))
+
+
+### Chore
+
+* **sbom:** update sbom [skip ci] ([825c60d](https://github.com/mojaloop/bulk-api-adapter/commit/825c60d1718d024ff3db91fd2c2b27e5abc0e6ce))
+
 ### [17.2.7](https://github.com/mojaloop/bulk-api-adapter/compare/v17.2.6...v17.2.7) (2026-03-25)
 
 
