@@ -1,0 +1,10 @@
+{
+  "reject": [
+    "@mojaloop/central-services-shared",
+    "why-csl-shared: held at the version the committed lock pins (carried over from the yaml config)",
+    "joi",
+    "why-joi: the latest hapi-swagger (17.3.2) still requires the joi 17.x line; nothing supports joi 18 yet (carried over from the yaml config)",
+    "@types/node",
+    "why-types-node: its major must match the Node runtime major in .nvmrc (24); a higher major only weakens type checking; bump together with the runtime"
+  ]
+}
