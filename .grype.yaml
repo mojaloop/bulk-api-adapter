@@ -186,6 +186,9 @@ ignore:
     reason: >-
       braces 3.0.3 stack-exhaustion ReDoS - dev-only transitive via @mojaloop/api-snippets > ts-auto-mock > micromatch;
       no patched release of braces 3.x exists as of 2026-10-16; also allowlisted in audit-ci.jsonc
+  - vulnerability: GHSA-37ch-88jc-xwx2
+    include-aliases: true
+    reason: 'Unfixable npm transitive vulnerability: unknown (unknown severity) as of 2026-10-20'
 output:
   - table
   - json
