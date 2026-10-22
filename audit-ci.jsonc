@@ -4,14 +4,6 @@
   // Only use one of ["low": true, "moderate": true, "high": true, "critical": true]
   "moderate": true,
   "allowlist": [ // NOTE: Please add as much information as possible to any items added to the allowList
-    "GHSA-vfj7-8cjw-p6xm",
-    "GHSA-q3jh-wrc6-jgq8",
-    "GHSA-8r9p-f939-6h3c",
-    "GHSA-r7fv-28h4-cvq7",
-    "GHSA-vfgh-jcmw-g37q",
-    "GHSA-gfr2-rv44-r23c",
-    "GHSA-x3q4-9hxx-gx8m",
-    "GHSA-374f-7chj-9948",
-    "GHSA-cv27-6wvh-8x7j"
+    "GHSA-vfj7-8cjw-p6xm" // braces stack-exhaustion ReDoS - dev-only transitive via @mojaloop/api-snippets > ts-auto-mock > micromatch; no patched release of braces 3.x exists (2026-10-16)
   ]
 }
