@@ -186,6 +186,33 @@ ignore:
     reason: >-
       braces 3.0.3 stack-exhaustion ReDoS - dev-only transitive via @mojaloop/api-snippets > ts-auto-mock > micromatch;
       no patched release of braces 3.x exists as of 2026-10-16; also allowlisted in audit-ci.jsonc
+  - vulnerability: CVE-2026-107891
+    include-aliases: true
+    reason: 'Alpine base image package (apk): musl - no npm fix available as of 2026-10-22 (info severity)'
+  - vulnerability: GHSA-q3jh-wrc6-jgq8
+    include-aliases: true
+    reason: 'Unfixable npm transitive vulnerability: unknown (unknown severity) as of 2026-10-22'
+  - vulnerability: GHSA-8r9p-f939-6h3c
+    include-aliases: true
+    reason: 'Unfixable npm transitive vulnerability: unknown (unknown severity) as of 2026-10-22'
+  - vulnerability: GHSA-r7fv-28h4-cvq7
+    include-aliases: true
+    reason: 'Unfixable npm transitive vulnerability: unknown (unknown severity) as of 2026-10-22'
+  - vulnerability: GHSA-vfgh-jcmw-g37q
+    include-aliases: true
+    reason: 'Unfixable npm transitive vulnerability: unknown (unknown severity) as of 2026-10-22'
+  - vulnerability: GHSA-gfr2-rv44-r23c
+    include-aliases: true
+    reason: 'Unfixable npm transitive vulnerability: unknown (unknown severity) as of 2026-10-22'
+  - vulnerability: GHSA-x3q4-9hxx-gx8m
+    include-aliases: true
+    reason: 'Unfixable npm transitive vulnerability: unknown (unknown severity) as of 2026-10-22'
+  - vulnerability: GHSA-374f-7chj-9948
+    include-aliases: true
+    reason: 'Unfixable npm transitive vulnerability: unknown (unknown severity) as of 2026-10-22'
+  - vulnerability: GHSA-cv27-6wvh-8x7j
+    include-aliases: true
+    reason: 'Unfixable npm transitive vulnerability: unknown (unknown severity) as of 2026-10-22'
 output:
   - table
   - json
